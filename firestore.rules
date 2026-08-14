@@ -1,0 +1,87 @@
+// =============================================================================
+// DEPLOY THESE RULES or you will get "Missing or insufficient permissions"
+// Firebase Console → Firestore Database → Rules → paste this → Publish
+// Or: firebase deploy --only firestore
+// =============================================================================
+//
+// NOTE: Admin dashboard saves go through your Next.js API (Firebase Admin SDK),
+// which bypasses these rules. These rules apply to client-side Firestore access.
+// For CMS to persist, ensure your API uses Admin SDK and env vars are set.
+//
+// For debugging only (INSECURE): set DEBUG_ALLOW_ALL = true to allow all read/write.
+// Revert to false before deploying to production.
+// =============================================================================
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Set to true only for local debugging; never in production
+    let DEBUG_ALLOW_ALL = false;
+
+    // ----- Public content: anyone can read (for marketing site). Auth or debug write.
+    match /categories/{docId} {
+      allow read: if true;
+      allow write: if request.auth != null || DEBUG_ALLOW_ALL;
+    }
+    match /projects/{docId} {
+      allow read: if true;
+      allow write: if request.auth != null || DEBUG_ALLOW_ALL;
+    }
+    match /testimonials/{docId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+    match /articles/{docId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+    match /heroSlides/{docId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+    match /settings/{docId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+    match /gallery/{docId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+    match /pages/{docId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+    match /cmsPages/{docId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+    match /cmsSections/{docId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+    match /formConfigs/{docId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+    match /propertyAmenities/{docId} {
+      allow read: if true;
+      allow write: if request.auth != null || DEBUG_ALLOW_ALL;
+    }
+    match /propertyDetails/{docId} {
+      allow read: if true;
+      allow write: if request.auth != null || DEBUG_ALLOW_ALL;
+    }
+    match /propertySections/{docId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+
+    // ----- Sensitive: only authenticated admin can read/write
+    match /leads/{docId} {
+      allow read, write: if request.auth != null;
+    }
+    match /formSubmissions/{docId} {
+      allow read, write: if request.auth != null;
+    }
+  }
+}
