@@ -1,0 +1,24 @@
+2026-08-16 17:12:51 +00:00: [API] GET /api/v1/projects/public/[id] error: error: invalid input syntax for type uuid: "quality-home-group-tech-park"
+2026-08-16 17:12:51 +00:00:     at async T (.next/server/chunks/[root-of-the-server]__c753f860._.js:4:1458)
+2026-08-16 17:12:51 +00:00:     at async i (.next/server/chunks/[root-of-the-server]__03f1d76c._.js:1:2003)
+2026-08-16 17:12:51 +00:00:     at async u (.next/server/chunks/[root-of-the-server]__03f1d76c._.js:1:6316)
+2026-08-16 17:12:51 +00:00:     at async d (.next/server/chunks/[root-of-the-server]__03f1d76c._.js:1:7354)
+2026-08-16 17:12:51 +00:00:     at async C (.next/server/chunks/[root-of-the-server]__03f1d76c._.js:1:8432) {
+2026-08-16 17:12:51 +00:00:   length: 160,
+2026-08-16 17:12:51 +00:00:   severity: 'ERROR',
+2026-08-16 17:12:51 +00:00:   code: '22P02',
+2026-08-16 17:12:51 +00:00:   detail: undefined,
+2026-08-16 17:12:51 +00:00:   hint: undefined,
+2026-08-16 17:12:51 +00:00:   position: undefined,
+2026-08-16 17:12:51 +00:00:   internalPosition: undefined,
+2026-08-16 17:12:51 +00:00:   internalQuery: undefined,
+2026-08-16 17:12:51 +00:00:   where: "unnamed portal parameter $1 = '...'",
+2026-08-16 17:12:51 +00:00:   schema: undefined,
+2026-08-16 17:12:51 +00:00:   table: undefined,
+2026-08-16 17:12:51 +00:00:   column: undefined,
+2026-08-16 17:12:51 +00:00:   dataType: undefined,
+2026-08-16 17:12:51 +00:00:   constraint: undefined,
+2026-08-16 17:12:51 +00:00:   file: 'uuid.c',
+2026-08-16 17:12:51 +00:00:   line: '138',
+2026-08-16 17:12:51 +00:00:   routine: 'string_to_uuid'
+2026-08-16 17:12:51 +00:00: }

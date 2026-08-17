@@ -89,10 +89,56 @@ async function seedPages() {
     {
       slug: "home-why-us",
       data: {
+        eyebrow: "Why Choose Us",
         title: "Why Quality Home Group",
-        subtitle: "Trusted builder with a commitment to excellence",
-        description: "We combine thoughtful design, quality construction, and transparent processes.",
+        description:
+          "We combine thoughtful design, quality construction, and transparent processes to deliver homes you can trust.",
         image: "https://placehold.co/800x600/DDA21A/1F2A54?text=Why+Us",
+        features: [
+          {
+            icon: "",
+            title: "Quality Construction",
+            description: "Premium materials and skilled workmanship on every project.",
+          },
+          {
+            icon: "",
+            title: "On-Time Delivery",
+            description: "Clear timelines and a track record of handing over as promised.",
+          },
+          {
+            icon: "",
+            title: "Transparent Process",
+            description: "RERA-registered projects with honest pricing and documentation.",
+          },
+          {
+            icon: "",
+            title: "Prime Locations",
+            description: "Homes and commercial spaces in Hyderabad's growth corridors.",
+          },
+        ],
+      },
+    },
+    {
+      slug: "about",
+      data: {
+        heroTitle: "About Us",
+        heroImage: "https://placehold.co/1920x600/1F2A54/ffffff?text=About+Quality+Home+Group",
+        tagline: "A Higher Quality Of Living",
+        introText:
+          "Quality Home Group is a leading architectural and construction company offering premium apartments, villas, townhouses, and commercial properties.",
+        description:
+          "We bring your aspirations to life with quality, precision, and performance. Each project reflects our passion for thoughtful design, sustainable development, and enduring value.",
+        missionTitle: "Our Mission",
+        missionText:
+          "To create spaces that inspire better living through integrity, quality, and innovation.",
+        missionIcon: "",
+        visionTitle: "Our Vision",
+        visionText:
+          "To be Hyderabad's most trusted real-estate brand, shaping communities where people connect, grow, and thrive.",
+        visionIcon: "",
+        leadersTitle: "Leadership",
+        leadersSubtitle: "The people behind Quality Home Group",
+        teamMembers: [],
       },
     },
     {
@@ -293,6 +339,240 @@ async function seedArticles() {
   }
 }
 
+async function seedCmsPages() {
+  const pages = [
+    {
+      slug: "home",
+      title: "Home",
+      description: "Quality Home Group homepage",
+      order: 0,
+      metaTitle: "Quality Home Group | Premium Homes in Hyderabad",
+      metaDescription:
+        "Premium apartments, villas, and commercial spaces across Hyderabad. A higher quality of living.",
+    },
+    {
+      slug: "about",
+      title: "About",
+      description: "About Quality Home Group",
+      order: 1,
+      metaTitle: "About Us | Quality Home Group",
+      metaDescription: "Learn about Quality Home Group — building communities and creating value in Hyderabad.",
+    },
+    {
+      slug: "apartments",
+      title: "Apartments",
+      description: "Apartment projects",
+      order: 2,
+      metaTitle: "Apartments | Quality Home Group",
+      metaDescription: "Explore premium apartment projects by Quality Home Group in Hyderabad.",
+    },
+    {
+      slug: "villas",
+      title: "Villas",
+      description: "Villa projects",
+      order: 3,
+      metaTitle: "Villas | Quality Home Group",
+      metaDescription: "Luxury independent villas crafted by Quality Home Group.",
+    },
+    {
+      slug: "commercial",
+      title: "Commercial",
+      description: "Commercial projects",
+      order: 4,
+      metaTitle: "Commercial | Quality Home Group",
+      metaDescription: "Grade-A office and retail spaces in Hyderabad's IT corridor.",
+    },
+    {
+      slug: "plots",
+      title: "Plots",
+      description: "Plot projects",
+      order: 5,
+      metaTitle: "Plots | Quality Home Group",
+      metaDescription: "Residential plots with clear titles, ready for your dream home.",
+    },
+    {
+      slug: "gallery",
+      title: "Gallery",
+      description: "Project gallery",
+      order: 6,
+      metaTitle: "Gallery | Quality Home Group",
+      metaDescription: "A look at Quality Home Group interiors, amenities, and exteriors.",
+    },
+    {
+      slug: "blog",
+      title: "Blog",
+      description: "News and insights",
+      order: 7,
+      metaTitle: "Blog | Quality Home Group",
+      metaDescription: "Market insights and home-buying guides from Quality Home Group.",
+    },
+    {
+      slug: "contact",
+      title: "Contact",
+      description: "Contact Quality Home Group",
+      order: 8,
+      metaTitle: "Contact Us | Quality Home Group",
+      metaDescription: "Get in touch with Quality Home Group for project enquiries.",
+    },
+    {
+      slug: "testimonials",
+      title: "Testimonials",
+      description: "Customer testimonials",
+      order: 9,
+      metaTitle: "Testimonials | Quality Home Group",
+      metaDescription: "What our homeowners and investors say about Quality Home Group.",
+    },
+  ];
+
+  for (const p of pages) {
+    await query(
+      `INSERT INTO cms_pages (slug, title, description, is_active, is_indexed, sort_order, meta_title, meta_description)
+       VALUES ($1,$2,$3,true,true,$4,$5,$6)
+       ON CONFLICT (slug) DO UPDATE SET
+         title = EXCLUDED.title,
+         description = EXCLUDED.description,
+         meta_title = EXCLUDED.meta_title,
+         meta_description = EXCLUDED.meta_description,
+         updated_at = NOW()`,
+      [p.slug, p.title, p.description, p.order, p.metaTitle, p.metaDescription],
+    );
+  }
+}
+
+async function seedSeo() {
+  const rows = [
+    {
+      slug: "home",
+      data: {
+        metaTitle: "Quality Home Group | Premium Homes in Hyderabad",
+        metaDescription:
+          "Premium apartments, villas, and commercial spaces across Hyderabad. A higher quality of living.",
+        metaKeywords: ["quality home group", "hyderabad real estate", "apartments", "villas"],
+        ogImage: "",
+        isIndexed: true,
+      },
+    },
+    {
+      slug: "about",
+      data: {
+        metaTitle: "About Us | Quality Home Group",
+        metaDescription: "Learn about Quality Home Group — building communities and creating value in Hyderabad.",
+        metaKeywords: ["about", "quality home group"],
+        ogImage: "",
+        isIndexed: true,
+      },
+    },
+    {
+      slug: "apartments",
+      data: {
+        metaTitle: "Apartments | Quality Home Group",
+        metaDescription: "Explore premium apartment projects by Quality Home Group in Hyderabad.",
+        metaKeywords: ["apartments", "hyderabad"],
+        ogImage: "",
+        isIndexed: true,
+      },
+    },
+    {
+      slug: "villas",
+      data: {
+        metaTitle: "Villas | Quality Home Group",
+        metaDescription: "Luxury independent villas crafted by Quality Home Group.",
+        metaKeywords: ["villas", "hyderabad"],
+        ogImage: "",
+        isIndexed: true,
+      },
+    },
+    {
+      slug: "commercial",
+      data: {
+        metaTitle: "Commercial | Quality Home Group",
+        metaDescription: "Grade-A office and retail spaces in Hyderabad's IT corridor.",
+        metaKeywords: ["commercial", "office space"],
+        ogImage: "",
+        isIndexed: true,
+      },
+    },
+    {
+      slug: "plots",
+      data: {
+        metaTitle: "Plots | Quality Home Group",
+        metaDescription: "Residential plots with clear titles, ready for your dream home.",
+        metaKeywords: ["plots", "hyderabad"],
+        ogImage: "",
+        isIndexed: true,
+      },
+    },
+    {
+      slug: "gallery",
+      data: {
+        metaTitle: "Gallery | Quality Home Group",
+        metaDescription: "A look at Quality Home Group interiors, amenities, and exteriors.",
+        metaKeywords: ["gallery"],
+        ogImage: "",
+        isIndexed: true,
+      },
+    },
+    {
+      slug: "blog",
+      data: {
+        metaTitle: "Blog | Quality Home Group",
+        metaDescription: "Market insights and home-buying guides from Quality Home Group.",
+        metaKeywords: ["blog", "real estate"],
+        ogImage: "",
+        isIndexed: true,
+      },
+    },
+    {
+      slug: "contact",
+      data: {
+        metaTitle: "Contact Us | Quality Home Group",
+        metaDescription: "Get in touch with Quality Home Group for project enquiries.",
+        metaKeywords: ["contact"],
+        ogImage: "",
+        isIndexed: true,
+      },
+    },
+    {
+      slug: "testimonials",
+      data: {
+        metaTitle: "Testimonials | Quality Home Group",
+        metaDescription: "What our homeowners and investors say about Quality Home Group.",
+        metaKeywords: ["testimonials"],
+        ogImage: "",
+        isIndexed: true,
+      },
+    },
+  ];
+
+  for (const row of rows) {
+    await query(
+      `INSERT INTO seo (page_slug, data) VALUES ($1, $2)
+       ON CONFLICT (page_slug) DO UPDATE SET data = EXCLUDED.data, updated_at = NOW()`,
+      [row.slug, JSON.stringify(row.data)],
+    );
+  }
+}
+
+async function seedForms() {
+  await query(
+    `INSERT INTO form_configs (name, slug, fields, success_message, email_notification, is_active)
+     VALUES ($1, $2, $3, $4, $5, true)
+     ON CONFLICT (slug) DO NOTHING`,
+    [
+      "Contact Enquiry",
+      "contact",
+      JSON.stringify([
+        { name: "name", label: "Name", type: "text", placeholder: "Your name", required: true },
+        { name: "email", label: "Email", type: "email", placeholder: "you@example.com", required: true },
+        { name: "phone", label: "Phone", type: "phone", placeholder: "+91", required: true },
+        { name: "message", label: "Message", type: "textarea", placeholder: "How can we help?", required: true },
+      ]),
+      "Thank you! We will get back to you shortly.",
+      "info@qualityhomegroup.com",
+    ],
+  );
+}
+
 async function seedGallery() {
   const count = await query(`SELECT COUNT(*)::int AS c FROM gallery`);
   if ((count.rows[0]?.c ?? 0) > 0) return;
@@ -321,6 +601,9 @@ async function main() {
   await seedTestimonials();
   await seedArticles();
   await seedGallery();
+  await seedCmsPages();
+  await seedSeo();
+  await seedForms();
   console.log("[seed] Done.");
 }
 
