@@ -18,7 +18,14 @@ export async function GET(
     const { page } = await params;
     if (!page) return apiError("BAD_REQUEST", undefined, "Page name required");
     const data = await adminGetDocument("pages", page);
-    return NextResponse.json({ data: data ?? null });
+    return NextResponse.json(
+      { data: data ?? null },
+      {
+        headers: {
+          "Cache-Control": "no-store, no-cache, must-revalidate",
+        },
+      },
+    );
   } catch (err) {
     console.error("[API] GET /api/v1/content/pages/[page] error:", err);
     return apiInternalError(err);
@@ -37,7 +44,8 @@ export async function PUT(
     if (!page) return apiError("BAD_REQUEST", undefined, "Page name required");
     const body = await request.json();
     await adminSetDocument("pages", page, body);
-    return NextResponse.json({ success: true });
+    const data = await adminGetDocument("pages", page);
+    return NextResponse.json({ success: true, data });
   } catch (err) {
     console.error("[API] PUT /api/v1/content/pages/[page] error:", err);
     return apiInternalError(err);

@@ -40,11 +40,11 @@ export function VideoSection() {
         if (res.ok && json?.data) {
           setContent(normalizeHomeVideoContent(json.data));
         } else {
-          setContent(normalizeHomeVideoContent(null));
+          setContent({ title: "", videoUrl: "", posterImage: "" });
         }
       } catch (e) {
         console.error("Video section load error:", e);
-        setContent(normalizeHomeVideoContent(null));
+        setContent({ title: "", videoUrl: "", posterImage: "" });
       } finally {
         setLoading(false);
       }
@@ -68,7 +68,7 @@ export function VideoSection() {
     return () => observer.disconnect();
   }, [isPlaying]);
 
-  const normalized = content ?? normalizeHomeVideoContent(null);
+  const normalized = content ?? { title: "", videoUrl: "", posterImage: "" };
   const videoUrl = normalized.videoUrl.trim();
   const hasVideo = isValidVideoUrl(videoUrl);
   const hasPoster = isValidImageUrl(normalized.posterImage);

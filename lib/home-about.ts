@@ -42,25 +42,22 @@ function pickString(...values: unknown[]): string {
 }
 
 function normalizePropertyTypes(raw: unknown): HomeAboutPropertyType[] {
-  if (!Array.isArray(raw)) return [...DEFAULT_HOME_ABOUT_PROPERTY_TYPES];
-  const items = raw
-    .map((item, index) => {
+  if (!Array.isArray(raw)) return [];
+  return raw
+    .map((item) => {
       const o = item as Record<string, unknown>;
-      const label =
-        pickString(o.label) || DEFAULT_HOME_ABOUT_PROPERTY_TYPES[index]?.label || "";
+      const label = pickString(o.label);
       const image = pickString(o.image, o.iconUrl);
       return { label, image };
     })
     .filter((p) => p.label);
-
-  return items.length > 0 ? items : [...DEFAULT_HOME_ABOUT_PROPERTY_TYPES];
 }
 
-/** Map Firestore `pages/home-about` (or legacy shapes) to homepage About section. */
+/** Map CMS `pages/home-about` (or legacy shapes) to homepage About section. */
 export function normalizeHomeAboutContent(
   raw: Record<string, unknown> | null | undefined
-): HomeAboutContent {
-  if (!raw) return { ...DEFAULT_HOME_ABOUT, propertyTypes: [...DEFAULT_HOME_ABOUT_PROPERTY_TYPES] };
+): HomeAboutContent | null {
+  if (!raw || !hasHomeAboutSourceData(raw)) return null;
 
   const paragraph1 = pickString(raw.paragraph1, raw.introText);
   const paragraph2 = pickString(raw.paragraph2);
@@ -77,24 +74,16 @@ export function normalizeHomeAboutContent(
   const heading = pickString(raw.heading, raw.subtitle, raw.tagline);
   const image = pickString(raw.image, raw.heroImage);
 
-  const hasAny = eyebrow || heading || p1 || p2 || image;
-
-  const base: HomeAboutContent = {
-    eyebrow: eyebrow || DEFAULT_HOME_ABOUT.eyebrow,
-    heading: heading || DEFAULT_HOME_ABOUT.heading,
-    paragraph1: p1 || DEFAULT_HOME_ABOUT.paragraph1,
-    paragraph2: p2 || DEFAULT_HOME_ABOUT.paragraph2,
+  return {
+    eyebrow,
+    heading,
+    paragraph1: p1,
+    paragraph2: p2,
     propertyTypes: normalizePropertyTypes(raw.propertyTypes),
-    buttonText: pickString(raw.buttonText) || DEFAULT_HOME_ABOUT.buttonText,
-    buttonLink: pickString(raw.buttonLink) || DEFAULT_HOME_ABOUT.buttonLink,
+    buttonText: pickString(raw.buttonText) || "Read More",
+    buttonLink: pickString(raw.buttonLink) || "/about",
     image,
   };
-
-  if (!hasAny) {
-    return { ...DEFAULT_HOME_ABOUT, propertyTypes: [...DEFAULT_HOME_ABOUT_PROPERTY_TYPES] };
-  }
-
-  return base;
 }
 
 export function hasHomeAboutSourceData(raw: Record<string, unknown> | null | undefined): boolean {

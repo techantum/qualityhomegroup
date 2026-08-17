@@ -14,17 +14,13 @@ export function normalizeHomeVideoContent(
   data: Partial<HomeVideoContent> | Record<string, unknown> | null | undefined
 ): HomeVideoContent {
   if (!data || typeof data !== "object") {
-    return { ...DEFAULT_HOME_VIDEO };
+    return { title: "", videoUrl: "", posterImage: "" };
   }
   const d = data as Record<string, unknown>;
   return {
-    title:
-      String(d.title ?? d.headline ?? DEFAULT_HOME_VIDEO.title).trim() ||
-      DEFAULT_HOME_VIDEO.title,
+    title: String(d.title ?? d.headline ?? "").trim(),
     videoUrl: String(d.videoUrl ?? d.video ?? "").trim(),
-    posterImage: String(
-      d.posterImage ?? d.backgroundImage ?? d.heroImage ?? ""
-    ).trim(),
+    posterImage: String(d.posterImage ?? d.backgroundImage ?? d.heroImage ?? "").trim(),
   };
 }
 

@@ -472,7 +472,7 @@ export async function adminSetDocument(
   if (collectionName === "settings") {
     await query(
       `INSERT INTO settings (key, data, updated_at) VALUES ($1, $2, NOW())
-       ON CONFLICT (key) DO UPDATE SET data = settings.data || EXCLUDED.data, updated_at = NOW()`,
+       ON CONFLICT (key) DO UPDATE SET data = EXCLUDED.data, updated_at = NOW()`,
       [docId, JSON.stringify(clean)],
     );
     return;
@@ -481,7 +481,7 @@ export async function adminSetDocument(
   if (collectionName === "pages") {
     await query(
       `INSERT INTO pages (slug, data, updated_at) VALUES ($1, $2, NOW())
-       ON CONFLICT (slug) DO UPDATE SET data = pages.data || EXCLUDED.data, updated_at = NOW()`,
+       ON CONFLICT (slug) DO UPDATE SET data = EXCLUDED.data, updated_at = NOW()`,
       [docId, JSON.stringify(clean)],
     );
     return;
@@ -490,7 +490,7 @@ export async function adminSetDocument(
   if (collectionName === "seo") {
     await query(
       `INSERT INTO seo (page_slug, data, updated_at) VALUES ($1, $2, NOW())
-       ON CONFLICT (page_slug) DO UPDATE SET data = seo.data || EXCLUDED.data, updated_at = NOW()`,
+       ON CONFLICT (page_slug) DO UPDATE SET data = EXCLUDED.data, updated_at = NOW()`,
       [docId, JSON.stringify(clean)],
     );
     return;
@@ -540,6 +540,13 @@ export async function adminGetArticles(limit?: number): Promise<Record<string, u
     ? await query(`SELECT * FROM articles ORDER BY created_at DESC LIMIT $1`, [limit])
     : await query(`SELECT * FROM articles ORDER BY created_at DESC`);
   return result.rows.map((r) => mapArticle(r));
+}
+
+export async function adminGetArticleById(id: string): Promise<Record<string, unknown> | null> {
+  if (!isDatabaseConfigured()) return null;
+  const result = await query(`SELECT * FROM articles WHERE id = $1 LIMIT 1`, [id]);
+  if (result.rows.length === 0) return null;
+  return mapArticle(result.rows[0]);
 }
 
 /** Insert a lead from contact/enquiry forms. */

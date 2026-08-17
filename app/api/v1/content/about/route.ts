@@ -14,13 +14,13 @@ export const dynamic = "force-dynamic";
 export async function GET() {
   try {
     const pageDoc = await adminGetDocument("pages", "about");
-    const legacyDoc = await adminGetSettingsDoc("about");
 
     let data: Record<string, unknown> | null = pageDoc;
-    if (!hasAboutSourceData(pageDoc) && legacyDoc) {
-      data = legacyDoc;
-    } else if (pageDoc && legacyDoc) {
-      data = { ...legacyDoc, ...pageDoc };
+    if (!hasAboutSourceData(pageDoc)) {
+      const legacyDoc = await adminGetSettingsDoc("about");
+      if (legacyDoc && hasAboutSourceData(legacyDoc)) {
+        data = legacyDoc;
+      }
     }
 
     return NextResponse.json({ data: data ?? null });

@@ -6,6 +6,7 @@ import { ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight, Quote } from "lucide-react";
 import { Reveal } from "@/components/motion/reveal";
+import { usePageContent } from "@/hooks/use-page-content";
 import { FloatingOrbs } from "@/components/motion/floating-orbs";
 import { Magnetic } from "@/components/motion/magnetic";
 import { SafeImage } from "@/components/safe-image";
@@ -18,6 +19,7 @@ interface TestimonialDisplay {
 }
 
 export function TestimonialsSection() {
+  const { data: sectionContent, loading: sectionLoading } = usePageContent("home-testimonials");
   const [testimonials, setTestimonials] = useState<TestimonialDisplay[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [startIndex, setStartIndex] = useState(0);
@@ -80,16 +82,24 @@ export function TestimonialsSection() {
     setTouchStart(null);
   };
 
+  const sectionEyebrow = String(sectionContent?.subtitle ?? sectionContent?.eyebrow ?? "").trim();
+  const sectionTitle = String(sectionContent?.title ?? "").trim();
+  const showSectionHeader = Boolean(sectionEyebrow || sectionTitle);
+
   return (
     <section className="py-20 relative overflow-hidden bg-gradient-to-br from-[#1F2A54] via-[#2a3a6e] to-[#1F2A54]">
       <FloatingOrbs />
       <div className="container mx-auto px-4 relative z-10">
-        <Reveal className="text-center mb-16">
-          <p className="text-white font-medium mb-2">Feedback</p>
-          <h2 className="font-extrabold text-3xl md:text-4xl text-white">
-            Our Testimonials
-          </h2>
-        </Reveal>
+        {!sectionLoading && showSectionHeader && (
+          <Reveal className="text-center mb-16">
+            {sectionEyebrow && (
+              <p className="text-white font-medium mb-2">{sectionEyebrow}</p>
+            )}
+            {sectionTitle && (
+              <h2 className="font-extrabold text-3xl md:text-4xl text-white">{sectionTitle}</h2>
+            )}
+          </Reveal>
+        )}
 
         {/* Loading State */}
         {isLoading && (

@@ -5,6 +5,7 @@ import React from "react"
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/auth-context";
+import { adminApiFetch } from "@/lib/admin-api";
 import type { ContactInfo } from "@/lib/firestore";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -61,13 +62,11 @@ export default function CMSContactPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!user?.getIdToken) return;
+    if (!user) return;
     setSaving(true);
     try {
-      const token = await user.getIdToken();
-      const res = await fetch("/api/v1/content/contact", {
+      const res = await adminApiFetch(user, "/api/v1/content/contact", {
         method: "PUT",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify(content),
       });
       const json = await res.json().catch(() => ({}));

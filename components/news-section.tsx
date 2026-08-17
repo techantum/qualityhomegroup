@@ -6,6 +6,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { Reveal } from "@/components/motion/reveal";
+import { usePageContent } from "@/hooks/use-page-content";
 import { Stagger, StaggerItem } from "@/components/motion/stagger";
 
 interface ArticleDisplay {
@@ -26,6 +27,7 @@ function formatDate(val: unknown): string {
 }
 
 export function NewsSection() {
+  const { data: sectionContent, loading: sectionLoading } = usePageContent("home-news");
   const [articles, setArticles] = useState<ArticleDisplay[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -52,18 +54,25 @@ export function NewsSection() {
     fetchArticles();
   }, []);
 
+  const sectionTitle = String(sectionContent?.title ?? "").trim();
+  const sectionSubtitle = String(sectionContent?.subtitle ?? "").trim();
+  const showSectionHeader = Boolean(sectionTitle || sectionSubtitle);
+
   return (
     <section className="py-20 bg-white">
       <div className="max-w-[1200px] mx-auto px-4">
-        {/* Section Header */}
-        <Reveal className="text-center mb-12">
-          <h2 className="font-extrabold text-3xl md:text-4xl text-[#1F2A54] mb-3">
-            Recent Articles & News
-          </h2>
-          <p className="text-gray-500">
-            Stay updated with the latest news and insights from the real estate world.
-          </p>
-        </Reveal>
+        {!sectionLoading && showSectionHeader && (
+          <Reveal className="text-center mb-12">
+            {sectionTitle && (
+              <h2 className="font-extrabold text-3xl md:text-4xl text-[#1F2A54] mb-3">
+                {sectionTitle}
+              </h2>
+            )}
+            {sectionSubtitle && (
+              <p className="text-gray-500">{sectionSubtitle}</p>
+            )}
+          </Reveal>
+        )}
 
         {/* Loading State */}
         {isLoading && (

@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import Image from "next/image";
 import { useAuth } from "@/lib/auth-context";
+import { adminApiFetch } from "@/lib/admin-api";
 import type { PageContent } from "@/lib/firestore";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -21,6 +22,9 @@ const pageConfig: Record<string, { title: string; description: string }> = {
   plots: { title: "Plots Page", description: "Manage open plots page content" },
   "home-why-us": { title: "Home — Why Us", description: "Homepage why-us section (title, features, image)" },
   "home-video": { title: "Home — Video", description: "Homepage video section (title, video URL, poster)" },
+  "home-projects": { title: "Home — Projects", description: "Homepage projects section heading and subtitle" },
+  "home-testimonials": { title: "Home — Testimonials", description: "Homepage testimonials section heading" },
+  "home-news": { title: "Home — News", description: "Homepage news/articles section heading and subtitle" },
 };
 
 interface Section {
@@ -89,17 +93,27 @@ export default function CMSGenericPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!user?.getIdToken) return;
+    if (!user) return;
     setSaving(true);
     try {
-      const token = await user.getIdToken();
-      const res = await fetch(`/api/v1/content/pages/${pageName}`, {
+      const res = await adminApiFetch(user, `/api/v1/content/pages/${pageName}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({ ...content, sections }),
       });
       const json = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(json?.error ?? `Save failed (${res.status})`);
+      if (json?.data) {
+        const data = json.data as PageContent;
+        setContent({
+          pageName: data.pageName ?? pageName,
+          title: data.title ?? "",
+          subtitle: data.subtitle ?? "",
+          content: data.content ?? "",
+          heroImage: data.heroImage ?? "",
+          sections: data.sections ?? [],
+        });
+        setSections((data.sections as Section[]) || []);
+      }
       alert("Page content saved!");
     } catch (error) {
       console.error("Error saving content:", error);

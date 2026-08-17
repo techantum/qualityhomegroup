@@ -103,6 +103,27 @@ async function seedPages() {
         posterImage: "https://placehold.co/1280x720/1F2A54/ffffff?text=Video",
       },
     },
+    {
+      slug: "home-projects",
+      data: {
+        title: "Latest Projects",
+        subtitle: "Discover our latest residential and commercial developments.",
+      },
+    },
+    {
+      slug: "home-testimonials",
+      data: {
+        subtitle: "Feedback",
+        title: "Our Testimonials",
+      },
+    },
+    {
+      slug: "home-news",
+      data: {
+        title: "Recent Articles & News",
+        subtitle: "Stay updated with the latest news and insights from the real estate world.",
+      },
+    },
   ];
 
   for (const page of pages) {

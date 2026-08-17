@@ -21,13 +21,15 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-function toAuthUser(user: User, session: Session | null): AuthUser {
+function toAuthUser(user: User): AuthUser {
   return {
     id: user.id,
     email: user.email,
     getIdToken: async () => {
       const supabase = getSupabaseBrowserClient();
-      const token = session?.access_token ?? (await supabase?.auth.getSession())?.data.session?.access_token;
+      const { data, error } = await supabase!.auth.getSession();
+      if (error) throw error;
+      const token = data.session?.access_token;
       if (!token) throw new Error("No active session");
       return token;
     },
@@ -48,13 +50,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     supabase.auth.getSession().then(({ data }) => {
       setSession(data.session);
-      setUser(data.session?.user ? toAuthUser(data.session.user, data.session) : null);
+      setUser(data.session?.user ? toAuthUser(data.session.user) : null);
       setLoading(false);
     });
 
     const { data: sub } = supabase.auth.onAuthStateChange((_event, nextSession) => {
       setSession(nextSession);
-      setUser(nextSession?.user ? toAuthUser(nextSession.user, nextSession) : null);
+      setUser(nextSession?.user ? toAuthUser(nextSession.user) : null);
       setLoading(false);
     });
 

@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useAuth } from "@/lib/auth-context";
+import { savePageContent } from "@/lib/admin-page-save";
 import { getGalleryImages, addGalleryImage, updateGalleryImage, deleteGalleryImage, type GalleryImage } from "@/lib/firestore";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -94,18 +95,14 @@ export default function GalleryPage() {
   }, [user]);
 
   const handleSaveHero = async () => {
-    if (!user?.getIdToken) return;
+    if (!user) return;
     setSavingHero(true);
     try {
-      const token = await user.getIdToken();
-      await fetch("/api/v1/content/pages/gallery", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-        body: JSON.stringify({ heroTitle, heroImage }),
-      });
+      await savePageContent(user, "gallery", { heroTitle, heroImage });
       alert("Hero section saved!");
-    } catch {
-      alert("Error saving hero section.");
+    } catch (error) {
+      console.error("Error saving gallery hero:", error);
+      alert(error instanceof Error ? error.message : "Error saving hero section.");
     } finally {
       setSavingHero(false);
     }

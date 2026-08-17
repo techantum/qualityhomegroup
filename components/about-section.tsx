@@ -41,11 +41,11 @@ export function AboutSection() {
         if (res.ok && json?.data) {
           setContent(normalizeHomeAboutContent(json.data));
         } else {
-          setContent(normalizeHomeAboutContent(null));
+          setContent(null);
         }
       } catch (error) {
         console.error("Error fetching home about content:", error);
-        setContent(normalizeHomeAboutContent(null));
+        setContent(null);
       } finally {
         setIsLoading(false);
       }
@@ -53,7 +53,7 @@ export function AboutSection() {
     fetchAbout();
   }, []);
 
-  if (isLoading || !content) {
+  if (isLoading) {
     return (
       <section id="about" className="py-16 md:py-24 bg-white">
         <motion.div
@@ -64,6 +64,8 @@ export function AboutSection() {
       </section>
     );
   }
+
+  if (!content) return null;
 
   const {
     eyebrow,

@@ -33,7 +33,8 @@ export function HomeAboutEditor() {
         const res = await fetch("/api/v1/content/pages/home-about");
         const json = await res.json().catch(() => ({}));
         if (res.ok && json?.data) {
-          setContent(normalizeHomeAboutContent(json.data));
+          const normalized = normalizeHomeAboutContent(json.data);
+          if (normalized) setContent(normalized);
         }
       } catch (e) {
         console.error("Error loading home about:", e);
@@ -65,6 +66,10 @@ export function HomeAboutEditor() {
       });
       const json = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(json?.error ?? `Save failed (${res.status})`);
+      if (json?.data) {
+        const normalized = normalizeHomeAboutContent(json.data);
+        if (normalized) setContent(normalized);
+      }
       alert("About section saved successfully!");
     } catch (e) {
       console.error("Error saving home about:", e);

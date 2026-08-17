@@ -26,10 +26,18 @@ export async function verifySupabaseAccessToken(
   token: string,
 ): Promise<{ id: string; email?: string } | null> {
   const client = getSupabaseServiceClient();
-  if (!client) return null;
+  if (!client) {
+    console.error(
+      "[auth] SUPABASE_SECRET_KEY (or SUPABASE_SERVICE_ROLE_KEY) is not set — admin saves will fail.",
+    );
+    return null;
+  }
 
   const { data, error } = await client.auth.getUser(token);
-  if (error || !data.user) return null;
+  if (error || !data.user) {
+    console.error("[auth] Token verification failed:", error?.message ?? "invalid user");
+    return null;
+  }
 
   return {
     id: data.user.id,

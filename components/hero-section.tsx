@@ -9,6 +9,7 @@ import { isValidImageUrl } from "@/lib/media";
 import { heroSlide, heroText } from "@/lib/motion/variants";
 import { usePrefersReducedMotion } from "@/lib/motion/prefs";
 import { Magnetic } from "@/components/motion/magnetic";
+import { SITE_HEADER_HEIGHT_PX } from "@/lib/site-layout";
 
 type HeroSlide = {
   id: string;
@@ -107,7 +108,10 @@ export function HeroSection() {
           animate={{ opacity: [0.6, 1, 0.6] }}
           transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
         />
-        <div className="container mx-auto px-4 relative z-10 pt-20 w-full">
+        <div
+          className="container mx-auto px-4 relative z-10 w-full"
+          style={{ paddingTop: SITE_HEADER_HEIGHT_PX }}
+        >
           <motion.div className="h-12 w-3/4 max-w-lg bg-white/10 rounded-lg mx-auto mb-4" animate={{ opacity: [0.3, 0.7, 0.3] }} transition={{ duration: 1.5, repeat: Infinity }} />
           <motion.div className="h-8 w-1/2 max-w-md bg-white/10 rounded-lg mx-auto" animate={{ opacity: [0.3, 0.7, 0.3] }} transition={{ duration: 1.5, repeat: Infinity, delay: 0.2 }} />
         </div>
@@ -168,7 +172,8 @@ export function HeroSection() {
       </AnimatePresence>
 
       <motion.div
-        className="container mx-auto px-4 relative z-10 pt-20"
+        className="container mx-auto px-4 relative z-10"
+        style={{ paddingTop: SITE_HEADER_HEIGHT_PX }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.3, duration: 0.8 }}

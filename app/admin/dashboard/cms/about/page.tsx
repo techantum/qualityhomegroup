@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useAuth } from "@/lib/auth-context";
+import { adminApiFetch } from "@/lib/admin-api";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -92,13 +93,11 @@ export default function CMSAboutPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!user?.getIdToken) return;
+    if (!user) return;
     setSaving(true);
     try {
-      const token = await user.getIdToken();
-      const res = await fetch("/api/v1/content/about", {
+      const res = await adminApiFetch(user, "/api/v1/content/about", {
         method: "PUT",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify(content),
       });
       const json = await res.json().catch(() => ({}));
