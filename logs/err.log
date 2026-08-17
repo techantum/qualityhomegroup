@@ -22,3 +22,506 @@
 2026-08-16 17:12:51 +00:00:   line: '138',
 2026-08-16 17:12:51 +00:00:   routine: 'string_to_uuid'
 2026-08-16 17:12:51 +00:00: }
+2026-08-17 05:42:12 +00:00: [API] GET /api/v1/content/pages/[page] error: error: (EMAXCONNSESSION) max clients reached in session mode - max clients are limited to pool_size: 15
+2026-08-17 05:42:12 +00:00:     at async L (.next/server/chunks/[root-of-the-server]__c753f860._.js:5:739)
+2026-08-17 05:42:12 +00:00:     at async l (.next/server/chunks/[root-of-the-server]__5f20ed72._.js:1:2457)
+2026-08-17 05:42:12 +00:00:     at async d (.next/server/chunks/[root-of-the-server]__5f20ed72._.js:1:6547)
+2026-08-17 05:42:12 +00:00:     at async u (.next/server/chunks/[root-of-the-server]__5f20ed72._.js:1:7585)
+2026-08-17 05:42:12 +00:00:     at async T (.next/server/chunks/[root-of-the-server]__5f20ed72._.js:1:8663) {
+2026-08-17 05:42:12 +00:00:   length: 117,
+2026-08-17 05:42:12 +00:00:   severity: 'FATAL',
+2026-08-17 05:42:12 +00:00:   code: 'XX000',
+2026-08-17 05:42:12 +00:00:   detail: undefined,
+2026-08-17 05:42:12 +00:00:   hint: undefined,
+2026-08-17 05:42:12 +00:00:   position: undefined,
+2026-08-17 05:42:12 +00:00:   internalPosition: undefined,
+2026-08-17 05:42:12 +00:00:   internalQuery: undefined,
+2026-08-17 05:42:12 +00:00:   where: undefined,
+2026-08-17 05:42:12 +00:00:   schema: undefined,
+2026-08-17 05:42:12 +00:00:   table: undefined,
+2026-08-17 05:42:12 +00:00:   column: undefined,
+2026-08-17 05:42:12 +00:00:   dataType: undefined,
+2026-08-17 05:42:12 +00:00:   constraint: undefined,
+2026-08-17 05:42:12 +00:00:   file: undefined,
+2026-08-17 05:42:12 +00:00:   line: undefined,
+2026-08-17 05:42:12 +00:00:   routine: undefined
+2026-08-17 05:42:12 +00:00: }
+2026-08-17 05:52:33 +00:00: [API] GET /api/v1/content/branding error: error: (EMAXCONNSESSION) max clients reached in session mode - max clients are limited to pool_size: 15
+2026-08-17 05:52:33 +00:00:     at async L (.next/server/chunks/[root-of-the-server]__c753f860._.js:5:604)
+2026-08-17 05:52:33 +00:00:     at async l (.next/server/chunks/[root-of-the-server]__ee8a0a63._.js:1:2467)
+2026-08-17 05:52:33 +00:00:     at async d (.next/server/chunks/[root-of-the-server]__ee8a0a63._.js:1:6697)
+2026-08-17 05:52:33 +00:00:     at async u (.next/server/chunks/[root-of-the-server]__ee8a0a63._.js:1:7735)
+2026-08-17 05:52:33 +00:00:     at async C (.next/server/chunks/[root-of-the-server]__ee8a0a63._.js:1:8813) {
+2026-08-17 05:52:33 +00:00:   length: 117,
+2026-08-17 05:52:33 +00:00:   severity: 'FATAL',
+2026-08-17 05:52:33 +00:00:   code: 'XX000',
+2026-08-17 05:52:33 +00:00:   detail: undefined,
+2026-08-17 05:52:33 +00:00:   hint: undefined,
+2026-08-17 05:52:33 +00:00:   position: undefined,
+2026-08-17 05:52:33 +00:00:   internalPosition: undefined,
+2026-08-17 05:52:33 +00:00:   internalQuery: undefined,
+2026-08-17 05:52:33 +00:00:   where: undefined,
+2026-08-17 05:52:33 +00:00:   schema: undefined,
+2026-08-17 05:52:33 +00:00:   table: undefined,
+2026-08-17 05:52:33 +00:00:   column: undefined,
+2026-08-17 05:52:33 +00:00:   dataType: undefined,
+2026-08-17 05:52:33 +00:00:   constraint: undefined,
+2026-08-17 05:52:33 +00:00:   file: undefined,
+2026-08-17 05:52:33 +00:00:   line: undefined,
+2026-08-17 05:52:33 +00:00:   routine: undefined
+2026-08-17 05:52:33 +00:00: }
+2026-08-17 05:52:33 +00:00: [API] GET /api/v1/content/hero error: error: (EMAXCONNSESSION) max clients reached in session mode - max clients are limited to pool_size: 15
+2026-08-17 05:52:33 +00:00:     at async N (.next/server/chunks/[root-of-the-server]__c753f860._.js:5:359)
+2026-08-17 05:52:33 +00:00:     at async i (.next/server/chunks/[root-of-the-server]__338f8447._.js:1:1984)
+2026-08-17 05:52:33 +00:00:     at async u (.next/server/chunks/[root-of-the-server]__338f8447._.js:1:5671)
+2026-08-17 05:52:33 +00:00:     at async d (.next/server/chunks/[root-of-the-server]__338f8447._.js:1:6709) {
+2026-08-17 05:52:33 +00:00:   length: 117,
+2026-08-17 05:52:33 +00:00:   severity: 'FATAL',
+2026-08-17 05:52:33 +00:00:   code: 'XX000',
+2026-08-17 05:52:33 +00:00:   detail: undefined,
+2026-08-17 05:52:33 +00:00:   hint: undefined,
+2026-08-17 05:52:33 +00:00:   position: undefined,
+2026-08-17 05:52:33 +00:00:   internalPosition: undefined,
+2026-08-17 05:52:33 +00:00:   internalQuery: undefined,
+2026-08-17 05:52:33 +00:00:   where: undefined,
+2026-08-17 05:52:33 +00:00:   schema: undefined,
+2026-08-17 05:52:33 +00:00:   table: undefined,
+2026-08-17 05:52:33 +00:00:   column: undefined,
+2026-08-17 05:52:33 +00:00:   dataType: undefined,
+2026-08-17 05:52:33 +00:00:   constraint: undefined,
+2026-08-17 05:52:33 +00:00:   file: undefined,
+2026-08-17 05:52:33 +00:00:   line: undefined,
+2026-08-17 05:52:33 +00:00:   routine: undefined
+2026-08-17 05:52:33 +00:00: }
+2026-08-17 05:52:33 +00:00: [API] GET /api/v1/testimonials/public error: error: (EMAXCONNSESSION) max clients reached in session mode - max clients are limited to pool_size: 15
+2026-08-17 05:52:33 +00:00:     at async U (.next/server/chunks/[root-of-the-server]__c753f860._.js:15:259)
+2026-08-17 05:52:33 +00:00:     at async i (.next/server/chunks/[root-of-the-server]__edd8a1fb._.js:1:1891)
+2026-08-17 05:52:33 +00:00:     at async d (.next/server/chunks/[root-of-the-server]__edd8a1fb._.js:1:5551)
+2026-08-17 05:52:33 +00:00:     at async u (.next/server/chunks/[root-of-the-server]__edd8a1fb._.js:1:6589)
+2026-08-17 05:52:33 +00:00:     at async A (.next/server/chunks/[root-of-the-server]__edd8a1fb._.js:1:7667) {
+2026-08-17 05:52:33 +00:00:   length: 117,
+2026-08-17 05:52:33 +00:00:   severity: 'FATAL',
+2026-08-17 05:52:33 +00:00:   code: 'XX000',
+2026-08-17 05:52:33 +00:00:   detail: undefined,
+2026-08-17 05:52:33 +00:00:   hint: undefined,
+2026-08-17 05:52:33 +00:00:   position: undefined,
+2026-08-17 05:52:33 +00:00:   internalPosition: undefined,
+2026-08-17 05:52:33 +00:00:   internalQuery: undefined,
+2026-08-17 05:52:33 +00:00:   where: undefined,
+2026-08-17 05:52:33 +00:00:   schema: undefined,
+2026-08-17 05:52:33 +00:00:   table: undefined,
+2026-08-17 05:52:33 +00:00:   column: undefined,
+2026-08-17 05:52:33 +00:00:   dataType: undefined,
+2026-08-17 05:52:33 +00:00:   constraint: undefined,
+2026-08-17 05:52:33 +00:00:   file: undefined,
+2026-08-17 05:52:33 +00:00:   line: undefined,
+2026-08-17 05:52:33 +00:00:   routine: undefined
+2026-08-17 05:52:33 +00:00: }
+2026-08-17 05:52:35 +00:00: [API] GET /api/v1/content/branding error: error: (EMAXCONNSESSION) max clients reached in session mode - max clients are limited to pool_size: 15
+2026-08-17 05:52:35 +00:00:     at async L (.next/server/chunks/[root-of-the-server]__c753f860._.js:5:604)
+2026-08-17 05:52:35 +00:00:     at async l (.next/server/chunks/[root-of-the-server]__ee8a0a63._.js:1:2467)
+2026-08-17 05:52:35 +00:00:     at async d (.next/server/chunks/[root-of-the-server]__ee8a0a63._.js:1:6697)
+2026-08-17 05:52:35 +00:00:     at async u (.next/server/chunks/[root-of-the-server]__ee8a0a63._.js:1:7735)
+2026-08-17 05:52:35 +00:00:     at async C (.next/server/chunks/[root-of-the-server]__ee8a0a63._.js:1:8813) {
+2026-08-17 05:52:35 +00:00:   length: 117,
+2026-08-17 05:52:35 +00:00:   severity: 'FATAL',
+2026-08-17 05:52:35 +00:00:   code: 'XX000',
+2026-08-17 05:52:35 +00:00:   detail: undefined,
+2026-08-17 05:52:35 +00:00:   hint: undefined,
+2026-08-17 05:52:35 +00:00:   position: undefined,
+2026-08-17 05:52:35 +00:00:   internalPosition: undefined,
+2026-08-17 05:52:35 +00:00:   internalQuery: undefined,
+2026-08-17 05:52:35 +00:00:   where: undefined,
+2026-08-17 05:52:35 +00:00:   schema: undefined,
+2026-08-17 05:52:35 +00:00:   table: undefined,
+2026-08-17 05:52:35 +00:00:   column: undefined,
+2026-08-17 05:52:35 +00:00:   dataType: undefined,
+2026-08-17 05:52:35 +00:00:   constraint: undefined,
+2026-08-17 05:52:35 +00:00:   file: undefined,
+2026-08-17 05:52:35 +00:00:   line: undefined,
+2026-08-17 05:52:35 +00:00:   routine: undefined
+2026-08-17 05:52:35 +00:00: }
+2026-08-17 05:52:38 +00:00: [API] GET /api/v1/content/branding error: error: (EMAXCONNSESSION) max clients reached in session mode - max clients are limited to pool_size: 15
+2026-08-17 05:52:38 +00:00:     at async L (.next/server/chunks/[root-of-the-server]__c753f860._.js:5:604)
+2026-08-17 05:52:38 +00:00:     at async l (.next/server/chunks/[root-of-the-server]__ee8a0a63._.js:1:2467)
+2026-08-17 05:52:38 +00:00:     at async d (.next/server/chunks/[root-of-the-server]__ee8a0a63._.js:1:6697)
+2026-08-17 05:52:38 +00:00:     at async u (.next/server/chunks/[root-of-the-server]__ee8a0a63._.js:1:7735)
+2026-08-17 05:52:38 +00:00:     at async C (.next/server/chunks/[root-of-the-server]__ee8a0a63._.js:1:8813) {
+2026-08-17 05:52:38 +00:00:   length: 117,
+2026-08-17 05:52:38 +00:00:   severity: 'FATAL',
+2026-08-17 05:52:38 +00:00:   code: 'XX000',
+2026-08-17 05:52:38 +00:00:   detail: undefined,
+2026-08-17 05:52:38 +00:00:   hint: undefined,
+2026-08-17 05:52:38 +00:00:   position: undefined,
+2026-08-17 05:52:38 +00:00:   internalPosition: undefined,
+2026-08-17 05:52:38 +00:00:   internalQuery: undefined,
+2026-08-17 05:52:38 +00:00:   where: undefined,
+2026-08-17 05:52:38 +00:00:   schema: undefined,
+2026-08-17 05:52:38 +00:00:   table: undefined,
+2026-08-17 05:52:38 +00:00:   column: undefined,
+2026-08-17 05:52:38 +00:00:   dataType: undefined,
+2026-08-17 05:52:38 +00:00:   constraint: undefined,
+2026-08-17 05:52:38 +00:00:   file: undefined,
+2026-08-17 05:52:38 +00:00:   line: undefined,
+2026-08-17 05:52:38 +00:00:   routine: undefined
+2026-08-17 05:52:38 +00:00: }
+2026-08-17 05:52:38 +00:00: [API] GET /api/v1/content/pages/[page] error: error: (EMAXCONNSESSION) max clients reached in session mode - max clients are limited to pool_size: 15
+2026-08-17 05:52:38 +00:00:     at async L (.next/server/chunks/[root-of-the-server]__c753f860._.js:5:739)
+2026-08-17 05:52:38 +00:00:     at async l (.next/server/chunks/[root-of-the-server]__5f20ed72._.js:1:2457)
+2026-08-17 05:52:38 +00:00:     at async d (.next/server/chunks/[root-of-the-server]__5f20ed72._.js:1:6666)
+2026-08-17 05:52:38 +00:00:     at async u (.next/server/chunks/[root-of-the-server]__5f20ed72._.js:1:7704)
+2026-08-17 05:52:38 +00:00:     at async C (.next/server/chunks/[root-of-the-server]__5f20ed72._.js:1:8782) {
+2026-08-17 05:52:38 +00:00:   length: 117,
+2026-08-17 05:52:38 +00:00:   severity: 'FATAL',
+2026-08-17 05:52:38 +00:00:   code: 'XX000',
+2026-08-17 05:52:38 +00:00:   detail: undefined,
+2026-08-17 05:52:38 +00:00:   hint: undefined,
+2026-08-17 05:52:38 +00:00:   position: undefined,
+2026-08-17 05:52:38 +00:00:   internalPosition: undefined,
+2026-08-17 05:52:38 +00:00:   internalQuery: undefined,
+2026-08-17 05:52:38 +00:00:   where: undefined,
+2026-08-17 05:52:38 +00:00:   schema: undefined,
+2026-08-17 05:52:38 +00:00:   table: undefined,
+2026-08-17 05:52:38 +00:00:   column: undefined,
+2026-08-17 05:52:38 +00:00:   dataType: undefined,
+2026-08-17 05:52:38 +00:00:   constraint: undefined,
+2026-08-17 05:52:38 +00:00:   file: undefined,
+2026-08-17 05:52:38 +00:00:   line: undefined,
+2026-08-17 05:52:38 +00:00:   routine: undefined
+2026-08-17 05:52:38 +00:00: }
+2026-08-17 05:52:38 +00:00: [API] GET /api/v1/content/branding error: error: (EMAXCONNSESSION) max clients reached in session mode - max clients are limited to pool_size: 15
+2026-08-17 05:52:38 +00:00:     at async L (.next/server/chunks/[root-of-the-server]__c753f860._.js:5:604)
+2026-08-17 05:52:38 +00:00:     at async l (.next/server/chunks/[root-of-the-server]__ee8a0a63._.js:1:2467)
+2026-08-17 05:52:38 +00:00:     at async d (.next/server/chunks/[root-of-the-server]__ee8a0a63._.js:1:6697)
+2026-08-17 05:52:38 +00:00:     at async u (.next/server/chunks/[root-of-the-server]__ee8a0a63._.js:1:7735)
+2026-08-17 05:52:38 +00:00:     at async C (.next/server/chunks/[root-of-the-server]__ee8a0a63._.js:1:8813) {
+2026-08-17 05:52:38 +00:00:   length: 117,
+2026-08-17 05:52:38 +00:00:   severity: 'FATAL',
+2026-08-17 05:52:38 +00:00:   code: 'XX000',
+2026-08-17 05:52:38 +00:00:   detail: undefined,
+2026-08-17 05:52:38 +00:00:   hint: undefined,
+2026-08-17 05:52:38 +00:00:   position: undefined,
+2026-08-17 05:52:38 +00:00:   internalPosition: undefined,
+2026-08-17 05:52:38 +00:00:   internalQuery: undefined,
+2026-08-17 05:52:38 +00:00:   where: undefined,
+2026-08-17 05:52:38 +00:00:   schema: undefined,
+2026-08-17 05:52:38 +00:00:   table: undefined,
+2026-08-17 05:52:38 +00:00:   column: undefined,
+2026-08-17 05:52:38 +00:00:   dataType: undefined,
+2026-08-17 05:52:38 +00:00:   constraint: undefined,
+2026-08-17 05:52:38 +00:00:   file: undefined,
+2026-08-17 05:52:38 +00:00:   line: undefined,
+2026-08-17 05:52:38 +00:00:   routine: undefined
+2026-08-17 05:52:38 +00:00: }
+2026-08-17 05:52:39 +00:00: [API] GET /api/v1/content/branding error: error: (EMAXCONNSESSION) max clients reached in session mode - max clients are limited to pool_size: 15
+2026-08-17 05:52:39 +00:00:     at async L (.next/server/chunks/[root-of-the-server]__c753f860._.js:5:604)
+2026-08-17 05:52:39 +00:00:     at async l (.next/server/chunks/[root-of-the-server]__ee8a0a63._.js:1:2467)
+2026-08-17 05:52:39 +00:00:     at async d (.next/server/chunks/[root-of-the-server]__ee8a0a63._.js:1:6697)
+2026-08-17 05:52:39 +00:00:     at async u (.next/server/chunks/[root-of-the-server]__ee8a0a63._.js:1:7735)
+2026-08-17 05:52:39 +00:00:     at async C (.next/server/chunks/[root-of-the-server]__ee8a0a63._.js:1:8813) {
+2026-08-17 05:52:39 +00:00:   length: 117,
+2026-08-17 05:52:39 +00:00:   severity: 'FATAL',
+2026-08-17 05:52:39 +00:00:   code: 'XX000',
+2026-08-17 05:52:39 +00:00:   detail: undefined,
+2026-08-17 05:52:39 +00:00:   hint: undefined,
+2026-08-17 05:52:39 +00:00:   position: undefined,
+2026-08-17 05:52:39 +00:00:   internalPosition: undefined,
+2026-08-17 05:52:39 +00:00:   internalQuery: undefined,
+2026-08-17 05:52:39 +00:00:   where: undefined,
+2026-08-17 05:52:39 +00:00:   schema: undefined,
+2026-08-17 05:52:39 +00:00:   table: undefined,
+2026-08-17 05:52:39 +00:00:   column: undefined,
+2026-08-17 05:52:39 +00:00:   dataType: undefined,
+2026-08-17 05:52:39 +00:00:   constraint: undefined,
+2026-08-17 05:52:39 +00:00:   file: undefined,
+2026-08-17 05:52:39 +00:00:   line: undefined,
+2026-08-17 05:52:39 +00:00:   routine: undefined
+2026-08-17 05:52:39 +00:00: }
+2026-08-17 05:52:39 +00:00: [API] GET /api/v1/content/branding error: error: (EMAXCONNSESSION) max clients reached in session mode - max clients are limited to pool_size: 15
+2026-08-17 05:52:39 +00:00:     at async L (.next/server/chunks/[root-of-the-server]__c753f860._.js:5:604)
+2026-08-17 05:52:39 +00:00:     at async l (.next/server/chunks/[root-of-the-server]__ee8a0a63._.js:1:2467)
+2026-08-17 05:52:39 +00:00:     at async d (.next/server/chunks/[root-of-the-server]__ee8a0a63._.js:1:6697)
+2026-08-17 05:52:39 +00:00:     at async u (.next/server/chunks/[root-of-the-server]__ee8a0a63._.js:1:7735)
+2026-08-17 05:52:39 +00:00:     at async C (.next/server/chunks/[root-of-the-server]__ee8a0a63._.js:1:8813) {
+2026-08-17 05:52:39 +00:00:   length: 117,
+2026-08-17 05:52:39 +00:00:   severity: 'FATAL',
+2026-08-17 05:52:39 +00:00:   code: 'XX000',
+2026-08-17 05:52:39 +00:00:   detail: undefined,
+2026-08-17 05:52:39 +00:00:   hint: undefined,
+2026-08-17 05:52:39 +00:00:   position: undefined,
+2026-08-17 05:52:39 +00:00:   internalPosition: undefined,
+2026-08-17 05:52:39 +00:00:   internalQuery: undefined,
+2026-08-17 05:52:39 +00:00:   where: undefined,
+2026-08-17 05:52:39 +00:00:   schema: undefined,
+2026-08-17 05:52:39 +00:00:   table: undefined,
+2026-08-17 05:52:39 +00:00:   column: undefined,
+2026-08-17 05:52:39 +00:00:   dataType: undefined,
+2026-08-17 05:52:39 +00:00:   constraint: undefined,
+2026-08-17 05:52:39 +00:00:   file: undefined,
+2026-08-17 05:52:39 +00:00:   line: undefined,
+2026-08-17 05:52:39 +00:00:   routine: undefined
+2026-08-17 05:52:39 +00:00: }
+2026-08-17 05:52:39 +00:00: [API] GET /api/v1/content/branding error: error: (EMAXCONNSESSION) max clients reached in session mode - max clients are limited to pool_size: 15
+2026-08-17 05:52:39 +00:00:     at async L (.next/server/chunks/[root-of-the-server]__c753f860._.js:5:604)
+2026-08-17 05:52:39 +00:00:     at async l (.next/server/chunks/[root-of-the-server]__ee8a0a63._.js:1:2467)
+2026-08-17 05:52:39 +00:00:     at async d (.next/server/chunks/[root-of-the-server]__ee8a0a63._.js:1:6697)
+2026-08-17 05:52:39 +00:00:     at async u (.next/server/chunks/[root-of-the-server]__ee8a0a63._.js:1:7735)
+2026-08-17 05:52:39 +00:00:     at async C (.next/server/chunks/[root-of-the-server]__ee8a0a63._.js:1:8813) {
+2026-08-17 05:52:39 +00:00:   length: 117,
+2026-08-17 05:52:39 +00:00:   severity: 'FATAL',
+2026-08-17 05:52:39 +00:00:   code: 'XX000',
+2026-08-17 05:52:39 +00:00:   detail: undefined,
+2026-08-17 05:52:39 +00:00:   hint: undefined,
+2026-08-17 05:52:39 +00:00:   position: undefined,
+2026-08-17 05:52:39 +00:00:   internalPosition: undefined,
+2026-08-17 05:52:39 +00:00:   internalQuery: undefined,
+2026-08-17 05:52:39 +00:00:   where: undefined,
+2026-08-17 05:52:39 +00:00:   schema: undefined,
+2026-08-17 05:52:39 +00:00:   table: undefined,
+2026-08-17 05:52:39 +00:00:   column: undefined,
+2026-08-17 05:52:39 +00:00:   dataType: undefined,
+2026-08-17 05:52:39 +00:00:   constraint: undefined,
+2026-08-17 05:52:39 +00:00:   file: undefined,
+2026-08-17 05:52:39 +00:00:   line: undefined,
+2026-08-17 05:52:39 +00:00:   routine: undefined
+2026-08-17 05:52:39 +00:00: }
+2026-08-17 05:52:39 +00:00: [API] GET /api/v1/content/branding error: error: (EMAXCONNSESSION) max clients reached in session mode - max clients are limited to pool_size: 15
+2026-08-17 05:52:39 +00:00:     at async L (.next/server/chunks/[root-of-the-server]__c753f860._.js:5:604)
+2026-08-17 05:52:39 +00:00:     at async l (.next/server/chunks/[root-of-the-server]__ee8a0a63._.js:1:2467)
+2026-08-17 05:52:39 +00:00:     at async d (.next/server/chunks/[root-of-the-server]__ee8a0a63._.js:1:6697)
+2026-08-17 05:52:39 +00:00:     at async u (.next/server/chunks/[root-of-the-server]__ee8a0a63._.js:1:7735)
+2026-08-17 05:52:39 +00:00:     at async C (.next/server/chunks/[root-of-the-server]__ee8a0a63._.js:1:8813) {
+2026-08-17 05:52:39 +00:00:   length: 117,
+2026-08-17 05:52:39 +00:00:   severity: 'FATAL',
+2026-08-17 05:52:39 +00:00:   code: 'XX000',
+2026-08-17 05:52:39 +00:00:   detail: undefined,
+2026-08-17 05:52:39 +00:00:   hint: undefined,
+2026-08-17 05:52:39 +00:00:   position: undefined,
+2026-08-17 05:52:39 +00:00:   internalPosition: undefined,
+2026-08-17 05:52:39 +00:00:   internalQuery: undefined,
+2026-08-17 05:52:39 +00:00:   where: undefined,
+2026-08-17 05:52:39 +00:00:   schema: undefined,
+2026-08-17 05:52:39 +00:00:   table: undefined,
+2026-08-17 05:52:39 +00:00:   column: undefined,
+2026-08-17 05:52:39 +00:00:   dataType: undefined,
+2026-08-17 05:52:39 +00:00:   constraint: undefined,
+2026-08-17 05:52:39 +00:00:   file: undefined,
+2026-08-17 05:52:39 +00:00:   line: undefined,
+2026-08-17 05:52:39 +00:00:   routine: undefined
+2026-08-17 05:52:39 +00:00: }
+2026-08-17 05:52:39 +00:00: [API] GET /api/v1/content/branding error: error: (EMAXCONNSESSION) max clients reached in session mode - max clients are limited to pool_size: 15
+2026-08-17 05:52:39 +00:00:     at async L (.next/server/chunks/[root-of-the-server]__c753f860._.js:5:604)
+2026-08-17 05:52:39 +00:00:     at async l (.next/server/chunks/[root-of-the-server]__ee8a0a63._.js:1:2467)
+2026-08-17 05:52:39 +00:00:     at async d (.next/server/chunks/[root-of-the-server]__ee8a0a63._.js:1:6697)
+2026-08-17 05:52:39 +00:00:     at async u (.next/server/chunks/[root-of-the-server]__ee8a0a63._.js:1:7735)
+2026-08-17 05:52:39 +00:00:     at async C (.next/server/chunks/[root-of-the-server]__ee8a0a63._.js:1:8813) {
+2026-08-17 05:52:39 +00:00:   length: 117,
+2026-08-17 05:52:39 +00:00:   severity: 'FATAL',
+2026-08-17 05:52:39 +00:00:   code: 'XX000',
+2026-08-17 05:52:39 +00:00:   detail: undefined,
+2026-08-17 05:52:39 +00:00:   hint: undefined,
+2026-08-17 05:52:39 +00:00:   position: undefined,
+2026-08-17 05:52:39 +00:00:   internalPosition: undefined,
+2026-08-17 05:52:39 +00:00:   internalQuery: undefined,
+2026-08-17 05:52:39 +00:00:   where: undefined,
+2026-08-17 05:52:39 +00:00:   schema: undefined,
+2026-08-17 05:52:39 +00:00:   table: undefined,
+2026-08-17 05:52:39 +00:00:   column: undefined,
+2026-08-17 05:52:39 +00:00:   dataType: undefined,
+2026-08-17 05:52:39 +00:00:   constraint: undefined,
+2026-08-17 05:52:39 +00:00:   file: undefined,
+2026-08-17 05:52:39 +00:00:   line: undefined,
+2026-08-17 05:52:39 +00:00:   routine: undefined
+2026-08-17 05:52:39 +00:00: }
+2026-08-17 05:52:40 +00:00: [API] GET /api/v1/content/pages/[page] error: error: (EMAXCONNSESSION) max clients reached in session mode - max clients are limited to pool_size: 15
+2026-08-17 05:52:40 +00:00:     at async L (.next/server/chunks/[root-of-the-server]__c753f860._.js:5:739)
+2026-08-17 05:52:40 +00:00:     at async l (.next/server/chunks/[root-of-the-server]__5f20ed72._.js:1:2457)
+2026-08-17 05:52:40 +00:00:     at async d (.next/server/chunks/[root-of-the-server]__5f20ed72._.js:1:6666)
+2026-08-17 05:52:40 +00:00:     at async u (.next/server/chunks/[root-of-the-server]__5f20ed72._.js:1:7704)
+2026-08-17 05:52:40 +00:00:     at async C (.next/server/chunks/[root-of-the-server]__5f20ed72._.js:1:8782) {
+2026-08-17 05:52:40 +00:00:   length: 117,
+2026-08-17 05:52:40 +00:00:   severity: 'FATAL',
+2026-08-17 05:52:40 +00:00:   code: 'XX000',
+2026-08-17 05:52:40 +00:00:   detail: undefined,
+2026-08-17 05:52:40 +00:00:   hint: undefined,
+2026-08-17 05:52:40 +00:00:   position: undefined,
+2026-08-17 05:52:40 +00:00:   internalPosition: undefined,
+2026-08-17 05:52:40 +00:00:   internalQuery: undefined,
+2026-08-17 05:52:40 +00:00:   where: undefined,
+2026-08-17 05:52:40 +00:00:   schema: undefined,
+2026-08-17 05:52:40 +00:00:   table: undefined,
+2026-08-17 05:52:40 +00:00:   column: undefined,
+2026-08-17 05:52:40 +00:00:   dataType: undefined,
+2026-08-17 05:52:40 +00:00:   constraint: undefined,
+2026-08-17 05:52:40 +00:00:   file: undefined,
+2026-08-17 05:52:40 +00:00:   line: undefined,
+2026-08-17 05:52:40 +00:00:   routine: undefined
+2026-08-17 05:52:40 +00:00: }
+2026-08-17 05:52:40 +00:00: [API] GET /api/v1/content/branding error: error: (EMAXCONNSESSION) max clients reached in session mode - max clients are limited to pool_size: 15
+2026-08-17 05:52:40 +00:00:     at async L (.next/server/chunks/[root-of-the-server]__c753f860._.js:5:604)
+2026-08-17 05:52:40 +00:00:     at async l (.next/server/chunks/[root-of-the-server]__ee8a0a63._.js:1:2467)
+2026-08-17 05:52:40 +00:00:     at async d (.next/server/chunks/[root-of-the-server]__ee8a0a63._.js:1:6697)
+2026-08-17 05:52:40 +00:00:     at async u (.next/server/chunks/[root-of-the-server]__ee8a0a63._.js:1:7735)
+2026-08-17 05:52:40 +00:00:     at async C (.next/server/chunks/[root-of-the-server]__ee8a0a63._.js:1:8813) {
+2026-08-17 05:52:40 +00:00:   length: 117,
+2026-08-17 05:52:40 +00:00:   severity: 'FATAL',
+2026-08-17 05:52:40 +00:00:   code: 'XX000',
+2026-08-17 05:52:40 +00:00:   detail: undefined,
+2026-08-17 05:52:40 +00:00:   hint: undefined,
+2026-08-17 05:52:40 +00:00:   position: undefined,
+2026-08-17 05:52:40 +00:00:   internalPosition: undefined,
+2026-08-17 05:52:40 +00:00:   internalQuery: undefined,
+2026-08-17 05:52:40 +00:00:   where: undefined,
+2026-08-17 05:52:40 +00:00:   schema: undefined,
+2026-08-17 05:52:40 +00:00:   table: undefined,
+2026-08-17 05:52:40 +00:00:   column: undefined,
+2026-08-17 05:52:40 +00:00:   dataType: undefined,
+2026-08-17 05:52:40 +00:00:   constraint: undefined,
+2026-08-17 05:52:40 +00:00:   file: undefined,
+2026-08-17 05:52:40 +00:00:   line: undefined,
+2026-08-17 05:52:40 +00:00:   routine: undefined
+2026-08-17 05:52:40 +00:00: }
+2026-08-17 05:52:40 +00:00: [API] GET /api/v1/content/branding error: error: (EMAXCONNSESSION) max clients reached in session mode - max clients are limited to pool_size: 15
+2026-08-17 05:52:40 +00:00:     at async L (.next/server/chunks/[root-of-the-server]__c753f860._.js:5:604)
+2026-08-17 05:52:40 +00:00:     at async l (.next/server/chunks/[root-of-the-server]__ee8a0a63._.js:1:2467)
+2026-08-17 05:52:40 +00:00:     at async d (.next/server/chunks/[root-of-the-server]__ee8a0a63._.js:1:6697)
+2026-08-17 05:52:40 +00:00:     at async u (.next/server/chunks/[root-of-the-server]__ee8a0a63._.js:1:7735)
+2026-08-17 05:52:40 +00:00:     at async C (.next/server/chunks/[root-of-the-server]__ee8a0a63._.js:1:8813) {
+2026-08-17 05:52:40 +00:00:   length: 117,
+2026-08-17 05:52:40 +00:00:   severity: 'FATAL',
+2026-08-17 05:52:40 +00:00:   code: 'XX000',
+2026-08-17 05:52:40 +00:00:   detail: undefined,
+2026-08-17 05:52:40 +00:00:   hint: undefined,
+2026-08-17 05:52:40 +00:00:   position: undefined,
+2026-08-17 05:52:40 +00:00:   internalPosition: undefined,
+2026-08-17 05:52:40 +00:00:   internalQuery: undefined,
+2026-08-17 05:52:40 +00:00:   where: undefined,
+2026-08-17 05:52:40 +00:00:   schema: undefined,
+2026-08-17 05:52:40 +00:00:   table: undefined,
+2026-08-17 05:52:40 +00:00:   column: undefined,
+2026-08-17 05:52:40 +00:00:   dataType: undefined,
+2026-08-17 05:52:40 +00:00:   constraint: undefined,
+2026-08-17 05:52:40 +00:00:   file: undefined,
+2026-08-17 05:52:40 +00:00:   line: undefined,
+2026-08-17 05:52:40 +00:00:   routine: undefined
+2026-08-17 05:52:40 +00:00: }
+2026-08-17 05:52:40 +00:00: [API] GET /api/v1/content/branding error: error: (EMAXCONNSESSION) max clients reached in session mode - max clients are limited to pool_size: 15
+2026-08-17 05:52:40 +00:00:     at async L (.next/server/chunks/[root-of-the-server]__c753f860._.js:5:604)
+2026-08-17 05:52:40 +00:00:     at async l (.next/server/chunks/[root-of-the-server]__ee8a0a63._.js:1:2467)
+2026-08-17 05:52:40 +00:00:     at async d (.next/server/chunks/[root-of-the-server]__ee8a0a63._.js:1:6697)
+2026-08-17 05:52:40 +00:00:     at async u (.next/server/chunks/[root-of-the-server]__ee8a0a63._.js:1:7735)
+2026-08-17 05:52:40 +00:00:     at async C (.next/server/chunks/[root-of-the-server]__ee8a0a63._.js:1:8813) {
+2026-08-17 05:52:40 +00:00:   length: 117,
+2026-08-17 05:52:40 +00:00:   severity: 'FATAL',
+2026-08-17 05:52:40 +00:00:   code: 'XX000',
+2026-08-17 05:52:40 +00:00:   detail: undefined,
+2026-08-17 05:52:40 +00:00:   hint: undefined,
+2026-08-17 05:52:40 +00:00:   position: undefined,
+2026-08-17 05:52:40 +00:00:   internalPosition: undefined,
+2026-08-17 05:52:40 +00:00:   internalQuery: undefined,
+2026-08-17 05:52:40 +00:00:   where: undefined,
+2026-08-17 05:52:40 +00:00:   schema: undefined,
+2026-08-17 05:52:40 +00:00:   table: undefined,
+2026-08-17 05:52:40 +00:00:   column: undefined,
+2026-08-17 05:52:40 +00:00:   dataType: undefined,
+2026-08-17 05:52:40 +00:00:   constraint: undefined,
+2026-08-17 05:52:40 +00:00:   file: undefined,
+2026-08-17 05:52:40 +00:00:   line: undefined,
+2026-08-17 05:52:40 +00:00:   routine: undefined
+2026-08-17 05:52:40 +00:00: }
+2026-08-17 05:52:40 +00:00: [API] GET /api/v1/content/branding error: error: (EMAXCONNSESSION) max clients reached in session mode - max clients are limited to pool_size: 15
+2026-08-17 05:52:40 +00:00:     at async L (.next/server/chunks/[root-of-the-server]__c753f860._.js:5:604)
+2026-08-17 05:52:40 +00:00:     at async l (.next/server/chunks/[root-of-the-server]__ee8a0a63._.js:1:2467)
+2026-08-17 05:52:40 +00:00:     at async d (.next/server/chunks/[root-of-the-server]__ee8a0a63._.js:1:6697)
+2026-08-17 05:52:40 +00:00:     at async u (.next/server/chunks/[root-of-the-server]__ee8a0a63._.js:1:7735)
+2026-08-17 05:52:40 +00:00:     at async C (.next/server/chunks/[root-of-the-server]__ee8a0a63._.js:1:8813) {
+2026-08-17 05:52:40 +00:00:   length: 117,
+2026-08-17 05:52:40 +00:00:   severity: 'FATAL',
+2026-08-17 05:52:40 +00:00:   code: 'XX000',
+2026-08-17 05:52:40 +00:00:   detail: undefined,
+2026-08-17 05:52:40 +00:00:   hint: undefined,
+2026-08-17 05:52:40 +00:00:   position: undefined,
+2026-08-17 05:52:40 +00:00:   internalPosition: undefined,
+2026-08-17 05:52:40 +00:00:   internalQuery: undefined,
+2026-08-17 05:52:40 +00:00:   where: undefined,
+2026-08-17 05:52:40 +00:00:   schema: undefined,
+2026-08-17 05:52:40 +00:00:   table: undefined,
+2026-08-17 05:52:40 +00:00:   column: undefined,
+2026-08-17 05:52:40 +00:00:   dataType: undefined,
+2026-08-17 05:52:40 +00:00:   constraint: undefined,
+2026-08-17 05:52:40 +00:00:   file: undefined,
+2026-08-17 05:52:40 +00:00:   line: undefined,
+2026-08-17 05:52:40 +00:00:   routine: undefined
+2026-08-17 05:52:40 +00:00: }
+2026-08-17 05:52:41 +00:00: [API] GET /api/v1/content/pages/[page] error: error: (EMAXCONNSESSION) max clients reached in session mode - max clients are limited to pool_size: 15
+2026-08-17 05:52:41 +00:00:     at async L (.next/server/chunks/[root-of-the-server]__c753f860._.js:5:739)
+2026-08-17 05:52:41 +00:00:     at async l (.next/server/chunks/[root-of-the-server]__5f20ed72._.js:1:2457)
+2026-08-17 05:52:41 +00:00:     at async d (.next/server/chunks/[root-of-the-server]__5f20ed72._.js:1:6666)
+2026-08-17 05:52:41 +00:00:     at async u (.next/server/chunks/[root-of-the-server]__5f20ed72._.js:1:7704)
+2026-08-17 05:52:41 +00:00:     at async C (.next/server/chunks/[root-of-the-server]__5f20ed72._.js:1:8782) {
+2026-08-17 05:52:41 +00:00:   length: 117,
+2026-08-17 05:52:41 +00:00:   severity: 'FATAL',
+2026-08-17 05:52:41 +00:00:   code: 'XX000',
+2026-08-17 05:52:41 +00:00:   detail: undefined,
+2026-08-17 05:52:41 +00:00:   hint: undefined,
+2026-08-17 05:52:41 +00:00:   position: undefined,
+2026-08-17 05:52:41 +00:00:   internalPosition: undefined,
+2026-08-17 05:52:41 +00:00:   internalQuery: undefined,
+2026-08-17 05:52:41 +00:00:   where: undefined,
+2026-08-17 05:52:41 +00:00:   schema: undefined,
+2026-08-17 05:52:41 +00:00:   table: undefined,
+2026-08-17 05:52:41 +00:00:   column: undefined,
+2026-08-17 05:52:41 +00:00:   dataType: undefined,
+2026-08-17 05:52:41 +00:00:   constraint: undefined,
+2026-08-17 05:52:41 +00:00:   file: undefined,
+2026-08-17 05:52:41 +00:00:   line: undefined,
+2026-08-17 05:52:41 +00:00:   routine: undefined
+2026-08-17 05:52:41 +00:00: }
+2026-08-17 05:52:41 +00:00: [API] GET /api/v1/content/pages/[page] error: error: (EMAXCONNSESSION) max clients reached in session mode - max clients are limited to pool_size: 15
+2026-08-17 05:52:41 +00:00:     at async L (.next/server/chunks/[root-of-the-server]__c753f860._.js:5:739)
+2026-08-17 05:52:41 +00:00:     at async l (.next/server/chunks/[root-of-the-server]__5f20ed72._.js:1:2457)
+2026-08-17 05:52:41 +00:00:     at async d (.next/server/chunks/[root-of-the-server]__5f20ed72._.js:1:6666)
+2026-08-17 05:52:41 +00:00:     at async u (.next/server/chunks/[root-of-the-server]__5f20ed72._.js:1:7704)
+2026-08-17 05:52:41 +00:00:     at async C (.next/server/chunks/[root-of-the-server]__5f20ed72._.js:1:8782) {
+2026-08-17 05:52:41 +00:00:   length: 117,
+2026-08-17 05:52:41 +00:00:   severity: 'FATAL',
+2026-08-17 05:52:41 +00:00:   code: 'XX000',
+2026-08-17 05:52:41 +00:00:   detail: undefined,
+2026-08-17 05:52:41 +00:00:   hint: undefined,
+2026-08-17 05:52:41 +00:00:   position: undefined,
+2026-08-17 05:52:41 +00:00:   internalPosition: undefined,
+2026-08-17 05:52:41 +00:00:   internalQuery: undefined,
+2026-08-17 05:52:41 +00:00:   where: undefined,
+2026-08-17 05:52:41 +00:00:   schema: undefined,
+2026-08-17 05:52:41 +00:00:   table: undefined,
+2026-08-17 05:52:41 +00:00:   column: undefined,
+2026-08-17 05:52:41 +00:00:   dataType: undefined,
+2026-08-17 05:52:41 +00:00:   constraint: undefined,
+2026-08-17 05:52:41 +00:00:   file: undefined,
+2026-08-17 05:52:41 +00:00:   line: undefined,
+2026-08-17 05:52:41 +00:00:   routine: undefined
+2026-08-17 05:52:41 +00:00: }
+2026-08-17 05:52:41 +00:00: [API] GET /api/v1/content/branding error: error: (EMAXCONNSESSION) max clients reached in session mode - max clients are limited to pool_size: 15
+2026-08-17 05:52:41 +00:00:     at async L (.next/server/chunks/[root-of-the-server]__c753f860._.js:5:604)
+2026-08-17 05:52:41 +00:00:     at async l (.next/server/chunks/[root-of-the-server]__ee8a0a63._.js:1:2467)
+2026-08-17 05:52:41 +00:00:     at async d (.next/server/chunks/[root-of-the-server]__ee8a0a63._.js:1:6697)
+2026-08-17 05:52:41 +00:00:     at async u (.next/server/chunks/[root-of-the-server]__ee8a0a63._.js:1:7735)
+2026-08-17 05:52:41 +00:00:     at async C (.next/server/chunks/[root-of-the-server]__ee8a0a63._.js:1:8813) {
+2026-08-17 05:52:41 +00:00:   length: 117,
+2026-08-17 05:52:41 +00:00:   severity: 'FATAL',
+2026-08-17 05:52:41 +00:00:   code: 'XX000',
+2026-08-17 05:52:41 +00:00:   detail: undefined,
+2026-08-17 05:52:41 +00:00:   hint: undefined,
+2026-08-17 05:52:41 +00:00:   position: undefined,
+2026-08-17 05:52:41 +00:00:   internalPosition: undefined,
+2026-08-17 05:52:41 +00:00:   internalQuery: undefined,
+2026-08-17 05:52:41 +00:00:   where: undefined,
+2026-08-17 05:52:41 +00:00:   schema: undefined,
+2026-08-17 05:52:41 +00:00:   table: undefined,
+2026-08-17 05:52:41 +00:00:   column: undefined,
+2026-08-17 05:52:41 +00:00:   dataType: undefined,
+2026-08-17 05:52:41 +00:00:   constraint: undefined,
+2026-08-17 05:52:41 +00:00:   file: undefined,
+2026-08-17 05:52:41 +00:00:   line: undefined,
+2026-08-17 05:52:41 +00:00:   routine: undefined
+2026-08-17 05:52:41 +00:00: }
