@@ -1,4 +1,4 @@
-import { readFileSync } from "fs";
+import { readFileSync, readdirSync } from "fs";
 import path from "path";
 
 function loadEnv() {
@@ -27,12 +27,17 @@ loadEnv();
 import { checkDatabaseConnection, query } from "../lib/db/postgres";
 
 async function main() {
-  const schemaPath = path.join(process.cwd(), "supabase/migrations/001_initial_schema.sql");
-  const sql = readFileSync(schemaPath, "utf8");
+  const migrationsDir = path.join(process.cwd(), "supabase/migrations");
+  const files = readdirSync(migrationsDir)
+    .filter((f) => f.endsWith(".sql"))
+    .sort();
 
-  console.log("[migrate] Applying schema...");
-  await query(sql);
-  console.log("[migrate] Schema applied successfully.");
+  for (const file of files) {
+    const sql = readFileSync(path.join(migrationsDir, file), "utf8");
+    console.log(`[migrate] Applying ${file}...`);
+    await query(sql);
+    console.log(`[migrate] ${file} applied.`);
+  }
 
   const ok = await checkDatabaseConnection();
   console.log("[migrate] Connection check:", ok ? "OK" : "FAILED");

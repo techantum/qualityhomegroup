@@ -10,6 +10,7 @@ import {
   mapCategory,
   mapCmsPage,
   mapCmsSection,
+  mapGallery,
   mapHeroSlide,
   mapLead,
   mapProject,
@@ -572,13 +573,41 @@ export async function adminGetCMSSections(pageId?: string): Promise<Record<strin
 export async function adminGetGallery(): Promise<Record<string, unknown>[]> {
   if (!isDatabaseConfigured()) return [];
   const result = await query(`SELECT * FROM gallery ORDER BY sort_order ASC`);
-  return result.rows.map((r) => ({
-    id: String(r.id),
-    title: r.title,
-    category: r.category,
-    image: r.image,
-    order: r.sort_order,
-  }));
+  return result.rows.map((r) => mapGallery(r));
+}
+
+export async function adminAddGalleryImage(image: {
+  title: string;
+  category: string;
+  image: string;
+  order?: number;
+}): Promise<string> {
+  const result = await query(
+    `INSERT INTO gallery (title, category, image, sort_order) VALUES ($1,$2,$3,$4) RETURNING id`,
+    [image.title, image.category, image.image, image.order ?? 0],
+  );
+  return String(result.rows[0].id);
+}
+
+export async function adminUpdateGalleryImage(
+  id: string,
+  image: Partial<{ title: string; category: string; image: string; order: number }>,
+): Promise<void> {
+  const sets: string[] = [];
+  const values: unknown[] = [];
+  let i = 1;
+  if (image.title !== undefined) { sets.push(`title = $${i++}`); values.push(image.title); }
+  if (image.category !== undefined) { sets.push(`category = $${i++}`); values.push(image.category); }
+  if (image.image !== undefined) { sets.push(`image = $${i++}`); values.push(image.image); }
+  if (image.order !== undefined) { sets.push(`sort_order = $${i++}`); values.push(image.order); }
+  if (!sets.length) return;
+  sets.push("updated_at = NOW()");
+  values.push(id);
+  await query(`UPDATE gallery SET ${sets.join(", ")} WHERE id = $${i}`, values);
+}
+
+export async function adminDeleteGalleryImage(id: string): Promise<void> {
+  await query(`DELETE FROM gallery WHERE id = $1`, [id]);
 }
 
 export async function adminGetDashboardStats(): Promise<{

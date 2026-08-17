@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       {
         error: isConfig
-          ? `${message}. On production, set Firebase Admin env vars (FIREBASE_PROJECT_ID, FIREBASE_CLIENT_EMAIL, FIREBASE_PRIVATE_KEY, storage bucket) or BLOB_READ_WRITE_TOKEN.`
+          ? `${message}. Set SUPABASE_SECRET_KEY (UPLOAD_PROVIDER=supabase), BLOB_READ_WRITE_TOKEN, or use UPLOAD_PROVIDER=local for development only.`
           : message,
       },
       { status: 500 }

@@ -45,6 +45,18 @@ function dbOrNull() {
   return getSupabaseBrowserClient();
 }
 
+async function getAuthHeaders(): Promise<HeadersInit> {
+  const sb = getSupabaseBrowserClient();
+  if (!sb) throw new Error("Supabase is not configured");
+  const { data } = await sb.auth.getSession();
+  const token = data.session?.access_token;
+  if (!token) throw new Error("Not authenticated");
+  return {
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "application/json",
+  };
+}
+
 export async function getProjects(): Promise<Project[]> {
   const sb = dbOrNull();
   if (!sb) return [];
@@ -305,38 +317,48 @@ export async function deleteLead(id: string): Promise<void> {
 }
 
 export async function getGalleryImages(): Promise<GalleryImage[]> {
-  const sb = dbOrNull();
-  if (!sb) return [];
-  const { data, error } = await sb.from("gallery").select("*").order("sort_order", { ascending: true });
-  if (error) throw error;
-  return (data ?? []).map((r) => mapGallery(r) as GalleryImage);
+  try {
+    const res = await fetch("/api/v1/gallery/public", { cache: "no-store" });
+    const json = await res.json().catch(() => ({}));
+    if (!res.ok) return [];
+    return (json.data ?? []) as GalleryImage[];
+  } catch {
+    return [];
+  }
 }
 
 export async function addGalleryImage(image: Omit<GalleryImage, "id">): Promise<string> {
-  const { data, error } = await db().from("gallery").insert({
-    title: image.title,
-    category: image.category,
-    image: image.image,
-    sort_order: image.order,
-  }).select("id").single();
-  if (error) throw error;
-  return String(data.id);
+  const res = await fetch("/api/v1/gallery", {
+    method: "POST",
+    headers: await getAuthHeaders(),
+    body: JSON.stringify(image),
+  });
+  const json = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(json.error || "Failed to add gallery image");
+  return String(json.data?.id);
 }
 
 export async function updateGalleryImage(id: string, image: Partial<GalleryImage>): Promise<void> {
-  const { error } = await db().from("gallery").update({
-    title: image.title,
-    category: image.category,
-    image: image.image,
-    sort_order: image.order,
-    updated_at: new Date().toISOString(),
-  }).eq("id", id);
-  if (error) throw error;
+  const res = await fetch(`/api/v1/gallery/${id}`, {
+    method: "PUT",
+    headers: await getAuthHeaders(),
+    body: JSON.stringify(image),
+  });
+  if (!res.ok) {
+    const json = await res.json().catch(() => ({}));
+    throw new Error(json.error || "Failed to update gallery image");
+  }
 }
 
 export async function deleteGalleryImage(id: string): Promise<void> {
-  const { error } = await db().from("gallery").delete().eq("id", id);
-  if (error) throw error;
+  const res = await fetch(`/api/v1/gallery/${id}`, {
+    method: "DELETE",
+    headers: await getAuthHeaders(),
+  });
+  if (!res.ok) {
+    const json = await res.json().catch(() => ({}));
+    throw new Error(json.error || "Failed to delete gallery image");
+  }
 }
 
 export async function getPageContent(pageName: string): Promise<PageContent | null> {
