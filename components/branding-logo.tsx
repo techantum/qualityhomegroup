@@ -33,12 +33,12 @@ export function BrandingLogo({
   const sizeStyle =
     variant === "header"
       ? {
-          width: SITE_LOGO_SIZE_PX,
-          height: SITE_LOGO_SIZE_PX,
-          minWidth: SITE_LOGO_SIZE_PX,
-          maxWidth: SITE_LOGO_SIZE_PX,
-          minHeight: SITE_LOGO_SIZE_PX,
-          maxHeight: SITE_LOGO_SIZE_PX,
+          width: "var(--site-logo-size)",
+          height: "var(--site-logo-size)",
+          minWidth: "var(--site-logo-size)",
+          maxWidth: "var(--site-logo-size)",
+          minHeight: "var(--site-logo-size)",
+          maxHeight: "var(--site-logo-size)",
         }
       : { width: resolvedWidth, height: resolvedHeight, maxWidth: resolvedWidth };
 
@@ -64,7 +64,7 @@ export function BrandingLogo({
       width={resolvedWidth}
       height={resolvedHeight}
       className={cn(
-        variant === "header" ? "h-[92.5px] w-[92.5px] min-h-[92.5px] max-h-[92.5px] min-w-[92.5px] max-w-[92.5px] object-contain" : "",
+        variant === "header" ? "object-contain" : "",
         className
       )}
       style={variant === "header" ? sizeStyle : undefined}

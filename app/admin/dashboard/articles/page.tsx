@@ -5,7 +5,8 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { useAuth } from "@/lib/auth-context";
-import { getArticles, addArticle, updateArticle, deleteArticle, type Article } from "@/lib/firestore";
+import { adminApiFetch } from "@/lib/admin-api";
+import type { Article } from "@/lib/firestore";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -61,9 +62,12 @@ export default function ArticlesPage() {
   }, [user]);
 
   const loadArticles = async () => {
+    if (!user) return;
     try {
-      const data = await getArticles();
-      setArticles(data);
+      const res = await adminApiFetch(user, "/api/v1/articles");
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(json?.error ?? `Load failed (${res.status})`);
+      setArticles((json.data ?? []) as Article[]);
     } catch (error) {
       console.error("Error loading articles:", error);
     } finally {
@@ -97,32 +101,47 @@ export default function ArticlesPage() {
   };
 
   const handleSave = async () => {
+    if (!user) return;
     setSaving(true);
     try {
-      if (editingArticle?.id) {
-        await updateArticle(editingArticle.id, formData);
-      } else {
-        await addArticle(formData);
-      }
+      const res = editingArticle?.id
+        ? await adminApiFetch(user, `/api/v1/articles/${editingArticle.id}`, {
+            method: "PUT",
+            body: JSON.stringify(formData),
+          })
+        : await adminApiFetch(user, "/api/v1/articles", {
+            method: "POST",
+            body: JSON.stringify(formData),
+          });
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(json?.error ?? `Save failed (${res.status})`);
       await loadArticles();
       setDialogOpen(false);
     } catch (error) {
       console.error("Error saving article:", error);
+      alert(error instanceof Error ? error.message : "Error saving article.");
     } finally {
       setSaving(false);
     }
   };
 
   const handleDelete = async () => {
-    if (!deletingArticle?.id) return;
+    if (!user || !deletingArticle?.id) return;
     setSaving(true);
     try {
-      await deleteArticle(deletingArticle.id);
+      const res = await adminApiFetch(user, `/api/v1/articles/${deletingArticle.id}`, {
+        method: "DELETE",
+      });
+      if (!res.ok && res.status !== 204) {
+        const json = await res.json().catch(() => ({}));
+        throw new Error(json?.error ?? `Delete failed (${res.status})`);
+      }
       await loadArticles();
       setDeleteDialogOpen(false);
       setDeletingArticle(null);
     } catch (error) {
       console.error("Error deleting article:", error);
+      alert(error instanceof Error ? error.message : "Error deleting article.");
     } finally {
       setSaving(false);
     }

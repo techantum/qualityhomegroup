@@ -43,7 +43,10 @@ export async function PUT(
     const { page } = await params;
     if (!page) return apiError("BAD_REQUEST", undefined, "Page name required");
     const body = await request.json();
-    await adminSetDocument("pages", page, body);
+    const existing = ((await adminGetDocument("pages", page)) ?? {}) as Record<string, unknown>;
+    const { id: _existingId, pageName: _existingName, ...existingRest } = existing;
+    const { id: _bodyId, pageName: _bodyName, ...bodyRest } = (body ?? {}) as Record<string, unknown>;
+    await adminSetDocument("pages", page, { ...existingRest, ...bodyRest });
     const data = await adminGetDocument("pages", page);
     return NextResponse.json({ success: true, data });
   } catch (err) {

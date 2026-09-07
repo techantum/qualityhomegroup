@@ -6,12 +6,12 @@
 import { NextResponse } from "next/server";
 import { apiError, apiInternalError } from "@/lib/api/errors";
 import {
-  adminGetProjectById,
-  adminGetProjectBySlug,
   adminGetPropertyDetails,
   adminGetPropertyAmenities,
+  resolveProjectRecord,
   type ProjectItem,
 } from "@/lib/firestore-admin";
+import { mergePropertyDetails } from "@/lib/project-page";
 
 export const dynamic = "force-dynamic";
 
@@ -34,8 +34,7 @@ export async function GET(
     const { id: idOrSlug } = await params;
     if (!idOrSlug) return apiError("BAD_REQUEST", undefined, "Project id or slug required");
 
-    let project: ProjectItem | null = await adminGetProjectById(idOrSlug);
-    if (!project) project = await adminGetProjectBySlug(idOrSlug);
+    const project: ProjectItem | null = await resolveProjectRecord(idOrSlug);
 
     if (!project) {
       console.warn("[API] Project not found (id or slug):", idOrSlug);
@@ -50,10 +49,11 @@ export async function GET(
         adminGetPropertyDetails(projectId),
         adminGetPropertyAmenities(projectId),
       ]);
-      propertyDetails = details;
+      propertyDetails = mergePropertyDetails(project as unknown as Record<string, unknown>, details);
       propertyAmenities = amenities ?? [];
     } catch (subErr) {
       console.warn("[API] Property details/amenities fetch failed for", projectId, subErr);
+      propertyDetails = mergePropertyDetails(project as unknown as Record<string, unknown>, null);
     }
 
     const payload = serializeProject(project);
@@ -63,7 +63,7 @@ export async function GET(
         propertyDetails,
         propertyAmenities,
       },
-    });
+    }, { headers: { "Cache-Control": "no-store, no-cache, must-revalidate" } });
   } catch (err) {
     console.error("[API] GET /api/v1/projects/public/[id] error:", err);
     return apiInternalError(err);

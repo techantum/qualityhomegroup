@@ -8,6 +8,8 @@ export type PageContent = {
   heroImage?: string;
   subtitle?: string;
   description?: string;
+  content?: string;
+  sections?: { id?: string; title?: string; content?: string; image?: string }[];
   [key: string]: unknown;
 };
 

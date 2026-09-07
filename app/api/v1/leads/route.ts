@@ -16,11 +16,11 @@ export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const parsed = leadsQuerySchema.safeParse({
-      limit: searchParams.get("limit"),
-      cursor: searchParams.get("cursor"),
-      status: searchParams.get("status"),
-      fromDate: searchParams.get("fromDate"),
-      toDate: searchParams.get("toDate"),
+      limit: searchParams.get("limit") ?? undefined,
+      cursor: searchParams.get("cursor") ?? undefined,
+      status: searchParams.get("status") ?? undefined,
+      fromDate: searchParams.get("fromDate") ?? undefined,
+      toDate: searchParams.get("toDate") ?? undefined,
     });
     if (!parsed.success) {
       return NextResponse.json(

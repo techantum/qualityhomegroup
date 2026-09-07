@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { saveUploadedFile } from "@/lib/upload-storage";
 
 export const runtime = "nodejs";
+export const maxDuration = 60;
 
 export async function POST(request: NextRequest) {
   try {

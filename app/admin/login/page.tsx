@@ -4,8 +4,8 @@ import React from "react"
 
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
 import { useAuth } from "@/lib/auth-context";
+import { BrandingLogo } from "@/components/branding-logo";
 import { isSupabaseConfigured } from "@/lib/auth-context";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -88,13 +88,7 @@ export default function AdminLoginPage() {
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <div className="flex justify-center mb-4">
-            <Image
-              src="/images/quality-home-group-logo-header.png"
-              alt="Quality Home Group"
-              width={120}
-              height={48}
-              className="h-12 w-auto"
-            />
+            <BrandingLogo variant="header" width={120} height={48} className="h-12 w-auto" alt="Quality Home Group" />
           </div>
           <CardTitle className="text-2xl font-bold text-navy">Admin Login</CardTitle>
           <CardDescription>

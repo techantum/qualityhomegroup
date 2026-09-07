@@ -27,7 +27,8 @@ export async function PUT(request: Request) {
   try {
     const body = await request.json();
     await adminSetDocument("settings", "contact", body);
-    return NextResponse.json({ success: true });
+    const data = await adminGetDocument("settings", "contact");
+    return NextResponse.json({ success: true, data });
   } catch (err) {
     console.error("[API] PUT /api/v1/content/contact error:", err);
     return apiInternalError(err);

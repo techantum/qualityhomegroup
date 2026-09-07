@@ -14,6 +14,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Loader2, Save, Plus, Trash2, GripVertical } from "lucide-react";
+import { type CompanyHistoryItem } from "@/lib/company-history";
 import { ImageUpload } from "@/components/admin/image-upload";
 
 interface TeamMember {
@@ -39,6 +40,13 @@ interface AboutPageContent {
   leadersTitle: string;
   leadersSubtitle: string;
   teamMembers: TeamMember[];
+  leaderName: string;
+  leaderRole: string;
+  leaderBio: string;
+  leaderImage: string;
+  historyEyebrow: string;
+  historyTitle: string;
+  history: CompanyHistoryItem[];
 }
 
 const emptyContent: AboutPageContent = {
@@ -56,6 +64,13 @@ const emptyContent: AboutPageContent = {
   leadersTitle: "",
   leadersSubtitle: "",
   teamMembers: [],
+  leaderName: "",
+  leaderRole: "",
+  leaderBio: "",
+  leaderImage: "",
+  historyEyebrow: "",
+  historyTitle: "",
+  history: [],
 };
 
 export default function CMSAboutPage() {
@@ -78,7 +93,14 @@ export default function CMSAboutPage() {
         const res = await fetch("/api/v1/content/about");
         const json = await res.json().catch(() => ({}));
         if (res.ok && json?.data) {
-          setContent({ ...emptyContent, ...json.data, teamMembers: json.data.teamMembers ?? [] });
+          setContent({
+            ...emptyContent,
+            ...json.data,
+            teamMembers: json.data.teamMembers ?? [],
+            history: Array.isArray(json.data.history) && json.data.history.length
+              ? json.data.history
+              : emptyContent.history,
+          });
         }
       } catch (err) {
         console.error("Error fetching about content:", err);
@@ -152,7 +174,7 @@ export default function CMSAboutPage() {
   }
 
   return (
-    <div className="p-6">
+    <div className="p-4 md:p-6 overflow-x-hidden">
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-[#1F2A54]">About Page CMS</h1>
         <p className="text-muted-foreground">Manage all sections of the About page</p>
@@ -169,7 +191,8 @@ export default function CMSAboutPage() {
               <TabsTrigger value="hero">Hero Section</TabsTrigger>
               <TabsTrigger value="quality">Quality Section</TabsTrigger>
               <TabsTrigger value="mission">Mission & Vision</TabsTrigger>
-              <TabsTrigger value="leaders">Our Leaders</TabsTrigger>
+              <TabsTrigger value="history">History</TabsTrigger>
+              <TabsTrigger value="leaders">Leadership</TabsTrigger>
             </TabsList>
 
             {/* Hero Section */}
@@ -262,11 +285,12 @@ export default function CMSAboutPage() {
                       />
                     </div>
                     <div>
-                      <Label htmlFor="missionIcon">Icon URL</Label>
-                      <Input
-                        id="missionIcon"
+                      <Label>Mission icon</Label>
+                      <ImageUpload
                         value={content.missionIcon}
-                        onChange={(e) => setContent({ ...content, missionIcon: e.target.value })}
+                        onChange={(url) => setContent({ ...content, missionIcon: url })}
+                        folder="cms/about/icons"
+                        placeholder="Upload mission icon"
                       />
                     </div>
                     <div>
@@ -296,11 +320,12 @@ export default function CMSAboutPage() {
                       />
                     </div>
                     <div>
-                      <Label htmlFor="visionIcon">Icon URL</Label>
-                      <Input
-                        id="visionIcon"
+                      <Label>Vision icon</Label>
+                      <ImageUpload
                         value={content.visionIcon}
-                        onChange={(e) => setContent({ ...content, visionIcon: e.target.value })}
+                        onChange={(url) => setContent({ ...content, visionIcon: url })}
+                        folder="cms/about/icons"
+                        placeholder="Upload vision icon"
                       />
                     </div>
                     <div>
@@ -317,17 +342,148 @@ export default function CMSAboutPage() {
               </div>
             </TabsContent>
 
-            {/* Our Leaders Section */}
-            <TabsContent value="leaders">
+            <TabsContent value="history">
               <Card>
                 <CardHeader>
-                  <CardTitle>Our Leaders Section</CardTitle>
-                  <CardDescription>Manage team members</CardDescription>
+                  <CardTitle>Company History</CardTitle>
+                  <CardDescription>Timeline shown on the About page and homepage</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="grid md:grid-cols-2 gap-4">
                     <div>
-                      <Label htmlFor="leadersTitle">Section Title</Label>
+                      <Label htmlFor="historyEyebrow">Section eyebrow</Label>
+                      <Input
+                        id="historyEyebrow"
+                        value={content.historyEyebrow}
+                        onChange={(e) => setContent({ ...content, historyEyebrow: e.target.value })}
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="historyTitle">Section title</Label>
+                      <Input
+                        id="historyTitle"
+                        value={content.historyTitle}
+                        onChange={(e) => setContent({ ...content, historyTitle: e.target.value })}
+                      />
+                    </div>
+                  </div>
+                  {content.history.map((item, index) => (
+                    <div key={index} className="grid gap-3 rounded-lg border p-4 md:grid-cols-5">
+                      <div className="md:col-span-1">
+                        <Label>Year</Label>
+                        <Input
+                          value={item.year}
+                          onChange={(e) => {
+                            const history = [...content.history];
+                            history[index] = { ...history[index], year: e.target.value };
+                            setContent({ ...content, history });
+                          }}
+                        />
+                      </div>
+                      <div className="md:col-span-4 space-y-3">
+                        <div>
+                          <Label>Title</Label>
+                          <Input
+                            value={item.title}
+                            onChange={(e) => {
+                              const history = [...content.history];
+                              history[index] = { ...history[index], title: e.target.value };
+                              setContent({ ...content, history });
+                            }}
+                          />
+                        </div>
+                        <div>
+                          <Label>Description</Label>
+                          <Textarea
+                            value={item.text}
+                            rows={3}
+                            onChange={(e) => {
+                              const history = [...content.history];
+                              history[index] = { ...history[index], text: e.target.value };
+                              setContent({ ...content, history });
+                            }}
+                          />
+                        </div>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          className="text-red-600"
+                          onClick={() =>
+                            setContent({
+                              ...content,
+                              history: content.history.filter((_, i) => i !== index),
+                            })
+                          }
+                        >
+                          <Trash2 size={16} className="mr-2" /> Remove
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() =>
+                      setContent({
+                        ...content,
+                        history: [...content.history, { year: "", title: "", text: "" }],
+                      })
+                    }
+                  >
+                    <Plus size={16} className="mr-2" /> Add timeline item
+                  </Button>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            {/* Our Leaders Section */}
+            <TabsContent value="leaders">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Leadership</CardTitle>
+                  <CardDescription>Managing Director profile shown on the About page</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="leaderName">Name</Label>
+                      <Input
+                        id="leaderName"
+                        value={content.leaderName}
+                        onChange={(e) => setContent({ ...content, leaderName: e.target.value })}
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="leaderRole">Role</Label>
+                      <Input
+                        id="leaderRole"
+                        value={content.leaderRole}
+                        onChange={(e) => setContent({ ...content, leaderRole: e.target.value })}
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <Label>Leader photo</Label>
+                    <ImageUpload
+                      value={content.leaderImage}
+                      onChange={(url) => setContent({ ...content, leaderImage: url })}
+                      folder="cms/about/leader"
+                      placeholder="Upload leadership photo"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="leaderBio">Executive profile</Label>
+                    <Textarea
+                      id="leaderBio"
+                      value={content.leaderBio}
+                      onChange={(e) => setContent({ ...content, leaderBio: e.target.value })}
+                      rows={10}
+                    />
+                  </div>
+
+                  <div className="grid md:grid-cols-2 gap-4 border-t pt-4">
+                    <div>
+                      <Label htmlFor="leadersTitle">Team section title</Label>
                       <Input
                         id="leadersTitle"
                         value={content.leadersTitle}
@@ -335,7 +491,7 @@ export default function CMSAboutPage() {
                       />
                     </div>
                     <div>
-                      <Label htmlFor="leadersSubtitle">Section Subtitle</Label>
+                      <Label htmlFor="leadersSubtitle">Team section subtitle</Label>
                       <Input
                         id="leadersSubtitle"
                         value={content.leadersSubtitle}

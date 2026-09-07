@@ -5,13 +5,8 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { useAuth } from "@/lib/auth-context";
-import {
-  getHeroSlides,
-  addHeroSlide,
-  updateHeroSlide,
-  deleteHeroSlide,
-  type HeroSlide,
-} from "@/lib/firestore";
+import { adminApiFetch } from "@/lib/admin-api";
+import { type HeroSlide } from "@/lib/firestore";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -70,8 +65,10 @@ export default function HeroPage() {
 
   const loadSlides = async () => {
     try {
-      const data = await getHeroSlides();
-      setSlides(data);
+      const res = await fetch("/api/v1/content/hero", { cache: "no-store" });
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(json?.error ?? `Load failed (${res.status})`);
+      setSlides((json?.data?.slides ?? []) as HeroSlide[]);
     } catch (error) {
       console.error("Error loading slides:", error);
     } finally {
@@ -119,30 +116,43 @@ export default function HeroPage() {
 
     setSaving(true);
     try {
+      if (!user) throw new Error("Not signed in");
       if (editingSlide?.id) {
-        await updateHeroSlide(editingSlide.id, formData);
+        const res = await adminApiFetch(user, `/api/v1/content/hero/slides/${editingSlide.id}`, {
+          method: "PUT",
+          body: JSON.stringify(formData),
+        });
+        const json = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(json?.error ?? `Save failed (${res.status})`);
       } else {
-        await addHeroSlide(formData);
+        const res = await adminApiFetch(user, "/api/v1/content/hero/slides", {
+          method: "POST",
+          body: JSON.stringify(formData),
+        });
+        const json = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(json?.error ?? `Save failed (${res.status})`);
       }
       await loadSlides();
       handleCloseDialog();
     } catch (error) {
       console.error("Error saving slide:", error);
-      alert("Error saving slide. Please try again.");
+      alert(error instanceof Error ? error.message : "Error saving slide. Please try again.");
     } finally {
       setSaving(false);
     }
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this slide?")) return;
+    if (!user || !confirm("Are you sure you want to delete this slide?")) return;
 
     try {
-      await deleteHeroSlide(id);
+      const res = await adminApiFetch(user, `/api/v1/content/hero/slides/${id}`, { method: "DELETE" });
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(json?.error ?? `Delete failed (${res.status})`);
       await loadSlides();
     } catch (error) {
       console.error("Error deleting slide:", error);
-      alert("Error deleting slide. Please try again.");
+      alert(error instanceof Error ? error.message : "Error deleting slide. Please try again.");
     }
   };
 

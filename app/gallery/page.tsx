@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { getGalleryImages } from "@/lib/firestore";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { ListingHero } from "@/components/listing-hero";
@@ -30,13 +29,15 @@ export default function GalleryPage() {
   useEffect(() => {
     async function fetchGallery() {
       try {
-        const data = await getGalleryImages();
-        const converted: ProjectGallery[] = data.map((item) => ({
-          id: item.id,
-          title: item.title,
-          thumbnail: item.image,
-          images: [item.image],
-          category: item.category,
+        const res = await fetch("/api/v1/gallery/public", { cache: "no-store" });
+        const json = await res.json().catch(() => ({}));
+        const data = Array.isArray(json?.data) ? json.data : [];
+        const converted: ProjectGallery[] = data.map((item: { id?: string; title?: string; image?: string; category?: string }) => ({
+          id: String(item.id ?? ""),
+          title: String(item.title ?? ""),
+          thumbnail: String(item.image ?? ""),
+          images: [String(item.image ?? "")].filter(Boolean),
+          category: String(item.category ?? ""),
         }));
         setProjects(converted);
       } catch (error) {
@@ -93,21 +94,23 @@ export default function GalleryPage() {
 
         <div className="max-w-[1200px] mx-auto px-4 relative z-10">
           {/* Section Header */}
+          {(String(pageContent?.subtitle || "").trim() || String(pageContent?.content || "").trim()) && (
           <div className="text-center mb-12">
-            <h3 className="text-[#1F2A54] text-2xl font-bold mb-2">GALLARY</h3>
-            <p className="text-[#DDA21A] text-xl font-semibold">OUR LATEST PROJECTS</p>
+            {String(pageContent?.subtitle || "").trim() && (
+              <h3 className="text-[#1F2A54] text-2xl font-bold mb-2">{String(pageContent?.subtitle).trim()}</h3>
+            )}
+            {String(pageContent?.content || "").trim() && (
+              <p className="text-[#DDA21A] text-xl font-semibold">{String(pageContent?.content).trim()}</p>
+            )}
           </div>
+          )}
 
           {/* Projects Grid */}
           {loading ? (
             <div className="flex items-center justify-center py-20">
               <Loader2 className="h-8 w-8 animate-spin text-[#1F2A54]" />
             </div>
-          ) : projects.length === 0 ? (
-            <div className="text-center py-16">
-              <p className="text-gray-400 text-lg">No gallery images available yet.</p>
-            </div>
-          ) : (
+          ) : projects.length === 0 ? null : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {projects.map((project, index) => (
                 <div 
@@ -137,23 +140,24 @@ export default function GalleryPage() {
       {/* Gallery Popup Modal */}
       {selectedProject && (
         <div 
-          className="fixed inset-0 z-[100] bg-black/90 flex items-center justify-center modal-backdrop-enter"
+          className="fixed inset-0 z-[100] bg-black/90 flex items-center justify-center p-3 sm:p-4 modal-backdrop-enter"
           onClick={closeGalleryPopup}
         >
           <div 
-            className="relative max-w-5xl w-full mx-4"
+            className="relative max-w-5xl w-full"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Close Button */}
             <button
               onClick={closeGalleryPopup}
-              className="absolute -top-12 right-0 text-white hover:text-[#DDA21A] transition-colors"
+              className="absolute -top-2 right-0 z-10 text-white hover:text-[#DDA21A] transition-colors sm:-top-12"
+              aria-label="Close gallery"
             >
               <X size={32} />
             </button>
 
             {/* Project Title */}
-            <h3 className="text-white text-2xl font-bold text-center mb-4">
+            <h3 className="text-white text-lg sm:text-2xl font-bold text-center mb-4 pr-10 sm:pr-0">
               {selectedProject.title}
             </h3>
 

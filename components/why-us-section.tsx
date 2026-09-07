@@ -47,7 +47,7 @@ export function WhyUsSection() {
 
   if (loading) {
     return (
-      <section className="py-20 bg-white relative overflow-hidden">
+      <section className="py-12 md:py-20 bg-white relative overflow-hidden">
         <motion.div
           className="max-w-[1200px] mx-auto px-4 h-64 bg-gray-100 rounded-2xl"
           animate={{ opacity: [0.5, 1, 0.5] }}
@@ -60,7 +60,7 @@ export function WhyUsSection() {
   if (!hasContent) return null;
 
   return (
-    <section className="py-20 bg-white relative overflow-hidden">
+    <section className="py-12 md:py-20 bg-white relative overflow-hidden">
       <FloatingOrbs />
       <div className="max-w-[1200px] mx-auto px-4 relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 items-start">
@@ -84,11 +84,11 @@ export function WhyUsSection() {
                 {features.map((feature, index) => (
                   <StaggerItem key={feature.title ?? String(index)}>
                     <motion.div
-                      className="flex items-center gap-6 p-5 bg-[#F8F8F8] rounded-lg"
+                      className="flex items-center gap-4 sm:gap-6 p-4 sm:p-5 bg-[#F8F8F8] rounded-lg"
                       whileHover={{ x: 6, backgroundColor: "#f0f0f0" }}
                       transition={{ type: "spring", stiffness: 400, damping: 28 }}
                     >
-                      <div className="flex-shrink-0 w-[84px] h-[84px] bg-[#1F2A54] rounded-full flex items-center justify-center p-5">
+                      <div className="flex-shrink-0 w-14 h-14 sm:w-[84px] sm:h-[84px] bg-[#1F2A54] rounded-full flex items-center justify-center p-3 sm:p-5">
                         {isValidImageUrl(feature.icon) && (
                           <Image
                             src={getSafeImageSrc(feature.icon)!}
@@ -116,7 +116,7 @@ export function WhyUsSection() {
 
           {isValidImageUrl(content?.image) && (
             <Reveal direction="left" delay={0.15}>
-              <GsapParallax speed={0.25} className="relative w-full h-[500px] lg:h-[600px]">
+              <GsapParallax speed={0.25} className="relative w-full h-[280px] sm:h-[500px] lg:h-[600px]">
                 <motion.div
                   className="relative w-full h-full"
                   whileHover={{ scale: 1.03 }}

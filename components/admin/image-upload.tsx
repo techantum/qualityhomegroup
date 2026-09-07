@@ -6,8 +6,7 @@ import { useState, useRef, useCallback } from "react";
 import { ImagePlaceholder } from "@/components/image-placeholder";
 import { isValidImageUrl } from "@/lib/media";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Upload, X, Loader2, ImageIcon, Link2, AlertTriangle } from "lucide-react";
+import { Upload, X, Loader2, ImageIcon, AlertTriangle } from "lucide-react";
 
 /** @deprecated Validation presets are no longer enforced. */
 export interface ImageValidationRules {
@@ -51,8 +50,6 @@ export function ImageUpload({
 }: ImageUploadProps) {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [showUrlInput, setShowUrlInput] = useState(false);
-  const [urlInput, setUrlInput] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileSelect = useCallback(
@@ -99,14 +96,6 @@ export function ImageUpload({
     e.preventDefault();
   }, []);
 
-  const handleUrlSubmit = () => {
-    if (urlInput.trim()) {
-      onChange(urlInput.trim());
-      setUrlInput("");
-      setShowUrlInput(false);
-    }
-  };
-
   const handleRemove = () => {
     onChange("");
     if (fileInputRef.current) {
@@ -135,7 +124,7 @@ export function ImageUpload({
             onDrop={handleDrop}
             onDragOver={handleDragOver}
             className={`${THUMB_CLASS} flex cursor-pointer flex-col items-center justify-center border-dashed hover:border-[#1F2A54]`}
-            onClick={() => !showUrlInput && fileInputRef.current?.click()}
+            onClick={() => fileInputRef.current?.click()}
           >
             {uploading ? (
               <Loader2 className="h-6 w-6 animate-spin text-[#1F2A54]" />
@@ -147,47 +136,22 @@ export function ImageUpload({
 
         <div className="flex min-w-0 flex-1 flex-col gap-2">
           <p className="text-xs text-muted-foreground">{placeholder}</p>
-          {showUrlInput ? (
-            <div className="flex max-w-sm gap-2">
-              <Input
-                placeholder="Image URL"
-                value={urlInput}
-                onChange={(e) => setUrlInput(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && handleUrlSubmit()}
-              />
-              <Button type="button" size="sm" onClick={handleUrlSubmit}>
-                Add
+          <div className="flex flex-wrap gap-2">
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              disabled={uploading}
+              onClick={() => fileInputRef.current?.click()}
+            >
+              <Upload size={14} className="mr-1" /> Upload
+            </Button>
+            {value && (
+              <Button type="button" variant="outline" size="sm" onClick={handleRemove}>
+                Remove
               </Button>
-              <Button type="button" size="sm" variant="ghost" onClick={() => setShowUrlInput(false)}>
-                Cancel
-              </Button>
-            </div>
-          ) : (
-            <div className="flex flex-wrap gap-2">
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                disabled={uploading}
-                onClick={() => fileInputRef.current?.click()}
-              >
-                <Upload size={14} className="mr-1" /> Upload
-              </Button>
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                onClick={() => setShowUrlInput(true)}
-              >
-                <Link2 size={14} className="mr-1" /> URL
-              </Button>
-              {value && (
-                <Button type="button" variant="outline" size="sm" onClick={handleRemove}>
-                  Remove
-                </Button>
-              )}
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </div>
 
@@ -230,13 +194,19 @@ export function MultiImageUpload({
   className = "",
 }: MultiImageUploadProps) {
   const [uploading, setUploading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const valueRef = useRef(value);
+  valueRef.current = value;
 
   const handleFilesSelect = async (files: FileList) => {
+    setError(null);
     setUploading(true);
     const newUrls: string[] = [];
+    const failures: string[] = [];
+    const current = valueRef.current;
 
-    for (let i = 0; i < files.length && value.length + newUrls.length < maxImages; i++) {
+    for (let i = 0; i < files.length && current.length + newUrls.length < maxImages; i++) {
       const file = files[i];
       try {
         const formData = new FormData();
@@ -247,17 +217,23 @@ export function MultiImageUpload({
           method: "POST",
           body: formData,
         });
-
-        if (response.ok) {
-          const data = await response.json();
-          newUrls.push(data.url);
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok || !data?.url) {
+          throw new Error(data.error || `Upload failed (${response.status})`);
         }
-      } catch {
-        // Skip failed uploads
+        newUrls.push(data.url);
+      } catch (err) {
+        failures.push(err instanceof Error ? err.message : "Upload failed");
       }
     }
 
-    onChange([...value, ...newUrls]);
+    if (newUrls.length) {
+      onChange([...valueRef.current, ...newUrls]);
+    }
+    if (failures.length) {
+      setError(failures[0] + (failures.length > 1 ? ` (+${failures.length - 1} more)` : ""));
+    }
+    if (fileInputRef.current) fileInputRef.current.value = "";
     setUploading(false);
   };
 
@@ -319,8 +295,9 @@ export function MultiImageUpload({
         }}
       />
 
+      {error && <p className="mt-2 text-xs text-red-600">{error}</p>}
       <p className="mt-2 text-xs text-muted-foreground">
-        {value.length} of {maxImages} images
+        {value.length} of {maxImages} images — upload files only
       </p>
     </div>
   );

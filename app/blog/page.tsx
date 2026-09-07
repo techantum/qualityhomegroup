@@ -50,14 +50,20 @@ export default function BlogPage() {
 
         <div className="max-w-[1200px] mx-auto px-4 relative z-10">
           {/* Section Header */}
+          {(String(pageContent?.subtitle || "").trim() || String(pageContent?.content || "").trim()) && (
           <div className="text-center mb-12">
-            <h2 className="font-sans font-bold text-2xl md:text-3xl text-[#1F2A54] mb-2">
-              LATEST
-            </h2>
-            <p className="text-[#DDA21A] text-lg tracking-wider">
-              NEWS INSIGHTS
-            </p>
+            {String(pageContent?.subtitle || "").trim() && (
+              <h2 className="font-sans font-bold text-2xl md:text-3xl text-[#1F2A54] mb-2">
+                {String(pageContent?.subtitle).trim()}
+              </h2>
+            )}
+            {String(pageContent?.content || "").trim() && (
+              <p className="text-[#DDA21A] text-lg tracking-wider">
+                {String(pageContent?.content).trim()}
+              </p>
+            )}
           </div>
+          )}
 
           {/* Loading State */}
           {loading && (
@@ -66,14 +72,6 @@ export default function BlogPage() {
             </div>
           )}
 
-          {/* Empty State */}
-          {!loading && posts.length === 0 && (
-            <div className="text-center py-16">
-              <p className="text-gray-400 text-lg">No blog posts available yet.</p>
-            </div>
-          )}
-
-          {/* Blog Grid */}
           {!loading && posts.length > 0 && (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {posts.map((post, index) => (

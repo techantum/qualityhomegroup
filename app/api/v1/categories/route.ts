@@ -8,6 +8,7 @@ import { NextResponse } from "next/server";
 import { requireAuth } from "@/lib/api/auth";
 import { apiInternalError } from "@/lib/api/errors";
 import {
+  adminAddCategory,
   adminGetActiveCategories,
   adminGetAllCategories,
   isAdminConfigured,
@@ -57,6 +58,43 @@ export async function GET(request: Request) {
     return NextResponse.json({ data: serialized });
   } catch (err) {
     console.error("[API] GET /api/v1/categories error:", err);
+    return apiInternalError(err);
+  }
+}
+
+export async function POST(request: Request) {
+  const auth = await requireAuth(request);
+  if ("response" in auth) return auth.response;
+
+  try {
+    if (!isAdminConfigured()) {
+      return NextResponse.json(
+        { error: ADMIN_NOT_CONFIGURED_MESSAGE, code: "service_unavailable" },
+        { status: 503 }
+      );
+    }
+    const body = await request.json();
+    const name = String(body.name ?? "").trim();
+    const slug = String(body.slug ?? "").trim();
+    if (!name || !slug) {
+      return NextResponse.json(
+        { error: "name and slug are required", code: "bad_request" },
+        { status: 400 }
+      );
+    }
+    const id = await adminAddCategory({
+      name,
+      slug,
+      description: body.description != null ? String(body.description) : "",
+      image: body.image != null ? String(body.image) : "",
+      heroImage: body.heroImage != null ? String(body.heroImage) : "",
+      heroTitle: body.heroTitle != null ? String(body.heroTitle) : "",
+      order: body.order != null ? Number(body.order) : 0,
+      isActive: body.isActive !== false,
+    });
+    return NextResponse.json({ data: { id } }, { status: 201 });
+  } catch (err) {
+    console.error("[API] POST /api/v1/categories error:", err);
     return apiInternalError(err);
   }
 }

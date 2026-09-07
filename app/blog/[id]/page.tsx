@@ -72,7 +72,7 @@ export default function BlogDetailPage() {
     <div className="min-h-screen bg-white font-sans overflow-x-hidden">
       <Header />
 
-      <section className="relative h-[300px] w-full overflow-hidden">
+      <section className="relative h-[calc(var(--site-header-height)+180px)] sm:h-[300px] w-full overflow-hidden">
         <SafeImage
           src={post.image}
           alt={post.title}

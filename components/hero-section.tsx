@@ -9,7 +9,6 @@ import { isValidImageUrl } from "@/lib/media";
 import { heroSlide, heroText } from "@/lib/motion/variants";
 import { usePrefersReducedMotion } from "@/lib/motion/prefs";
 import { Magnetic } from "@/components/motion/magnetic";
-import { SITE_HEADER_HEIGHT_PX } from "@/lib/site-layout";
 
 type HeroSlide = {
   id: string;
@@ -102,7 +101,7 @@ export function HeroSection() {
 
   if (isLoading) {
     return (
-      <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-[#1F2A54]">
+      <section className="relative min-h-[70vh] md:min-h-[90vh] flex items-center overflow-hidden bg-[#1F2A54]">
         <motion.div
           className="absolute inset-0 bg-gradient-to-br from-[#1F2A54] via-[#2a3a6e] to-[#1F2A54]"
           animate={{ opacity: [0.6, 1, 0.6] }}
@@ -110,7 +109,7 @@ export function HeroSection() {
         />
         <div
           className="container mx-auto px-4 relative z-10 w-full"
-          style={{ paddingTop: SITE_HEADER_HEIGHT_PX }}
+          style={{ paddingTop: "var(--site-header-height)" }}
         >
           <motion.div className="h-12 w-3/4 max-w-lg bg-white/10 rounded-lg mx-auto mb-4" animate={{ opacity: [0.3, 0.7, 0.3] }} transition={{ duration: 1.5, repeat: Infinity }} />
           <motion.div className="h-8 w-1/2 max-w-md bg-white/10 rounded-lg mx-auto" animate={{ opacity: [0.3, 0.7, 0.3] }} transition={{ duration: 1.5, repeat: Infinity, delay: 0.2 }} />
@@ -129,7 +128,7 @@ export function HeroSection() {
 
   return (
     <section
-      className="relative min-h-[90vh] flex items-center overflow-hidden"
+      className="relative min-h-[70vh] md:min-h-[90vh] flex items-center overflow-hidden"
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
       onMouseEnter={() => setIsPaused(true)}
@@ -165,6 +164,7 @@ export function HeroSection() {
                   ) : (
                     <div className="absolute inset-0 bg-gradient-to-br from-[#1F2A54] to-[#3d4f8f]" />
                   )}
+                  <div className="absolute inset-0 bg-[#1F2A54]/70" />
                 </div>
               </motion.div>
             )
@@ -173,7 +173,7 @@ export function HeroSection() {
 
       <motion.div
         className="container mx-auto px-4 relative z-10"
-        style={{ paddingTop: SITE_HEADER_HEIGHT_PX }}
+        style={{ paddingTop: "var(--site-header-height)" }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.3, duration: 0.8 }}
@@ -185,7 +185,7 @@ export function HeroSection() {
             initial="hidden"
             animate="visible"
           >
-            <h1 className="font-royal text-4xl md:text-5xl lg:text-6xl text-white leading-tight mb-4">
+            <h1 className="font-royal text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-white leading-tight mb-4 px-8 sm:px-12">
               {currentSlideData.headline.split("\n").map((line, i, lines) => (
                 <motion.span
                   key={i}
@@ -237,7 +237,7 @@ export function HeroSection() {
           <motion.button
             type="button"
             onClick={goToPrevious}
-            className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-20 w-12 h-12 flex items-center justify-center text-white/90 hover:text-gold"
+            className="absolute left-1 sm:left-4 md:left-8 top-1/2 -translate-y-1/2 z-20 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center text-white/90 hover:text-gold"
             whileHover={{ scale: 1.15, x: -4 }}
             whileTap={{ scale: 0.95 }}
             aria-label="Previous slide"
@@ -247,14 +247,14 @@ export function HeroSection() {
           <motion.button
             type="button"
             onClick={goToNext}
-            className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-20 w-12 h-12 flex items-center justify-center text-white/90 hover:text-gold"
+            className="absolute right-1 sm:right-4 md:right-8 top-1/2 -translate-y-1/2 z-20 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center text-white/90 hover:text-gold"
             whileHover={{ scale: 1.15, x: 4 }}
             whileTap={{ scale: 0.95 }}
             aria-label="Next slide"
           >
             <ChevronRight className="w-10 h-10" />
           </motion.button>
-          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+          <div className="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 z-20 flex gap-2">
             {slides.map((_, index) => (
               <motion.button
                 key={index}

@@ -11,6 +11,9 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  async rewrites() {
+    return [{ source: "/favicon.ico", destination: "/icon.svg" }]
+  },
   images: {
     unoptimized: true,
     remotePatterns: [
@@ -24,6 +27,7 @@ const nextConfig = {
     serverActions: {
       bodySizeLimit: "15mb",
     },
+    proxyClientMaxBodySize: "15mb",
   },
 }
 

@@ -300,7 +300,7 @@ export default function FormsManagerPage() {
   }
 
   return (
-    <div className="p-6">
+    <div className="p-4 md:p-6 overflow-x-hidden">
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
         <div>

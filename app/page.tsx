@@ -8,6 +8,7 @@ import { TestimonialsSection } from "@/components/testimonials-section";
 import { NewsSection } from "@/components/news-section";
 import { Footer } from "@/components/footer";
 import { PageTransition } from "@/components/motion/page-transition";
+import { CompanyHistorySection } from "@/components/company-history-section";
 
 export default function HomePage() {
   return (
@@ -16,6 +17,7 @@ export default function HomePage() {
       <Header />
       <HeroSection />
       <AboutSection />
+      <CompanyHistorySection />
       <ProjectsSection />
       <VideoSection />
       <WhyUsSection />

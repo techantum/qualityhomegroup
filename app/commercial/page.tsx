@@ -7,7 +7,9 @@ import { MapPin } from "lucide-react";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { ListingHero } from "@/components/listing-hero";
+import { CmsPageBody } from "@/components/cms-page-body";
 import { usePageContent } from "@/hooks/use-page-content";
+import { matchesListingType, matchesListingStatus } from "@/lib/project-page";
 import { Project } from "@/lib/firestore";
 import { isValidImageUrl } from "@/lib/media";
 
@@ -31,11 +33,7 @@ export default function CommercialPage() {
         const json = await res.json().catch(() => ({}));
         const list = Array.isArray(json?.data) ? json.data : [];
         const commercialProjects = list
-          .filter((p: { category?: string; type?: string }) => {
-            const cat = (p.category || "").toLowerCase();
-            const type = (p.type || "").toLowerCase();
-            return cat === "commercial" || type === "commercial";
-          })
+          .filter((p: { category?: string; type?: string }) => matchesListingType(p, "commercial"))
           .map((p: Record<string, unknown>) => ({ id: p.id, ...p } as Project));
         setProjects(commercialProjects);
       } catch {
@@ -47,41 +45,38 @@ export default function CommercialPage() {
     fetchProjects();
   }, []);
 
-  const filteredProjects = activeFilter === "all" 
-    ? projects 
-    : projects.filter(p => {
-        const s = (p.status || "").toLowerCase();
-        if (activeFilter === "ongoing") return s === "ongoing" || s === "under construction";
-        if (activeFilter === "upcoming") return s === "upcoming";
-        if (activeFilter === "completed") return s === "completed" || s === "ready to move";
-        return false;
-      });
+  const filteredProjects = activeFilter === "all"
+    ? projects
+    : projects.filter((p) => matchesListingStatus(p.status, activeFilter));
 
   return (
     <main className="min-h-screen overflow-x-hidden">
       <Header />
       
       <ListingHero
-        title={pageContent?.title}
+        title={(pageContent?.heroTitle as string) || pageContent?.title}
         image={pageContent?.heroImage}
         loading={pageLoading}
         defaultAlt="Commercial"
       />
+      <CmsPageBody content={pageContent?.content} sections={pageContent?.sections} />
 
       {/* Projects Section */}
       <section className="py-16 bg-white">
         <div className="max-w-[1200px] mx-auto px-4">
-          <h2 className="font-royal text-2xl md:text-3xl text-[#1F2A54] text-center mb-8">
-            OUR COMMERCIAL PROJECTS
-          </h2>
+          {String(pageContent?.subtitle || "").trim() && (
+            <h2 className="font-royal text-2xl md:text-3xl text-[#1F2A54] text-center mb-8">
+              {String(pageContent?.subtitle).trim()}
+            </h2>
+          )}
 
           {/* Filter Tabs */}
-          <div className="flex flex-wrap justify-center gap-3 mb-12">
+          <div className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-12">
             {filterTabs.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveFilter(tab.id)}
-                className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 ease-in-out ${
+                className={`px-3 sm:px-6 py-2 rounded-full text-xs sm:text-sm font-medium transition-all duration-300 ease-in-out ${
                   activeFilter === tab.id
                     ? "bg-[#1F2A54] text-white shadow-md scale-105"
                     : "bg-gray-100 text-[#1F2A54] hover:bg-gray-200 hover:scale-105"
@@ -95,17 +90,15 @@ export default function CommercialPage() {
           {/* Projects Grid - from CMS only */}
           {loading ? (
             <div className="text-center py-12">Loading projects...</div>
-          ) : filteredProjects.length === 0 ? (
-            <div className="text-center py-12 text-gray-600">No commercial projects in CMS yet.</div>
-          ) : (
+          ) : filteredProjects.length === 0 ? null : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {filteredProjects.map((project) => (
                 <Link
                   key={project.id}
-                  href={`/property/${project.id}`}
+                  href={`/property/${(project as { slug?: string }).slug || project.id}`}
                   className="group block"
                 >
-                  <div className="relative h-[420px] rounded-[20px] overflow-hidden border border-gray-200 shadow-sm card-hover-lift">
+                  <div className="relative h-[300px] sm:h-[420px] rounded-[20px] overflow-hidden border border-gray-200 shadow-sm card-hover-lift">
                     {isValidImageUrl(project.image) ? (
                       <Image
                         src={project.image!}

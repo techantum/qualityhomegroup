@@ -5,8 +5,9 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useAuth } from "@/lib/auth-context";
+import { adminApiFetch } from "@/lib/admin-api";
 import { savePageContent } from "@/lib/admin-page-save";
-import { getGalleryImages, addGalleryImage, updateGalleryImage, deleteGalleryImage, type GalleryImage } from "@/lib/firestore";
+import type { GalleryImage } from "@/lib/firestore";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -40,6 +41,7 @@ export default function GalleryPage() {
   const [loadingData, setLoadingData] = useState(true);
   const [heroTitle, setHeroTitle] = useState("");
   const [heroImage, setHeroImage] = useState("");
+  const [heroSubtitle, setHeroSubtitle] = useState("");
   const [savingHero, setSavingHero] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isUploadDialogOpen, setIsUploadDialogOpen] = useState(false);
@@ -59,7 +61,6 @@ export default function GalleryPage() {
   const [bulkCategory, setBulkCategory] = useState("");
   const [uploadingFiles, setUploadingFiles] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [bulkUploadUrls, setBulkUploadUrls] = useState("");
 
   useEffect(() => {
     if (!loading && !user) {
@@ -69,9 +70,12 @@ export default function GalleryPage() {
 
   useEffect(() => {
     async function fetchImages() {
+      if (!user) return;
       try {
-        const data = await getGalleryImages();
-        setImages(data);
+        const res = await adminApiFetch(user, "/api/v1/gallery");
+        const json = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(json?.error ?? `Load failed (${res.status})`);
+        setImages((json.data ?? []) as GalleryImage[]);
       } catch (error) {
         console.error("Error fetching gallery:", error);
       } finally {
@@ -85,6 +89,7 @@ export default function GalleryPage() {
         if (res.ok && json?.data) {
           setHeroTitle(json.data.heroTitle ?? "");
           setHeroImage(json.data.heroImage ?? "");
+          setHeroSubtitle(json.data.subtitle ?? "");
         }
       } catch {}
     }
@@ -98,7 +103,7 @@ export default function GalleryPage() {
     if (!user) return;
     setSavingHero(true);
     try {
-      await savePageContent(user, "gallery", { heroTitle, heroImage });
+      await savePageContent(user, "gallery", { heroTitle, heroImage, subtitle: heroSubtitle });
       alert("Hero section saved!");
     } catch (error) {
       console.error("Error saving gallery hero:", error);
@@ -110,26 +115,39 @@ export default function GalleryPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!user) return;
     setSaving(true);
     try {
-      if (editingImage) {
-        await updateGalleryImage(editingImage.id!, formData);
-        setImages(images.map(img => img.id === editingImage.id ? { ...img, ...formData } : img));
+      if (editingImage?.id) {
+        const res = await adminApiFetch(user, `/api/v1/gallery/${editingImage.id}`, {
+          method: "PUT",
+          body: JSON.stringify(formData),
+        });
+        const json = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(json?.error ?? `Save failed (${res.status})`);
+        setImages(images.map((img) => (img.id === editingImage.id ? { ...img, ...formData } : img)));
       } else {
-        const id = await addGalleryImage(formData);
+        const res = await adminApiFetch(user, "/api/v1/gallery", {
+          method: "POST",
+          body: JSON.stringify(formData),
+        });
+        const json = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(json?.error ?? `Save failed (${res.status})`);
+        const id = String(json?.data?.id ?? "");
         setImages([...images, { id, ...formData }]);
       }
       setIsDialogOpen(false);
       resetForm();
     } catch (error) {
       console.error("Error saving image:", error);
+      alert(error instanceof Error ? error.message : "Error saving gallery image.");
     } finally {
       setSaving(false);
     }
   };
 
   const handleBulkUpload = async (files: FileList) => {
-    if (!bulkCategory || files.length === 0) return;
+    if (!user || !bulkCategory || files.length === 0) return;
     
     setUploadingFiles(true);
     
@@ -150,13 +168,19 @@ export default function GalleryPage() {
         if (response.ok) {
           const data = await response.json();
           const title = file.name.replace(/\.[^/.]+$/, "") || `${bulkCategory} Image ${images.length + i + 1}`;
-          const id = await addGalleryImage({
-            title,
-            category: bulkCategory,
-            image: data.url,
-            order: images.length + i,
+          const saveRes = await adminApiFetch(user, "/api/v1/gallery", {
+            method: "POST",
+            body: JSON.stringify({
+              title,
+              category: bulkCategory,
+              image: data.url,
+              order: images.length + i,
+            }),
           });
-          setImages(prev => [...prev, { id, title, category: bulkCategory, image: data.url, order: images.length + i }]);
+          const saveJson = await saveRes.json().catch(() => ({}));
+          if (!saveRes.ok) throw new Error(saveJson?.error ?? "Failed to save gallery image");
+          const id = String(saveJson?.data?.id ?? "");
+          setImages((prev) => [...prev, { id, title, category: bulkCategory, image: data.url, order: images.length + i }]);
         }
       }
       setIsUploadDialogOpen(false);
@@ -180,27 +204,37 @@ export default function GalleryPage() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this image?")) return;
+    if (!user || !confirm("Are you sure you want to delete this image?")) return;
     try {
-      await deleteGalleryImage(id);
-      setImages(images.filter(img => img.id !== id));
+      const res = await adminApiFetch(user, `/api/v1/gallery/${id}`, { method: "DELETE" });
+      if (!res.ok && res.status !== 204) {
+        const json = await res.json().catch(() => ({}));
+        throw new Error(json?.error ?? `Delete failed (${res.status})`);
+      }
+      setImages(images.filter((img) => img.id !== id));
     } catch (error) {
       console.error("Error deleting image:", error);
+      alert(error instanceof Error ? error.message : "Error deleting image.");
     }
   };
 
   const handleBulkDelete = async () => {
-    if (!confirm(`Are you sure you want to delete ${selectedImages.length} images?`)) return;
+    if (!user || !confirm(`Are you sure you want to delete ${selectedImages.length} images?`)) return;
     
     try {
       for (const id of selectedImages) {
-        await deleteGalleryImage(id);
+        const res = await adminApiFetch(user, `/api/v1/gallery/${id}`, { method: "DELETE" });
+        if (!res.ok && res.status !== 204) {
+          const json = await res.json().catch(() => ({}));
+          throw new Error(json?.error ?? `Delete failed (${res.status})`);
+        }
       }
-      setImages(images.filter(img => !selectedImages.includes(img.id!)));
+      setImages(images.filter((img) => !selectedImages.includes(img.id!)));
       setSelectedImages([]);
       setIsSelectionMode(false);
     } catch (error) {
       console.error("Error deleting images:", error);
+      alert(error instanceof Error ? error.message : "Error deleting images.");
     }
   };
 
@@ -245,7 +279,7 @@ export default function GalleryPage() {
   }
 
   return (
-    <div className="p-6">
+    <div className="p-4 md:p-6 overflow-x-hidden">
       {/* Hero Section Settings */}
       <Card className="mb-6">
         <CardHeader>
@@ -260,6 +294,15 @@ export default function GalleryPage() {
               value={heroTitle}
               onChange={(e) => setHeroTitle(e.target.value)}
               placeholder="e.g., OUR GALLERY"
+            />
+          </div>
+          <div>
+            <Label htmlFor="gallerySubtitle">Section subtitle</Label>
+            <Input
+              id="gallerySubtitle"
+              value={heroSubtitle}
+              onChange={(e) => setHeroSubtitle(e.target.value)}
+              placeholder="Optional heading below the hero"
             />
           </div>
           <div>

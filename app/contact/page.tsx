@@ -147,7 +147,7 @@ export default function ContactPage() {
         <div className="max-w-[900px] mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Email Card */}
-            <div className="bg-[#ffffff] rounded-[8px] p-6 border border-gray-200 flex flex-col h-[220px] card-hover-lift transition-all duration-300">
+            <div className="bg-[#ffffff] rounded-[8px] p-6 border border-gray-200 flex flex-col min-h-[200px] card-hover-lift transition-all duration-300">
               <div className="mb-4 text-[#1F2A54]">
                 <Mail className="w-6 h-6" aria-hidden />
               </div>
@@ -162,7 +162,7 @@ export default function ContactPage() {
             </div>
 
             {/* Phone Card */}
-            <div className="bg-[#ffffff] rounded-[8px] p-6 border border-gray-200 flex flex-col h-[220px] card-hover-lift transition-all duration-300">
+            <div className="bg-[#ffffff] rounded-[8px] p-6 border border-gray-200 flex flex-col min-h-[200px] card-hover-lift transition-all duration-300">
               <div className="mb-4 text-[#1F2A54]">
                 <Phone className="w-6 h-6" aria-hidden />
               </div>
@@ -177,7 +177,7 @@ export default function ContactPage() {
             </div>
 
             {/* Location Card */}
-            <div className="bg-[#ffffff] rounded-[8px] p-6 border border-gray-200 flex flex-col h-[220px]">
+            <div className="bg-[#ffffff] rounded-[8px] p-6 border border-gray-200 flex flex-col min-h-[200px]">
               <div className="mb-4 text-[#1F2A54]">
                 <MapPin className="w-6 h-6" aria-hidden />
               </div>
@@ -306,9 +306,8 @@ export default function ContactPage() {
               </form>
             </div>
 
-            {/* Map */}
+            {contactInfo?.mapUrl ? (
             <div className="rounded-lg overflow-hidden h-[400px] lg:h-auto">
-              {contactInfo?.mapUrl ? (
               <iframe
                 src={contactInfo.mapUrl}
                 width="100%"
@@ -319,12 +318,8 @@ export default function ContactPage() {
                 referrerPolicy="no-referrer-when-downgrade"
                 title="Location Map"
               />
-              ) : (
-                <div className="flex items-center justify-center h-full min-h-[400px] bg-gray-100 text-gray-500 text-sm">
-                  Map embed URL can be configured in the admin contact settings.
-                </div>
-              )}
             </div>
+            ) : null}
           </div>
         </div>
       </section>

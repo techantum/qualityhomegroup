@@ -284,6 +284,7 @@ export interface PropertyDetails {
   price: string;
   priceLabel: string;
   heroImage: string;
+  aboutImage?: string;
   about: string;
   reraNumber: string;
   videoUrl?: string;
@@ -299,6 +300,7 @@ export interface PropertyDetails {
   location: {
     address: string;
     mapUrl: string;
+    image?: string;
     nearbyPlaces: { name: string; distance: string; type: string }[];
   };
   specifications: {

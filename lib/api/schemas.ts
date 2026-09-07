@@ -9,6 +9,7 @@ export const contactSubmissionSchema = z.object({
   name: z.string().min(1, "Name is required").max(200),
   email: z.string().email("Invalid email").max(320),
   phone: z.string().max(50).optional().default(""),
+  mobile: z.string().max(50).optional(),
   message: z.string().max(5000).optional().default(""),
   source: z.string().max(100).optional().default("Website Enquiry"),
   projectType: z.string().max(100).optional(),
@@ -24,13 +25,16 @@ export const paginationSchema = z.object({
   limit: z.coerce.number().int().min(1).max(100).optional().default(20),
 });
 
+const emptyToUndefined = (value: unknown) =>
+  value === null || value === "" ? undefined : value;
+
 /** Leads list query (cursor-based pagination + filters) */
 export const leadsQuerySchema = z.object({
-  limit: z.coerce.number().int().min(1).max(100).optional().default(20),
-  cursor: z.string().min(1).optional(),
-  status: leadStatusSchema.optional(),
-  fromDate: z.string().optional(),
-  toDate: z.string().optional(),
+  limit: z.preprocess(emptyToUndefined, z.coerce.number().int().min(1).max(500).optional().default(20)),
+  cursor: z.preprocess(emptyToUndefined, z.string().min(1).optional()),
+  status: z.preprocess(emptyToUndefined, leadStatusSchema.optional()),
+  fromDate: z.preprocess(emptyToUndefined, z.string().optional()),
+  toDate: z.preprocess(emptyToUndefined, z.string().optional()),
 });
 
 /** Mark lead as contacted/closed body */
@@ -49,7 +53,7 @@ export const cmsPageSchema = z.object({
   metaTitle: z.string().max(100).optional(),
   metaDescription: z.string().max(500).optional(),
   metaKeywords: z.array(z.string().max(50)).max(20).optional(),
-  ogImage: z.string().url().max(2000).optional(),
+  ogImage: z.string().max(2000).optional(),
 });
 
 /** CMS section create/update */

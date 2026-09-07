@@ -58,6 +58,8 @@ export function NewsSection() {
   const sectionSubtitle = String(sectionContent?.subtitle ?? "").trim();
   const showSectionHeader = Boolean(sectionTitle || sectionSubtitle);
 
+  if (!isLoading && articles.length === 0) return null;
+
   return (
     <section className="py-20 bg-white">
       <div className="max-w-[1200px] mx-auto px-4">
@@ -86,13 +88,6 @@ export function NewsSection() {
                 </div>
               </div>
             ))}
-          </div>
-        )}
-
-        {/* Empty State */}
-        {!isLoading && articles.length === 0 && (
-          <div className="text-center py-16">
-            <p className="text-gray-400 text-lg">No articles available yet.</p>
           </div>
         )}
 

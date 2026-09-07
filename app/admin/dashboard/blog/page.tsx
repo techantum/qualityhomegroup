@@ -8,7 +8,7 @@ import Image from "next/image";
 import { useAuth } from "@/lib/auth-context";
 import { adminApiFetch } from "@/lib/admin-api";
 import { savePageContent } from "@/lib/admin-page-save";
-import { getArticles, addArticle, updateArticle, deleteArticle, type Article } from "@/lib/firestore";
+import type { Article } from "@/lib/firestore";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -28,6 +28,7 @@ export default function BlogPage() {
   const [loadingData, setLoadingData] = useState(true);
   const [heroTitle, setHeroTitle] = useState("");
   const [heroImage, setHeroImage] = useState("");
+  const [heroSubtitle, setHeroSubtitle] = useState("");
   const [savingHero, setSavingHero] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingArticle, setEditingArticle] = useState<Article | null>(null);
@@ -49,9 +50,12 @@ export default function BlogPage() {
 
   useEffect(() => {
     async function fetchArticles() {
+      if (!user) return;
       try {
-        const data = await getArticles();
-        setArticles(data);
+        const res = await adminApiFetch(user, "/api/v1/articles");
+        const json = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(json?.error ?? `Load failed (${res.status})`);
+        setArticles((json.data ?? []) as Article[]);
       } catch (error) {
         console.error("Error fetching articles:", error);
       } finally {
@@ -65,6 +69,7 @@ export default function BlogPage() {
         if (res.ok && json?.data) {
           setHeroTitle(json.data.heroTitle ?? "");
           setHeroImage(json.data.heroImage ?? "");
+          setHeroSubtitle(json.data.subtitle ?? "");
         }
       } catch {}
     }
@@ -78,7 +83,7 @@ export default function BlogPage() {
     if (!user) return;
     setSavingHero(true);
     try {
-      await savePageContent(user, "blog", { heroTitle, heroImage });
+      await savePageContent(user, "blog", { heroTitle, heroImage, subtitle: heroSubtitle });
       alert("Hero section saved!");
     } catch (error) {
       console.error("Error saving blog hero:", error);
@@ -90,19 +95,31 @@ export default function BlogPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!user) return;
     setSaving(true);
     try {
-      if (editingArticle) {
-        await updateArticle(editingArticle.id!, formData);
-        setArticles(articles.map(a => a.id === editingArticle.id ? { ...a, ...formData } : a));
+      const res = editingArticle?.id
+        ? await adminApiFetch(user, `/api/v1/articles/${editingArticle.id}`, {
+            method: "PUT",
+            body: JSON.stringify(formData),
+          })
+        : await adminApiFetch(user, "/api/v1/articles", {
+            method: "POST",
+            body: JSON.stringify(formData),
+          });
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(json?.error ?? `Save failed (${res.status})`);
+      if (editingArticle?.id) {
+        setArticles(articles.map((a) => (a.id === editingArticle.id ? { ...a, ...formData } : a)));
       } else {
-        const id = await addArticle(formData);
+        const id = String(json?.data?.id ?? "");
         setArticles([{ id, ...formData }, ...articles]);
       }
       setIsDialogOpen(false);
       resetForm();
     } catch (error) {
       console.error("Error saving article:", error);
+      alert(error instanceof Error ? error.message : "Error saving article.");
     } finally {
       setSaving(false);
     }
@@ -122,12 +139,17 @@ export default function BlogPage() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this article?")) return;
+    if (!user || !confirm("Are you sure you want to delete this article?")) return;
     try {
-      await deleteArticle(id);
-      setArticles(articles.filter(a => a.id !== id));
+      const res = await adminApiFetch(user, `/api/v1/articles/${id}`, { method: "DELETE" });
+      if (!res.ok && res.status !== 204) {
+        const json = await res.json().catch(() => ({}));
+        throw new Error(json?.error ?? `Delete failed (${res.status})`);
+      }
+      setArticles(articles.filter((a) => a.id !== id));
     } catch (error) {
       console.error("Error deleting article:", error);
+      alert(error instanceof Error ? error.message : "Error deleting article.");
     }
   };
 
@@ -152,7 +174,7 @@ export default function BlogPage() {
   }
 
   return (
-    <div className="p-6">
+    <div className="p-4 md:p-6 overflow-x-hidden">
       {/* Hero Section Settings */}
       <Card className="mb-6">
         <CardHeader>
@@ -167,6 +189,15 @@ export default function BlogPage() {
               value={heroTitle}
               onChange={(e) => setHeroTitle(e.target.value)}
               placeholder="e.g., OUR BLOG"
+            />
+          </div>
+          <div>
+            <Label htmlFor="blogSubtitle">Section subtitle</Label>
+            <Input
+              id="blogSubtitle"
+              value={heroSubtitle}
+              onChange={(e) => setHeroSubtitle(e.target.value)}
+              placeholder="Optional heading below the hero"
             />
           </div>
           <div>

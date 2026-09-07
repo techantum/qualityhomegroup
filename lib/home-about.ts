@@ -23,11 +23,11 @@ export const DEFAULT_HOME_ABOUT_PROPERTY_TYPES: HomeAboutPropertyType[] = [
 
 export const DEFAULT_HOME_ABOUT: HomeAboutContent = {
   eyebrow: "About Quality Home Group",
-  heading: "We Are The Leader In The Architectural",
+  heading: "Building Homes That Are Better, Safer, Smarter",
   paragraph1:
-    "At Quality Home Group, we're driven by a clear purpose — to redefine how communities are built and experienced. Rooted in integrity, quality, and innovation, our journey is guided by a commitment to create spaces that inspire better living. Each project reflects our passion for thoughtful design, sustainable development, and enduring value.",
+    "Quality Home Group is a construction company that builds homes with a foundation of experience, strength of quality construction, colors of innovative solutions, lights of new technology, surety of transparent transactions and finally the touch of emotion that converts into a dream home.",
   paragraph2:
-    "We don't just construct buildings; we shape environments where people connect, grow, and thrive. For us, it's more than construction — it's the art of building a better tomorrow.",
+    "Quality Home Group stands tall when it comes to delivering beyond expectations. We work for customer satisfaction, and that approach has helped us create our niche as one of the preferred construction companies.",
   propertyTypes: DEFAULT_HOME_ABOUT_PROPERTY_TYPES,
   buttonText: "Read More",
   buttonLink: "/about",
@@ -80,7 +80,7 @@ export function normalizeHomeAboutContent(
     paragraph1: p1,
     paragraph2: p2,
     propertyTypes: normalizePropertyTypes(raw.propertyTypes),
-    buttonText: pickString(raw.buttonText) || "Read More",
+    buttonText: pickString(raw.buttonText),
     buttonLink: pickString(raw.buttonLink) || "/about",
     image,
   };

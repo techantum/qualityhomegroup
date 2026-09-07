@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/auth-context";
-import { getLeads, updateLead, deleteLead, type Lead } from "@/lib/firestore";
+import { adminApiFetch } from "@/lib/admin-api";
+import { type Lead } from "@/lib/firestore";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -59,13 +60,16 @@ export default function LeadsCRMPage() {
   }, [user, loading, router]);
 
   const fetchLeads = async () => {
+    if (!user) return;
     setLoadingData(true);
     try {
-      const data = await getLeads();
+      const res = await adminApiFetch(user, "/api/v1/leads?limit=500");
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(json?.error ?? `Load failed (${res.status})`);
+      const data = (json.data ?? []) as Lead[];
       setLeads(data);
       setFilteredLeads(data);
     } catch {
-      // Firestore permissions not configured - use empty state
       setLeads([]);
       setFilteredLeads([]);
     } finally {
@@ -98,8 +102,14 @@ export default function LeadsCRMPage() {
   }, [searchTerm, statusFilter, sourceFilter, leads]);
 
   const handleStatusChange = async (id: string, status: Lead['status']) => {
+    if (!user) return;
     try {
-      await updateLead(id, { status });
+      const res = await adminApiFetch(user, `/api/v1/leads/${id}`, {
+        method: "PATCH",
+        body: JSON.stringify({ status }),
+      });
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(json?.error ?? `Update failed (${res.status})`);
       setLeads(leads.map(lead => lead.id === id ? { ...lead, status } : lead));
       if (selectedLead?.id === id) {
         setSelectedLead({ ...selectedLead, status });
@@ -110,10 +120,15 @@ export default function LeadsCRMPage() {
   };
 
   const handleSaveNotes = async () => {
-    if (!selectedLead?.id) return;
+    if (!user || !selectedLead?.id) return;
     setSavingNotes(true);
     try {
-      await updateLead(selectedLead.id, { notes } as Partial<Lead>);
+      const res = await adminApiFetch(user, `/api/v1/leads/${selectedLead.id}`, {
+        method: "PATCH",
+        body: JSON.stringify({ notes }),
+      });
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(json?.error ?? `Save failed (${res.status})`);
       setLeads(leads.map(lead => lead.id === selectedLead.id ? { ...lead, notes } : lead));
       setSelectedLead({ ...selectedLead, notes } as Lead);
     } catch (error) {
@@ -124,9 +139,13 @@ export default function LeadsCRMPage() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this lead?")) return;
+    if (!user || !confirm("Are you sure you want to delete this lead?")) return;
     try {
-      await deleteLead(id);
+      const res = await adminApiFetch(user, `/api/v1/leads/${id}`, { method: "DELETE" });
+      if (!res.ok && res.status !== 204) {
+        const json = await res.json().catch(() => ({}));
+        throw new Error(json?.error ?? `Delete failed (${res.status})`);
+      }
       setLeads(leads.filter(lead => lead.id !== id));
       setShowDetailModal(false);
     } catch (error) {
@@ -191,7 +210,7 @@ export default function LeadsCRMPage() {
   }
 
   return (
-    <div className="p-6">
+    <div className="p-4 md:p-6 overflow-x-hidden">
       {/* Header */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between mb-6 gap-4">
         <div>
@@ -287,13 +306,13 @@ export default function LeadsCRMPage() {
               <CardContent className="p-4">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                   <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-2">
-                      <h3 className="font-semibold text-[#1F2A54] text-lg">{lead.name}</h3>
+                    <div className="flex flex-wrap items-center gap-3 mb-2">
+                      <h3 className="font-semibold text-[#1F2A54] text-base sm:text-lg break-words">{lead.name}</h3>
                       <Badge className={statusColors[lead.status]}>
                         {lead.status}
                       </Badge>
                     </div>
-                    <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
+                    <div className="flex flex-wrap gap-x-4 gap-y-2 text-sm text-muted-foreground break-all">
                       <span className="flex items-center gap-1">
                         <Mail size={14} /> {lead.email}
                       </span>

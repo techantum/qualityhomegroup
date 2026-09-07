@@ -1,18 +1,15 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { useAuth } from "@/lib/auth-context";
+import { adminApiFetch } from "@/lib/admin-api";
 import {
   getProjectById,
   getPropertyAmenities,
-  addPropertyAmenity,
-  updatePropertyAmenity,
-  deletePropertyAmenity,
   getPropertyDetails,
-  updatePropertyDetails,
   type Project,
   type PropertyAmenity,
   type PropertyDetails,
@@ -21,7 +18,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Switch } from "@/components/ui/switch";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Dialog,
@@ -42,6 +41,13 @@ import {
   Save,
 } from "lucide-react";
 import { ImageUpload, MultiImageUpload } from "@/components/admin/image-upload";
+import { PdfUpload } from "@/components/admin/pdf-upload";
+
+interface CategoryOption {
+  id: string;
+  name: string;
+  slug: string;
+}
 
 export default function ProjectDetailsPage() {
   const { user, loading: authLoading } = useAuth();
@@ -54,6 +60,17 @@ export default function ProjectDetailsPage() {
   const [propertyDetails, setPropertyDetails] = useState<PropertyDetails | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [categories, setCategories] = useState<CategoryOption[]>([]);
+  const [projectBasics, setProjectBasics] = useState({
+    title: "",
+    type: "",
+    categoryId: "",
+    category: "",
+    location: "",
+    description: "",
+    status: "ongoing",
+    featured: false,
+  });
   
   // Amenity Dialog
   const [amenityDialogOpen, setAmenityDialogOpen] = useState(false);
@@ -74,6 +91,7 @@ export default function ProjectDetailsPage() {
     price: "",
     priceLabel: "Price:",
     heroImage: "",
+    aboutImage: "",
     about: "",
     reraNumber: "",
     videoUrl: "",
@@ -87,11 +105,15 @@ export default function ProjectDetailsPage() {
     possessionStarts: "",
     locationAddress: "",
     mapUrl: "",
+    locationImage: "",
     galleryImages: [] as string[],
     floorPlans: [] as { name: string; image: string }[],
     specifications: [] as { category: string; items: string[] }[],
     nearbyPlaces: [] as { name: string; distance: string; type: string }[],
+    highlights: [] as string[],
   });
+  const detailsFormRef = useRef(detailsForm);
+  detailsFormRef.current = detailsForm;
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -105,6 +127,42 @@ export default function ProjectDetailsPage() {
     }
   }, [user, projectId]);
 
+  useEffect(() => {
+    if (!user) return;
+    const currentUser = user;
+    async function fetchCategories() {
+      try {
+        const res = await adminApiFetch(currentUser, "/api/v1/categories");
+        const json = await res.json().catch(() => ({}));
+        if (res.ok) {
+          setCategories(json.data ?? []);
+        }
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    }
+    fetchCategories();
+  }, [user]);
+
+  useEffect(() => {
+    if (!categories.length || projectBasics.categoryId) return;
+    const match = categories.find(
+      (c) =>
+        c.id === projectBasics.categoryId ||
+        c.slug === projectBasics.category ||
+        c.name === projectBasics.type ||
+        c.slug === (projectBasics.type || "").toLowerCase()
+    );
+    if (match) {
+      setProjectBasics((prev) => ({
+        ...prev,
+        categoryId: match.id,
+        category: match.slug,
+        type: match.name,
+      }));
+    }
+  }, [categories, projectBasics.categoryId, projectBasics.category, projectBasics.type]);
+
   const loadData = async () => {
     try {
       const res = await fetch(`/api/v1/projects/public/${encodeURIComponent(projectId)}`, { cache: "no-store" });
@@ -116,6 +174,16 @@ export default function ProjectDetailsPage() {
 
       if (projectData) {
         setProject(projectData as Project);
+        setProjectBasics({
+          title: projectData.title ?? "",
+          type: projectData.type ?? "",
+          categoryId: projectData.categoryId ?? "",
+          category: projectData.category ?? "",
+          location: projectData.location ?? "",
+          description: projectData.description ?? "",
+          status: projectData.status ?? "ongoing",
+          featured: Boolean(projectData.featured),
+        });
       } else {
         const p = await getProjectById(projectId);
         setProject(p);
@@ -124,18 +192,22 @@ export default function ProjectDetailsPage() {
       setPropertyDetails(detailsData as PropertyDetails | null);
 
       if (detailsData) {
-        const loc = detailsData.location as { address?: string; mapUrl?: string; nearbyPlaces?: { name: string; distance: string; type: string }[] } | undefined;
+        const loc = detailsData.location as { address?: string; mapUrl?: string; image?: string; nearbyPlaces?: { name: string; distance: string; type: string }[] } | undefined;
         const specs = Array.isArray(detailsData.specifications) ? detailsData.specifications : [];
         const floorPlans = Array.isArray((detailsData as Record<string, unknown>).floorPlans)
           ? ((detailsData as Record<string, unknown>).floorPlans as { name?: string; image?: string }[]).map((p) => ({ name: p?.name ?? "", image: p?.image ?? "" }))
           : [];
         const galleryImages = Array.isArray((detailsData as Record<string, unknown>).galleryImages) ? ((detailsData as Record<string, unknown>).galleryImages as string[]) : [];
         const walkthroughVideoUrl = (detailsData as Record<string, unknown>).walkthroughVideoUrl as string | undefined;
+        const highlights = Array.isArray((detailsData as Record<string, unknown>).highlights)
+          ? ((detailsData as Record<string, unknown>).highlights as unknown[]).map((item) => String(item || "").trim()).filter(Boolean)
+          : [];
         setDetailsForm({
           tagline: detailsData.tagline || "",
           price: detailsData.price || "",
           priceLabel: detailsData.priceLabel || "Price:",
           heroImage: detailsData.heroImage || "",
+          aboutImage: String((detailsData as Record<string, unknown>).aboutImage ?? ""),
           about: detailsData.about || "",
           reraNumber: detailsData.reraNumber || "",
           videoUrl: detailsData.videoUrl || "",
@@ -149,31 +221,49 @@ export default function ProjectDetailsPage() {
           possessionStarts: detailsData.stats?.possessionStarts || "",
           locationAddress: loc?.address || "",
           mapUrl: loc?.mapUrl || "",
+          locationImage: loc?.image || String((detailsData as Record<string, unknown>).locationImage ?? ""),
           galleryImages,
           floorPlans,
           specifications: specs.map((s: { category?: string; items?: string[] }) => ({ category: s?.category ?? "", items: Array.isArray(s?.items) ? s.items : [] })),
           nearbyPlaces: loc?.nearbyPlaces ?? [],
+          highlights,
         });
       }
       if (!projectData) {
         const p = await getProjectById(projectId);
-        if (p) setProject(p);
+        if (p) {
+          setProject(p);
+          setProjectBasics({
+            title: p.title ?? "",
+            type: p.type ?? "",
+            categoryId: p.categoryId ?? "",
+            category: p.category ?? "",
+            location: p.location ?? "",
+            description: p.description ?? "",
+            status: p.status ?? "ongoing",
+            featured: Boolean(p.featured),
+          });
+        }
       }
       if (!detailsData && (projectData || project)) {
         const idForDetails = (projectData ?? project)?.id ?? projectId;
         const d = await getPropertyDetails(idForDetails);
         if (d) {
           setPropertyDetails(d);
-          const loc = d.location as { address?: string; mapUrl?: string; nearbyPlaces?: { name: string; distance: string; type: string }[] } | undefined;
+          const loc = d.location as { address?: string; mapUrl?: string; image?: string; nearbyPlaces?: { name: string; distance: string; type: string }[] } | undefined;
           const specs = Array.isArray(d.specifications) ? d.specifications : [];
           const floorPlans = Array.isArray((d as Record<string, unknown>).floorPlans) ? ((d as Record<string, unknown>).floorPlans as { name?: string; image?: string }[]).map((p) => ({ name: p?.name ?? "", image: p?.image ?? "" })) : [];
           const galleryImages = Array.isArray((d as Record<string, unknown>).galleryImages) ? ((d as Record<string, unknown>).galleryImages as string[]) : [];
           const walkthroughVideoUrl = (d as Record<string, unknown>).walkthroughVideoUrl as string | undefined;
+          const highlights = Array.isArray((d as Record<string, unknown>).highlights)
+            ? ((d as Record<string, unknown>).highlights as unknown[]).map((item) => String(item || "").trim()).filter(Boolean)
+            : [];
           setDetailsForm({
-            tagline: d.tagline || "", price: d.price || "", priceLabel: d.priceLabel || "Price:", heroImage: d.heroImage || "", about: d.about || "", reraNumber: d.reraNumber || "", videoUrl: d.videoUrl || "", walkthroughVideoUrl: walkthroughVideoUrl || "", brochureUrl: d.brochureUrl || "",
+            tagline: d.tagline || "", price: d.price || "", priceLabel: d.priceLabel || "Price:", heroImage: d.heroImage || "", aboutImage: String((d as Record<string, unknown>).aboutImage ?? ""), about: d.about || "", reraNumber: d.reraNumber || "", videoUrl: d.videoUrl || "", walkthroughVideoUrl: walkthroughVideoUrl || "", brochureUrl: d.brochureUrl || "",
             totalLandArea: d.stats?.totalLandArea || "", noOfBlocks: d.stats?.noOfBlocks || "", totalUnits: d.stats?.totalUnits || "", configuration: d.stats?.configuration || "", floors: d.stats?.floors || "", possessionStarts: d.stats?.possessionStarts || "",
-            locationAddress: loc?.address || "", mapUrl: loc?.mapUrl || "", galleryImages, floorPlans,
+            locationAddress: loc?.address || "", mapUrl: loc?.mapUrl || "", locationImage: loc?.image || String((d as Record<string, unknown>).locationImage ?? ""), galleryImages, floorPlans,
             specifications: specs.map((s: { category?: string; items?: string[] }) => ({ category: s?.category ?? "", items: Array.isArray(s?.items) ? s.items : [] })), nearbyPlaces: loc?.nearbyPlaces ?? [],
+            highlights,
           });
         }
       }
@@ -210,48 +300,97 @@ export default function ProjectDetailsPage() {
     setAmenityDialogOpen(true);
   };
 
+  const persistGallery = async (urls: string[]) => {
+    if (!user) return;
+    const id = project?.id ?? projectId;
+    if (!id) return;
+    try {
+      const res = await adminApiFetch(user, `/api/v1/projects/${encodeURIComponent(id)}/details`, {
+        method: "PATCH",
+        body: JSON.stringify({ galleryImages: urls.filter((url) => String(url || "").trim()) }),
+      });
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(json?.error ?? `Gallery save failed (${res.status})`);
+    } catch (error) {
+      console.error("Error saving gallery:", error);
+      alert(error instanceof Error ? error.message : "Failed to save gallery images.");
+    }
+  };
+
   const handleSaveAmenity = async () => {
+    if (!user) {
+      alert("You must be logged in to save.");
+      return;
+    }
+    const idForAmenities = project?.id ?? projectId;
     setSaving(true);
     try {
       const amenityData = {
-        propertyId: projectId,
+        propertyId: idForAmenities,
         name: amenityForm.name,
         image: amenityForm.image,
         galleryImages: amenityForm.galleryImages.filter(img => img.trim() !== ""),
         order: editingAmenity?.order ?? amenities.length,
       };
 
-      if (editingAmenity?.id) {
-        await updatePropertyAmenity(editingAmenity.id, amenityData);
-      } else {
-        await addPropertyAmenity(amenityData);
-      }
+      const url = editingAmenity?.id
+        ? `/api/v1/projects/${encodeURIComponent(idForAmenities)}/amenities/${encodeURIComponent(editingAmenity.id)}`
+        : `/api/v1/projects/${encodeURIComponent(idForAmenities)}/amenities`;
+      const res = await adminApiFetch(user, url, {
+        method: editingAmenity?.id ? "PUT" : "POST",
+        body: JSON.stringify(amenityData),
+      });
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(json?.error ?? `Save failed (${res.status})`);
       await loadData();
       setAmenityDialogOpen(false);
     } catch (error) {
       console.error("Error saving amenity:", error);
+      alert(error instanceof Error ? error.message : "Failed to save amenity.");
     } finally {
       setSaving(false);
     }
   };
 
   const handleDeleteAmenity = async () => {
-    if (!deletingAmenity?.id) return;
+    if (!deletingAmenity?.id || !user) return;
+    const idForAmenities = project?.id ?? projectId;
     setSaving(true);
     try {
-      await deletePropertyAmenity(deletingAmenity.id);
+      const res = await adminApiFetch(
+        user,
+        `/api/v1/projects/${encodeURIComponent(idForAmenities)}/amenities/${encodeURIComponent(deletingAmenity.id)}`,
+        { method: "DELETE" },
+      );
+      if (!res.ok && res.status !== 204) {
+        const json = await res.json().catch(() => ({}));
+        throw new Error(json?.error ?? `Delete failed (${res.status})`);
+      }
       await loadData();
       setDeleteDialogOpen(false);
       setDeletingAmenity(null);
     } catch (error) {
       console.error("Error deleting amenity:", error);
+      alert(error instanceof Error ? error.message : "Failed to delete amenity.");
     } finally {
       setSaving(false);
     }
   };
 
+  const handleCategoryChange = (categoryId: string) => {
+    const cat = categories.find((c) => c.id === categoryId);
+    if (cat) {
+      setProjectBasics((prev) => ({
+        ...prev,
+        categoryId: cat.id,
+        category: cat.slug,
+        type: cat.name,
+      }));
+    }
+  };
+
   const handleSaveDetails = async () => {
-    if (!user?.getIdToken) {
+    if (!user) {
       alert("You must be logged in to save.");
       return;
     }
@@ -260,42 +399,71 @@ export default function ProjectDetailsPage() {
       alert("Project not loaded yet. Please wait and try again.");
       return;
     }
+    if (!projectBasics.title || !projectBasics.type || !projectBasics.location) {
+      alert("Please fill in required fields: Project name, Type, and Location");
+      return;
+    }
     setSaving(true);
     try {
-      const token = await user.getIdToken();
+      const form = detailsFormRef.current;
+      const projectRes = await adminApiFetch(user, `/api/v1/projects/${encodeURIComponent(detailsDocId)}?t=${Date.now()}`, {
+        method: "PUT",
+        body: JSON.stringify({
+          title: projectBasics.title,
+          type: projectBasics.type,
+          location: projectBasics.location,
+          description: projectBasics.description,
+          categoryId: projectBasics.categoryId,
+          category: projectBasics.category,
+          status: projectBasics.status,
+          featured: projectBasics.featured,
+          price: form.price,
+          image: form.heroImage,
+        }),
+        cache: "no-store",
+      });
+      const projectJson = await projectRes.json().catch(() => ({}));
+      if (!projectRes.ok) throw new Error(projectJson?.error ?? `Project save failed (${projectRes.status})`);
+      const updatedProject = projectJson?.data?.project;
+      if (updatedProject) {
+        setProject(updatedProject as Project);
+      }
+
       const payload = {
         projectId: detailsDocId,
-        tagline: detailsForm.tagline,
-        price: detailsForm.price,
-        priceLabel: detailsForm.priceLabel,
-        heroImage: detailsForm.heroImage,
-        about: detailsForm.about,
-        reraNumber: detailsForm.reraNumber,
-        videoUrl: detailsForm.videoUrl,
-        brochureUrl: detailsForm.brochureUrl,
-        walkthroughVideoUrl: detailsForm.walkthroughVideoUrl || undefined,
-        galleryImages: detailsForm.galleryImages,
-        floorPlans: detailsForm.floorPlans,
-        specifications: detailsForm.specifications,
+        tagline: form.tagline,
+        price: form.price,
+        priceLabel: form.priceLabel,
+        heroImage: form.heroImage,
+        aboutImage: form.aboutImage,
+        about: form.about,
+        reraNumber: form.reraNumber,
+        videoUrl: form.videoUrl,
+        brochureUrl: form.brochureUrl,
+        walkthroughVideoUrl: form.walkthroughVideoUrl || "",
+        galleryImages: form.galleryImages,
+        floorPlans: form.floorPlans,
+        specifications: form.specifications,
+        highlights: form.highlights.map((item) => item.trim()).filter(Boolean),
         stats: {
-          totalLandArea: detailsForm.totalLandArea,
-          noOfBlocks: detailsForm.noOfBlocks,
-          totalUnits: detailsForm.totalUnits,
-          configuration: detailsForm.configuration,
-          floors: detailsForm.floors,
-          possessionStarts: detailsForm.possessionStarts,
+          totalLandArea: form.totalLandArea,
+          noOfBlocks: form.noOfBlocks,
+          totalUnits: form.totalUnits,
+          configuration: form.configuration,
+          floors: form.floors,
+          possessionStarts: form.possessionStarts,
         },
         location: {
-          address: detailsForm.locationAddress,
-          mapUrl: detailsForm.mapUrl,
-          nearbyPlaces: detailsForm.nearbyPlaces,
+          address: form.locationAddress,
+          mapUrl: form.mapUrl,
+          image: form.locationImage,
+          nearbyPlaces: form.nearbyPlaces,
         },
+        locationImage: form.locationImage,
       };
-      const res = await fetch(`/api/v1/projects/${detailsDocId}/details`, {
+      const res = await adminApiFetch(user, `/api/v1/projects/${encodeURIComponent(detailsDocId)}/details`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify(payload),
-        cache: "no-store",
       });
       const json = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(json?.error ?? `Save failed (${res.status})`);
@@ -303,7 +471,7 @@ export default function ProjectDetailsPage() {
       const savedDetails = json?.data?.propertyDetails;
       if (savedDetails) {
         setPropertyDetails(savedDetails as PropertyDetails);
-        const loc = (savedDetails as Record<string, unknown>).location as { address?: string; mapUrl?: string; nearbyPlaces?: { name: string; distance: string; type: string }[] } | undefined;
+        const loc = (savedDetails as Record<string, unknown>).location as { address?: string; mapUrl?: string; image?: string; nearbyPlaces?: { name: string; distance: string; type: string }[] } | undefined;
         const specs = Array.isArray((savedDetails as Record<string, unknown>).specifications) ? (savedDetails as Record<string, unknown>).specifications as { category?: string; items?: string[] }[] : [];
         const floorPlans = Array.isArray((savedDetails as Record<string, unknown>).floorPlans) ? ((savedDetails as Record<string, unknown>).floorPlans as { name?: string; image?: string }[]).map((p) => ({ name: p?.name ?? "", image: p?.image ?? "" })) : [];
         const galleryImages = Array.isArray((savedDetails as Record<string, unknown>).galleryImages) ? ((savedDetails as Record<string, unknown>).galleryImages as string[]) : [];
@@ -314,6 +482,7 @@ export default function ProjectDetailsPage() {
           price: String((savedDetails as Record<string, unknown>).price ?? ""),
           priceLabel: String((savedDetails as Record<string, unknown>).priceLabel ?? "Price:"),
           heroImage: String((savedDetails as Record<string, unknown>).heroImage ?? ""),
+          aboutImage: String((savedDetails as Record<string, unknown>).aboutImage ?? ""),
           about: String((savedDetails as Record<string, unknown>).about ?? ""),
           reraNumber: String((savedDetails as Record<string, unknown>).reraNumber ?? ""),
           videoUrl: String((savedDetails as Record<string, unknown>).videoUrl ?? ""),
@@ -327,10 +496,14 @@ export default function ProjectDetailsPage() {
           possessionStarts: stats?.possessionStarts ?? "",
           locationAddress: loc?.address ?? "",
           mapUrl: loc?.mapUrl ?? "",
+          locationImage: loc?.image ?? String((savedDetails as Record<string, unknown>).locationImage ?? ""),
           galleryImages,
           floorPlans,
           specifications: specs.map((s: { category?: string; items?: string[] }) => ({ category: s?.category ?? "", items: Array.isArray(s?.items) ? s.items : [] })),
           nearbyPlaces: loc?.nearbyPlaces ?? [],
+          highlights: Array.isArray((savedDetails as Record<string, unknown>).highlights)
+            ? ((savedDetails as Record<string, unknown>).highlights as unknown[]).map((item) => String(item || "").trim()).filter(Boolean)
+            : [],
         });
       } else {
         await loadData();
@@ -364,9 +537,9 @@ export default function ProjectDetailsPage() {
             >
               <ArrowLeft size={24} />
             </Link>
-            <div>
-              <h1 className="text-xl font-semibold text-[#1F2A54]">{project.title}</h1>
-              <p className="text-sm text-muted-foreground">{project.location}</p>
+            <div className="min-w-0">
+              <h1 className="text-lg sm:text-xl font-semibold text-[#1F2A54] truncate">{projectBasics.title || project.title}</h1>
+              <p className="text-sm text-muted-foreground truncate">{projectBasics.location || project.location}</p>
             </div>
           </div>
         </div>
@@ -374,11 +547,97 @@ export default function ProjectDetailsPage() {
 
       <main className="p-4 md:p-6">
         <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
-          <p className="text-sm text-muted-foreground">Edit sections below; they appear on the website project detail page. Use &quot;Save all sections&quot; to publish.</p>
+          <p className="text-sm text-muted-foreground">Edit project name, type, location, and all page sections. Use &quot;Save all sections&quot; to publish.</p>
           <Button onClick={handleSaveDetails} disabled={saving} className="bg-[#1F2A54] hover:bg-[#1F2A54]/90">
             {saving ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Saving...</> : <><Save className="mr-2 h-4 w-4" /> Save all sections</>}
           </Button>
         </div>
+        <Card className="mb-6">
+          <CardHeader>
+            <CardTitle>Project details</CardTitle>
+            <p className="text-sm text-muted-foreground">These appear on listings and can be changed after the project is created.</p>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="project-title">Project name *</Label>
+                <Input
+                  id="project-title"
+                  value={projectBasics.title}
+                  onChange={(e) => setProjectBasics({ ...projectBasics, title: e.target.value })}
+                  placeholder="e.g., Quality Home Group Skyline Towers"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="project-type">Project type *</Label>
+                {categories.length > 0 ? (
+                  <Select value={projectBasics.categoryId || undefined} onValueChange={handleCategoryChange}>
+                    <SelectTrigger id="project-type">
+                      <SelectValue placeholder="Select type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {categories.map((cat) => (
+                        <SelectItem key={cat.id} value={cat.id}>{cat.name}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                ) : (
+                  <Input
+                    id="project-type"
+                    value={projectBasics.type}
+                    onChange={(e) => setProjectBasics({ ...projectBasics, type: e.target.value })}
+                    placeholder="e.g., Apartments, Villas"
+                  />
+                )}
+                {!projectBasics.categoryId && projectBasics.type ? (
+                  <p className="text-xs text-muted-foreground">Current type: {projectBasics.type}. Choose a category to change it.</p>
+                ) : null}
+              </div>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="project-location">Location *</Label>
+                <Input
+                  id="project-location"
+                  value={projectBasics.location}
+                  onChange={(e) => setProjectBasics({ ...projectBasics, location: e.target.value })}
+                  placeholder="e.g., Narsingi, Hyderabad"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="project-status">Status</Label>
+                <Select value={projectBasics.status} onValueChange={(value) => setProjectBasics({ ...projectBasics, status: value })}>
+                  <SelectTrigger id="project-status">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="ongoing">Under Construction</SelectItem>
+                    <SelectItem value="upcoming">Upcoming</SelectItem>
+                    <SelectItem value="completed">Ready to Move</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="project-description">Short description</Label>
+              <Textarea
+                id="project-description"
+                value={projectBasics.description}
+                onChange={(e) => setProjectBasics({ ...projectBasics, description: e.target.value })}
+                placeholder="Brief description for listing cards..."
+                rows={2}
+              />
+            </div>
+            <div className="flex items-center gap-3">
+              <Switch
+                id="project-featured"
+                checked={projectBasics.featured}
+                onCheckedChange={(checked) => setProjectBasics({ ...projectBasics, featured: checked })}
+              />
+              <Label htmlFor="project-featured">Featured project</Label>
+            </div>
+          </CardContent>
+        </Card>
         <Tabs defaultValue="overview" className="space-y-6">
           <TabsList className="bg-white flex flex-wrap h-auto gap-1">
             <TabsTrigger value="overview">Overview</TabsTrigger>
@@ -397,7 +656,7 @@ export default function ProjectDetailsPage() {
             <Card>
               <CardHeader>
                 <CardTitle>Overview</CardTitle>
-                <p className="text-sm text-muted-foreground">Hero tagline, price, about text. Shown at top of project detail page.</p>
+                <p className="text-sm text-muted-foreground">Hero, about, and gallery each use their own images. Do not reuse one upload across sections.</p>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -420,11 +679,26 @@ export default function ProjectDetailsPage() {
                 </div>
                 <div className="space-y-2">
                   <Label>Hero Image</Label>
-                  <ImageUpload value={detailsForm.heroImage} onChange={(url) => setDetailsForm({ ...detailsForm, heroImage: url })} folder="projects/hero" aspectRatio="banner" preset="heroBanner" placeholder="Upload hero image" />
+                  <p className="text-xs text-muted-foreground">Banner at the top of the project page only.</p>
+                  <ImageUpload value={detailsForm.heroImage} onChange={(url) => setDetailsForm((prev) => ({ ...prev, heroImage: url }))} folder="projects/hero" aspectRatio="banner" preset="heroBanner" placeholder="Upload hero image" />
                 </div>
                 <div className="space-y-2">
                   <Label>About Project</Label>
                   <Textarea value={detailsForm.about} onChange={(e) => setDetailsForm({ ...detailsForm, about: e.target.value })} placeholder="Detailed description..." rows={6} />
+                </div>
+                <div className="space-y-2">
+                  <Label>About section image</Label>
+                  <p className="text-xs text-muted-foreground">Right-side image in &quot;About this project&quot;. Use a different image from the hero.</p>
+                  <ImageUpload value={detailsForm.aboutImage} onChange={(url) => setDetailsForm((prev) => ({ ...prev, aboutImage: url }))} folder="projects/about" aspectRatio="portrait" placeholder="Upload about section image" />
+                </div>
+                <div className="space-y-2">
+                  <Label>Highlights (one per line)</Label>
+                  <Textarea
+                    value={detailsForm.highlights.join("\n")}
+                    onChange={(e) => setDetailsForm({ ...detailsForm, highlights: e.target.value.split("\n") })}
+                    placeholder="Quality construction&#10;Gated community living"
+                    rows={6}
+                  />
                 </div>
               </CardContent>
             </Card>
@@ -516,7 +790,7 @@ export default function ProjectDetailsPage() {
                   <div key={idx} className="flex gap-2 items-end border p-2 rounded-lg">
                     <Input placeholder="Plan name" value={plan.name} onChange={(e) => { const u = [...detailsForm.floorPlans]; u[idx] = { ...u[idx], name: e.target.value }; setDetailsForm({ ...detailsForm, floorPlans: u }); }} className="flex-1" />
                     <div className="flex-1">
-                      <ImageUpload value={plan.image} onChange={(url) => { const u = [...detailsForm.floorPlans]; u[idx] = { ...u[idx], image: url }; setDetailsForm({ ...detailsForm, floorPlans: u }); }} folder="projects/floor-plans" placeholder="Image" />
+                      <ImageUpload value={plan.image} onChange={(url) => { setDetailsForm((prev) => { const u = [...prev.floorPlans]; u[idx] = { ...u[idx], image: url }; return { ...prev, floorPlans: u }; }); }} folder="projects/floor-plans" placeholder="Image" />
                     </div>
                     <Button type="button" variant="ghost" size="icon" onClick={() => setDetailsForm({ ...detailsForm, floorPlans: detailsForm.floorPlans.filter((_, i) => i !== idx) })}><Trash2 size={16} /></Button>
                   </div>
@@ -530,10 +804,23 @@ export default function ProjectDetailsPage() {
             <Card>
               <CardHeader>
                 <CardTitle>Gallery</CardTitle>
-                <p className="text-sm text-muted-foreground">Images for the Gallery section on the website.</p>
+                <p className="text-sm text-muted-foreground">Gallery section only. These images are not used as the hero or About image.</p>
               </CardHeader>
               <CardContent>
-                <MultiImageUpload value={detailsForm.galleryImages} onChange={(urls) => setDetailsForm({ ...detailsForm, galleryImages: urls })} folder="projects/gallery" maxImages={20} />
+                <MultiImageUpload
+                  value={detailsForm.galleryImages}
+                  onChange={(urls) => {
+                    setDetailsForm((prev) => {
+                      const next = { ...prev, galleryImages: urls };
+                      detailsFormRef.current = next;
+                      return next;
+                    });
+                    void persistGallery(urls);
+                  }}
+                  folder="projects/gallery"
+                  maxImages={20}
+                />
+                <p className="text-xs text-muted-foreground mt-2">Gallery images save as soon as you add or remove them, and also with &quot;Save all sections&quot;.</p>
               </CardContent>
             </Card>
           </TabsContent>
@@ -543,7 +830,7 @@ export default function ProjectDetailsPage() {
             <Card>
               <CardHeader>
                 <CardTitle>Location Advantages</CardTitle>
-                <p className="text-sm text-muted-foreground">Address, map embed, and nearby places (hospitals, schools, IT parks, connectivity).</p>
+                <p className="text-sm text-muted-foreground">Address, right-side image, map embed, and nearby places.</p>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-2">
@@ -555,15 +842,25 @@ export default function ProjectDetailsPage() {
                   <Input value={detailsForm.mapUrl} onChange={(e) => setDetailsForm({ ...detailsForm, mapUrl: e.target.value })} placeholder="https://www.google.com/maps/embed?..." />
                 </div>
                 <div className="space-y-2">
+                  <Label>Right-side location image</Label>
+                  <ImageUpload
+                    value={detailsForm.locationImage}
+                    onChange={(url) => setDetailsForm((prev) => ({ ...prev, locationImage: url }))}
+                    folder="projects/location"
+                    placeholder="Upload the Location Advantages image"
+                  />
+                  <p className="text-xs text-muted-foreground">Shown on the right of Location Advantages. If empty, the map or hero image is used.</p>
+                </div>
+                <div className="space-y-2">
                   <div className="flex items-center justify-between">
                     <Label>Nearby Places (type: hospital / school / it / connectivity)</Label>
                     <Button type="button" variant="outline" size="sm" onClick={() => setDetailsForm({ ...detailsForm, nearbyPlaces: [...detailsForm.nearbyPlaces, { name: "", distance: "", type: "" }] })}><Plus size={14} className="mr-1" /> Add</Button>
                   </div>
                   {detailsForm.nearbyPlaces.map((place, idx) => (
-                    <div key={idx} className="flex flex-wrap gap-2 items-center border p-2 rounded-lg">
-                      <Input placeholder="Name" value={place.name} onChange={(e) => { const u = [...detailsForm.nearbyPlaces]; u[idx] = { ...u[idx], name: e.target.value }; setDetailsForm({ ...detailsForm, nearbyPlaces: u }); }} className="w-32" />
-                      <Input placeholder="Distance" value={place.distance} onChange={(e) => { const u = [...detailsForm.nearbyPlaces]; u[idx] = { ...u[idx], distance: e.target.value }; setDetailsForm({ ...detailsForm, nearbyPlaces: u }); }} className="w-24" />
-                      <Input placeholder="Type" value={place.type} onChange={(e) => { const u = [...detailsForm.nearbyPlaces]; u[idx] = { ...u[idx], type: e.target.value }; setDetailsForm({ ...detailsForm, nearbyPlaces: u }); }} className="w-28" />
+                    <div key={idx} className="flex flex-col sm:flex-row flex-wrap gap-2 items-stretch sm:items-center border p-2 rounded-lg">
+                      <Input placeholder="Name" value={place.name} onChange={(e) => { const u = [...detailsForm.nearbyPlaces]; u[idx] = { ...u[idx], name: e.target.value }; setDetailsForm({ ...detailsForm, nearbyPlaces: u }); }} className="sm:w-32" />
+                      <Input placeholder="Distance" value={place.distance} onChange={(e) => { const u = [...detailsForm.nearbyPlaces]; u[idx] = { ...u[idx], distance: e.target.value }; setDetailsForm({ ...detailsForm, nearbyPlaces: u }); }} className="sm:w-24" />
+                      <Input placeholder="Type" value={place.type} onChange={(e) => { const u = [...detailsForm.nearbyPlaces]; u[idx] = { ...u[idx], type: e.target.value }; setDetailsForm({ ...detailsForm, nearbyPlaces: u }); }} className="sm:w-28" />
                       <Button type="button" variant="ghost" size="icon" onClick={() => setDetailsForm({ ...detailsForm, nearbyPlaces: detailsForm.nearbyPlaces.filter((_, i) => i !== idx) })}><Trash2 size={16} /></Button>
                     </div>
                   ))}
@@ -638,11 +935,16 @@ export default function ProjectDetailsPage() {
             <Card>
               <CardHeader>
                 <CardTitle>Brochure</CardTitle>
-                <p className="text-sm text-muted-foreground">Link to view or download the project brochure.</p>
+                <p className="text-sm text-muted-foreground">Upload a PDF for this project. It appears as the Brochure download on the website project page after you save.</p>
               </CardHeader>
-              <CardContent>
-                <Label>Brochure URL</Label>
-                <Input value={detailsForm.brochureUrl} onChange={(e) => setDetailsForm({ ...detailsForm, brochureUrl: e.target.value })} placeholder="https://example.com/brochure.pdf" className="mt-2" />
+              <CardContent className="space-y-2">
+                <Label>Brochure PDF</Label>
+                <PdfUpload
+                  value={detailsForm.brochureUrl}
+                  onChange={(url) => setDetailsForm((prev) => ({ ...prev, brochureUrl: url }))}
+                  folder="projects/brochures"
+                  placeholder="Drag & drop or click to upload brochure PDF"
+                />
               </CardContent>
             </Card>
           </TabsContent>

@@ -204,9 +204,16 @@
   --gold-light: #e8d48a;
 
   /* Site header */
-  --site-logo-size: 92.5px;
-  --site-navbar-padding-y: 10px;
+  --site-logo-size: 110px;
+  --site-navbar-padding-y: 5px;
   --site-header-height: calc(var(--site-logo-size) + var(--site-navbar-padding-y) * 2);
+}
+
+@media (max-width: 1023px) {
+  :root {
+    --site-logo-size: 84px;
+    --site-navbar-padding-y: 5px;
+  }
 }
 
 .dark {
@@ -303,9 +310,12 @@
   body {
     @apply bg-background text-foreground;
     overflow-x: hidden;
-    max-width: 100vw;
+    max-width: 100%;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+  body.menu-open {
+    overflow: hidden;
   }
 
   /* Smooth transitions on all interactive elements */
@@ -801,27 +811,37 @@ a, button, [role="button"], input[type="submit"], input[type="button"], .cursor-
   scrollbar-width: none;
 }
 
-/* Touch-friendly tap targets */
+/* Touch-friendly tap targets without stretching inline links */
 @media (max-width: 768px) {
-  button, a, [role="button"], input[type="submit"], input[type="button"] {
+  button:not(.unstyled),
+  [role="button"],
+  input[type="submit"],
+  input[type="button"] {
     min-height: 44px;
-    min-width: 44px;
   }
-  /* Exception for inline links and small text buttons */
-  a.inline-link, .text-link {
-    min-height: auto;
-    min-width: auto;
+  input, textarea, select {
+    font-size: 16px !important;
   }
 }
 
 /* ===== GLOBAL OVERFLOW PREVENTION ===== */
 section, main, .container {
-  max-width: 100vw;
+  max-width: 100%;
 }
 
 img, video, iframe, canvas, svg {
   max-width: 100%;
+}
+
+img:not([data-nimg="fill"]),
+video:not([class*="absolute"]) {
   height: auto;
+}
+
+img[data-nimg="fill"] {
+  max-width: none;
+  width: 100%;
+  height: 100%;
 }
 
 /* Prevent absolute elements from causing horizontal overflow */

@@ -4,10 +4,8 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useAuth } from "@/lib/auth-context";
+import { adminApiFetch } from "@/lib/admin-api";
 import {
-  addCategory,
-  updateCategory,
-  deleteCategory,
   type Category,
 } from "@/lib/firestore";
 import { Button } from "@/components/ui/button";
@@ -81,19 +79,15 @@ export default function CategoriesPage() {
   }, [user]);
 
   const loadCategories = async () => {
-    if (!user || typeof user.getIdToken !== "function") {
+    if (!user) {
       setLoading(false);
       return;
     }
     try {
-      const token = await user.getIdToken();
-      const res = await fetch("/api/v1/categories?all=true", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (res.ok) {
-        const json = await res.json();
-        setCategories((json.data ?? []) as Category[]);
-      }
+      const res = await adminApiFetch(user, "/api/v1/categories?all=true");
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(json?.error ?? `Load failed (${res.status})`);
+      setCategories((json.data ?? []) as Category[]);
     } catch (error) {
       console.error("Error loading categories:", error);
     } finally {
@@ -135,7 +129,7 @@ export default function CategoriesPage() {
   };
 
   const handleSave = async () => {
-    if (!formData.name || !formData.slug) return;
+    if (!user || !formData.name || !formData.slug) return;
     setSaving(true);
     try {
       const payload = {
@@ -148,39 +142,58 @@ export default function CategoriesPage() {
         order: formData.order,
         isActive: formData.isActive,
       };
-      if (editingCategory?.id) {
-        await updateCategory(editingCategory.id, payload);
-      } else {
-        await addCategory(payload);
-      }
+      const res = editingCategory?.id
+        ? await adminApiFetch(user, `/api/v1/categories/${editingCategory.id}`, {
+            method: "PUT",
+            body: JSON.stringify(payload),
+          })
+        : await adminApiFetch(user, "/api/v1/categories", {
+            method: "POST",
+            body: JSON.stringify(payload),
+          });
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(json?.error ?? `Save failed (${res.status})`);
       await loadCategories();
       setDialogOpen(false);
     } catch (error) {
       console.error("Error saving category:", error);
+      alert(error instanceof Error ? error.message : "Error saving category.");
     } finally {
       setSaving(false);
     }
   };
 
   const handleDelete = async () => {
-    if (!deletingCategory?.id) return;
+    if (!user || !deletingCategory?.id) return;
     setSaving(true);
     try {
-      await deleteCategory(deletingCategory.id);
+      const res = await adminApiFetch(user, `/api/v1/categories/${deletingCategory.id}`, {
+        method: "DELETE",
+      });
+      if (!res.ok && res.status !== 204) {
+        const json = await res.json().catch(() => ({}));
+        throw new Error(json?.error ?? `Delete failed (${res.status})`);
+      }
       await loadCategories();
       setDeleteDialogOpen(false);
       setDeletingCategory(null);
     } catch (error) {
       console.error("Error deleting category:", error);
+      alert(error instanceof Error ? error.message : "Error deleting category.");
     } finally {
       setSaving(false);
     }
   };
 
   const handleToggleActive = async (category: Category) => {
-    if (!category.id) return;
+    if (!user || !category.id) return;
     try {
-      await updateCategory(category.id, { isActive: !category.isActive });
+      const res = await adminApiFetch(user, `/api/v1/categories/${category.id}`, {
+        method: "PUT",
+        body: JSON.stringify({ isActive: !category.isActive }),
+      });
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(json?.error ?? `Update failed (${res.status})`);
       await loadCategories();
     } catch (error) {
       console.error("Error toggling category:", error);

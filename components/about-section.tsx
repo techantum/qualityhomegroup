@@ -97,10 +97,14 @@ export function AboutSection() {
       <div className="max-w-[1200px] mx-auto px-4 relative z-10">
         <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-start">
           <Reveal direction="right" className="lg:pr-4">
+            {eyebrow && (
             <p className="text-[#1F2A54] font-medium mb-3 text-base md:text-lg">{eyebrow}</p>
+            )}
+            {heading && (
             <h2 className="text-[#111827] text-3xl md:text-[2.5rem] font-extrabold leading-tight mb-6 max-w-lg">
               {heading}
             </h2>
+            )}
 
             {paragraph1 && (
               <p className="text-[#6B7280] text-base leading-relaxed mb-4">{paragraph1}</p>
@@ -110,20 +114,22 @@ export function AboutSection() {
             )}
 
             {propertyTypes.length > 0 && (
-              <div className="flex flex-wrap justify-between gap-6 mb-10 max-w-md">
+              <div className="flex flex-wrap justify-between gap-4 sm:gap-6 mb-10 max-w-md">
                 {propertyTypes.map((item, i) => (
                   <PropertyTypeItem key={`${item.label}-${i}`} {...item} />
                 ))}
               </div>
             )}
 
+            {buttonText && (
             <Link
               href={buttonLink || "/about"}
               className="inline-flex items-center gap-2 bg-[#DDA21A] hover:bg-[#c99218] text-[#1F2A54] font-semibold px-8 py-3 rounded-md transition-colors"
             >
-              {buttonText || "Read More"}
+              {buttonText}
               <ArrowRight className="w-4 h-4" />
             </Link>
+            )}
           </Reveal>
 
           {isValidImageUrl(image) && (

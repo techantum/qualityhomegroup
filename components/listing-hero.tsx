@@ -5,7 +5,7 @@ import { SafeImage } from "@/components/safe-image";
 import { isValidImageUrl } from "@/lib/media";
 import { heroText } from "@/lib/motion/variants";
 
-const HERO_HEIGHT_CLASS = "h-[300px]";
+const HERO_HEIGHT_CLASS = "h-[calc(var(--site-header-height)+200px)] sm:h-[calc(var(--site-header-height)+240px)] md:h-[300px]";
 
 type ListingHeroProps = {
   title?: string;
@@ -56,8 +56,12 @@ export function ListingHero({ title, image, loading, defaultAlt = "Page hero" }:
           animate={{ opacity: 1 }}
         />
       )}
+      {hasImage && <div className="absolute inset-0 z-[1] bg-[#1F2A54]/70" />}
       {hasTitle && (
-        <div className="absolute inset-0 z-10 flex items-center justify-center px-4">
+        <div
+          className="absolute inset-0 z-10 flex items-center justify-center px-4"
+          style={{ paddingTop: "var(--site-header-height)" }}
+        >
           <h1 className="inner-hero-title font-royal text-center text-white">
             {title!.split("\n").map((line, i, arr) => (
               <motion.span key={i} custom={i} variants={heroText} initial="hidden" animate="visible">

@@ -6,12 +6,12 @@
 import { NextResponse } from "next/server";
 import { requireAuth } from "@/lib/api/auth";
 import { apiError, apiInternalError } from "@/lib/api/errors";
-import { adminAddProject, adminGetProjects, adminGetProjectById, isAdminConfigured } from "@/lib/firestore-admin";
+import { adminAddProject, adminGetProjects, adminGetProjectById, adminReplacePropertyAmenities, adminUpsertPropertyDetailsFromProject, isAdminConfigured } from "@/lib/firestore-admin";
 
 export const dynamic = "force-dynamic";
 
 const ADMIN_NOT_CONFIGURED_MESSAGE =
-  "Firebase Admin not configured. Add FIREBASE_PROJECT_ID, FIREBASE_CLIENT_EMAIL, and FIREBASE_PRIVATE_KEY to .env (or environment) and restart the server.";
+  "Database is not configured. Set DATABASE_URL or DIRECT_URL and restart the server.";
 
 export async function GET(request: Request) {
   const auth = await requireAuth(request);
@@ -48,9 +48,9 @@ export async function POST(request: Request) {
     const body = await request.json();
     const {
       title, type, location, image, description, categoryId, category, status, price, featured,
-      tagline, heroImage, priceLabel, reraNumber, possessionDate, about,
+      tagline, heroImage, priceLabel, reraNumber, possessionDate, about, aboutImage,
       projectStatusVideo, walkThroughVideo, brochureUrl, stats,
-      amenities, floorPlans, galleryImages, nearbyPlaces,
+      amenities, floorPlans, galleryImages, nearbyPlaces, locationImage,
       metaTitle, metaDescription, metaKeywords,
     } = body;
     if (!title || !type || !location) {
@@ -73,6 +73,7 @@ export async function POST(request: Request) {
       reraNumber: reraNumber ? String(reraNumber) : undefined,
       possessionDate: possessionDate ? String(possessionDate) : undefined,
       about: about ? String(about) : undefined,
+      aboutImage: aboutImage ? String(aboutImage) : undefined,
       projectStatusVideo: projectStatusVideo ? String(projectStatusVideo) : undefined,
       walkThroughVideo: walkThroughVideo ? String(walkThroughVideo) : undefined,
       brochureUrl: brochureUrl ? String(brochureUrl) : undefined,
@@ -81,10 +82,19 @@ export async function POST(request: Request) {
       floorPlans: Array.isArray(floorPlans) ? floorPlans : undefined,
       galleryImages: Array.isArray(galleryImages) ? galleryImages : undefined,
       nearbyPlaces: nearbyPlaces && typeof nearbyPlaces === "object" ? nearbyPlaces : undefined,
+      locationImage: body.locationImage ? String(body.locationImage) : undefined,
       metaTitle: metaTitle ? String(metaTitle) : undefined,
       metaDescription: metaDescription ? String(metaDescription) : undefined,
       metaKeywords: Array.isArray(metaKeywords) ? metaKeywords : undefined,
     });
+    await adminUpsertPropertyDetailsFromProject(id, {
+      title, type, location, image, description, tagline, heroImage, priceLabel, reraNumber, about, aboutImage,
+      projectStatusVideo, walkThroughVideo, brochureUrl, price, stats, floorPlans, galleryImages, nearbyPlaces,
+      locationImage, videoUrl: projectStatusVideo, walkthroughVideoUrl: walkThroughVideo,
+    });
+    if (Array.isArray(amenities)) {
+      await adminReplacePropertyAmenities(id, amenities);
+    }
     const verify = await adminGetProjectById(id);
     if (!verify) {
       console.error("[API] POST /api/v1/projects: document not found after write:", id);

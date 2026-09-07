@@ -27,6 +27,26 @@ function fileExtension(fileName: string): string {
   return (fileName.split(".").pop() || "bin").replace(/[^a-z0-9]/gi, "") || "bin";
 }
 
+function inferContentType(fileName: string, declared?: string): string {
+  if (declared && declared !== "application/octet-stream") return declared;
+  const ext = fileExtension(fileName).toLowerCase();
+  const map: Record<string, string> = {
+    jpg: "image/jpeg",
+    jpeg: "image/jpeg",
+    png: "image/png",
+    webp: "image/webp",
+    gif: "image/gif",
+    svg: "image/svg+xml",
+    avif: "image/avif",
+    heic: "image/heic",
+    mp4: "video/mp4",
+    webm: "video/webm",
+    mov: "video/quicktime",
+    pdf: "application/pdf",
+  };
+  return map[ext] || "image/jpeg";
+}
+
 function uniqueFileName(ext: string): string {
   return `${Date.now()}-${Math.random().toString(36).slice(2, 10)}.${ext}`;
 }
@@ -129,7 +149,7 @@ export async function saveUploadedFile(file: File, folderInput: string): Promise
   const baseName = uniqueFileName(ext);
   const objectPath = `${folder}/${baseName}`;
   const buffer = Buffer.from(await file.arrayBuffer());
-  const contentType = file.type || "application/octet-stream";
+  const contentType = inferContentType(file.name, file.type);
 
   let url: string;
   const provider = resolveProvider();

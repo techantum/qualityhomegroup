@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { useAuth } from "@/lib/auth-context";
+import { adminApiFetch } from "@/lib/admin-api";
 
 interface CategoryOption {
   id: string;
@@ -20,6 +21,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ArrowLeft, Loader2, Plus, X } from "lucide-react";
 import { ImageUpload, MultiImageUpload } from "@/components/admin/image-upload";
+import { PdfUpload } from "@/components/admin/pdf-upload";
 
 const defaultStats = {
   totalLandArea: "",
@@ -37,20 +39,15 @@ export default function NewProjectPage() {
   const [categories, setCategories] = useState<CategoryOption[]>([]);
 
   useEffect(() => {
-    if (!user || typeof user.getIdToken !== "function") return;
+    if (!user) return;
     const currentUser = user;
     async function fetchCategories() {
       try {
-        const token = await currentUser.getIdToken();
-        const res = await fetch("/api/v1/categories", {
-          headers: { Authorization: `Bearer ${token}` },
-          cache: "no-store",
-        });
+        const res = await adminApiFetch(currentUser, "/api/v1/categories");
+        const json = await res.json().catch(() => ({}));
         if (res.ok) {
-          const json = await res.json();
           setCategories(json.data ?? []);
         } else {
-          const json = await res.json().catch(() => ({}));
           console.error("Categories API error:", res.status, json?.error ?? json);
         }
       } catch (error) {
@@ -73,6 +70,7 @@ export default function NewProjectPage() {
     // Hero Section
     tagline: "",
     heroImage: "",
+    locationImage: "",
     // Pricing
     price: "",
     priceLabel: "Price",
@@ -81,13 +79,14 @@ export default function NewProjectPage() {
     stats: { ...defaultStats },
     // About
     about: "",
+    aboutImage: "",
     // Videos
     projectStatusVideo: "",
     walkThroughVideo: "",
     // Brochure
     brochureUrl: "",
     // Status
-    status: "Under Construction",
+    status: "ongoing",
     possessionDate: "",
     // SEO
     metaTitle: "",
@@ -124,18 +123,15 @@ export default function NewProjectPage() {
       alert("Please fill in required fields: Title, Category, and Location");
       return;
     }
-    if (!user?.getIdToken) {
+    if (!user) {
       alert("You must be logged in to save.");
       return;
     }
 
     setSaving(true);
     try {
-      const token = await user.getIdToken();
-      const res = await fetch("/api/v1/projects", {
+      const res = await adminApiFetch(user, "/api/v1/projects", {
         method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-        cache: "no-store",
         body: JSON.stringify({
           title: formData.title,
           type: formData.type,
@@ -153,6 +149,7 @@ export default function NewProjectPage() {
           reraNumber: formData.reraNumber,
           possessionDate: formData.possessionDate,
           about: formData.about,
+          aboutImage: formData.aboutImage,
           projectStatusVideo: formData.projectStatusVideo,
           walkThroughVideo: formData.walkThroughVideo,
           brochureUrl: formData.brochureUrl,
@@ -161,6 +158,7 @@ export default function NewProjectPage() {
           floorPlans,
           galleryImages,
           nearbyPlaces,
+          locationImage: formData.locationImage,
           metaTitle: formData.metaTitle,
           metaDescription: formData.metaDescription,
           metaKeywords,
@@ -217,7 +215,7 @@ export default function NewProjectPage() {
   }
 
   return (
-    <div className="p-6 max-w-5xl mx-auto">
+    <div className="p-4 md:p-6 max-w-5xl mx-auto overflow-x-hidden">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
           <Link href="/admin/dashboard/projects" className="p-2 hover:bg-secondary rounded-lg">
@@ -279,9 +277,9 @@ export default function NewProjectPage() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="Under Construction">Under Construction</SelectItem>
-                    <SelectItem value="Ready to Move">Ready to Move</SelectItem>
-                    <SelectItem value="Upcoming">Upcoming</SelectItem>
+                    <SelectItem value="ongoing">Under Construction</SelectItem>
+                    <SelectItem value="upcoming">Upcoming</SelectItem>
+                    <SelectItem value="completed">Ready to Move</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -305,6 +303,14 @@ export default function NewProjectPage() {
                 rows={2}
               />
             </div>
+            <div className="flex items-center gap-3">
+              <Switch
+                id="featured"
+                checked={formData.featured}
+                onCheckedChange={(checked) => setFormData({ ...formData, featured: checked })}
+              />
+              <Label htmlFor="featured">Featured project</Label>
+            </div>
           </CardContent>
         </Card>
 
@@ -312,7 +318,7 @@ export default function NewProjectPage() {
         <Card>
           <CardHeader>
             <CardTitle>Hero Image</CardTitle>
-            <CardDescription>Main banner image for the project page</CardDescription>
+            <CardDescription>Top banner only. Not used in About or Gallery.</CardDescription>
           </CardHeader>
           <CardContent>
             <ImageUpload
@@ -436,15 +442,25 @@ export default function NewProjectPage() {
         <Card>
           <CardHeader>
             <CardTitle>About Project</CardTitle>
-            <CardDescription>Detailed description shown in the Overview section</CardDescription>
+            <CardDescription>Text and image for the Overview section. Use a different image from the hero.</CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="space-y-4">
             <Textarea
               value={formData.about}
               onChange={(e) => setFormData({ ...formData, about: e.target.value })}
               placeholder="Enter detailed project description..."
               rows={6}
             />
+            <div className="space-y-2">
+              <Label>About section image</Label>
+              <ImageUpload
+                value={formData.aboutImage}
+                onChange={(url) => setFormData({ ...formData, aboutImage: url })}
+                folder="projects/about"
+                aspectRatio="portrait"
+                placeholder="Upload about section image"
+              />
+            </div>
           </CardContent>
         </Card>
 
@@ -536,6 +552,7 @@ export default function NewProjectPage() {
         <Card>
           <CardHeader>
             <CardTitle>Gallery Images</CardTitle>
+            <CardDescription>Gallery section only — not reused as hero or About image</CardDescription>
           </CardHeader>
           <CardContent>
             <MultiImageUpload
@@ -554,6 +571,15 @@ export default function NewProjectPage() {
             <CardDescription>Nearby places and connectivity</CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
+            <div className="space-y-2">
+              <Label>Right-side location image</Label>
+              <ImageUpload
+                value={formData.locationImage}
+                onChange={(url) => setFormData({ ...formData, locationImage: url })}
+                folder="projects/location"
+                placeholder="Upload the Location Advantages image"
+              />
+            </div>
             {(["hospitals", "schools", "itParks", "connectivity"] as const).map((category) => (
               <div key={category} className="space-y-3">
                 <Label className="capitalize">{category === "itParks" ? "IT Parks" : category}</Label>
@@ -624,11 +650,12 @@ export default function NewProjectPage() {
           </CardHeader>
           <CardContent>
             <div className="space-y-2">
-              <Label>Brochure PDF URL</Label>
-              <Input
+              <Label>Brochure PDF</Label>
+              <PdfUpload
                 value={formData.brochureUrl}
-                onChange={(e) => setFormData({ ...formData, brochureUrl: e.target.value })}
-                placeholder="https://..."
+                onChange={(url) => setFormData({ ...formData, brochureUrl: url })}
+                folder="projects/brochures"
+                placeholder="Upload brochure PDF for this project"
               />
             </div>
           </CardContent>

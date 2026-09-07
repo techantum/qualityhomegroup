@@ -96,8 +96,10 @@ export function ProjectsSection() {
   const sectionSubtitle = String(sectionContent?.subtitle ?? "").trim();
   const showSectionHeader = Boolean(sectionTitle || sectionSubtitle);
 
+  if (!isLoading && projects.length === 0) return null;
+
   return (
-    <section className="py-20 bg-white">
+    <section className="py-12 md:py-20 bg-white">
       <div className="max-w-[1200px] mx-auto px-4">
         {!sectionLoading && showSectionHeader && (
           <Reveal className="text-center mb-12">
@@ -122,13 +124,6 @@ export function ProjectsSection() {
           </div>
         )}
 
-        {/* Empty State */}
-        {!isLoading && projects.length === 0 && (
-          <div className="text-center py-16">
-            <p className="text-gray-400 text-lg">No projects available yet.</p>
-          </div>
-        )}
-
         {/* Projects Slider */}
         {!isLoading && projects.length > 0 && (
           <>
@@ -142,7 +137,7 @@ export function ProjectsSection() {
                 type="button"
                 onClick={prevSlide}
                 disabled={currentIndex === 0}
-                className="absolute -left-2 md:-left-16 top-1/2 -translate-y-1/2 z-10 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center disabled:opacity-30 text-[#1F2A54]"
+                className="absolute left-1 sm:-left-2 md:-left-16 top-1/2 -translate-y-1/2 z-10 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center disabled:opacity-30 text-white md:text-[#1F2A54] bg-black/30 md:bg-transparent rounded-full"
                 whileHover={{ scale: 1.15, x: -4 }}
                 whileTap={{ scale: 0.95 }}
                 aria-label="Previous projects"
@@ -151,7 +146,7 @@ export function ProjectsSection() {
               </motion.button>
 
               {/* Projects Cards */}
-              <div className="w-full overflow-hidden px-6 md:px-0">
+              <div className="w-full overflow-hidden px-8 md:px-0">
                 <motion.div
                   className="flex gap-6"
                   animate={{ x: `-${currentIndex * (100 / slidesToShow + 2)}%` }}
@@ -184,8 +179,8 @@ export function ProjectsSection() {
                         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
 
                         {/* Content */}
-                        <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                          <h3 className="font-extrabold text-xl md:text-2xl mb-1">
+                        <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 text-white">
+                          <h3 className="font-extrabold text-lg sm:text-xl md:text-2xl mb-1">
                             {project.title}
                           </h3>
                           <p className="text-white/80 text-sm mb-3 font-normal">
@@ -207,7 +202,7 @@ export function ProjectsSection() {
                 type="button"
                 onClick={nextSlide}
                 disabled={currentIndex >= maxIndex}
-                className="absolute -right-2 md:-right-16 top-1/2 -translate-y-1/2 z-10 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center disabled:opacity-30 text-[#1F2A54]"
+                className="absolute right-1 sm:-right-2 md:-right-16 top-1/2 -translate-y-1/2 z-10 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center disabled:opacity-30 text-white md:text-[#1F2A54] bg-black/30 md:bg-transparent rounded-full"
                 whileHover={{ scale: 1.15, x: 4 }}
                 whileTap={{ scale: 0.95 }}
                 aria-label="Next projects"

@@ -4,9 +4,8 @@ import React, { useEffect, useState, use } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/lib/auth-context";
+import { adminApiFetch } from "@/lib/admin-api";
 import {
-  getCMSPages,
-  updateCMSPage,
   type CMSPage,
 } from "@/lib/firestore";
 import { Button } from "@/components/ui/button";
@@ -63,8 +62,9 @@ export default function SEOManagerPage({ params }: PageProps) {
   useEffect(() => {
     async function fetchData() {
       try {
-        const pagesData = await getCMSPages();
-        const currentPage = pagesData.find((p) => p.id === pageId);
+        const res = await fetch(`/api/v1/cms/pages/${pageId}`, { cache: "no-store" });
+        const json = await res.json().catch(() => ({}));
+        const currentPage = json?.data as CMSPage | undefined;
         if (currentPage) {
           setPage(currentPage);
           setFormData({
@@ -92,18 +92,25 @@ export default function SEOManagerPage({ params }: PageProps) {
     setSaved(false);
 
     try {
-      await updateCMSPage(pageId, {
-        metaTitle: formData.metaTitle,
-        metaDescription: formData.metaDescription,
-        metaKeywords: formData.metaKeywords,
-        ogImage: formData.ogImage,
-        isIndexed: formData.isIndexed,
-        slug: formData.slug,
+      if (!user) throw new Error("Not signed in");
+      const res = await adminApiFetch(user, `/api/v1/cms/pages/${pageId}`, {
+        method: "PUT",
+        body: JSON.stringify({
+          metaTitle: formData.metaTitle,
+          metaDescription: formData.metaDescription,
+          metaKeywords: formData.metaKeywords,
+          ogImage: formData.ogImage,
+          isIndexed: formData.isIndexed,
+          slug: formData.slug,
+        }),
       });
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(json?.error ?? `Save failed (${res.status})`);
       setSaved(true);
       setTimeout(() => setSaved(false), 3000);
     } catch (error) {
       console.error("Error saving SEO settings:", error);
+      alert(error instanceof Error ? error.message : "Error saving SEO settings.");
     } finally {
       setSaving(false);
     }
@@ -212,7 +219,7 @@ export default function SEOManagerPage({ params }: PageProps) {
   }
 
   return (
-    <div className="p-6">
+    <div className="p-4 md:p-6 overflow-x-hidden">
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
         <div className="flex items-center gap-4">

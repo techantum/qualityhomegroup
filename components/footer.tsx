@@ -90,9 +90,6 @@ export function Footer() {
                     {email}
                   </a>
                 )}
-                {!address && !phone && !email && (
-                  <p className="text-sm text-muted-foreground">Contact details can be configured in the admin panel.</p>
-                )}
               </div>
             </StaggerItem>
 

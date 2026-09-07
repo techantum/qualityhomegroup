@@ -4,11 +4,8 @@ import React, { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/lib/auth-context";
+import { adminApiFetch } from "@/lib/admin-api";
 import {
-  getCMSPages,
-  addCMSPage,
-  updateCMSPage,
-  deleteCMSPage,
   type CMSPage,
 } from "@/lib/firestore";
 import { Button } from "@/components/ui/button";
@@ -81,8 +78,10 @@ export default function PagesManagerPage() {
   useEffect(() => {
     async function fetchPages() {
       try {
-        const data = await getCMSPages();
-        setPages(data || []);
+        const res = await fetch("/api/v1/cms/pages", { cache: "no-store" });
+        const json = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(json?.error ?? `Load failed (${res.status})`);
+        setPages((json.data ?? []) as CMSPage[]);
       } catch (error) {
         console.error("CMS Pages fetch error:", error);
         setPages([]);
@@ -97,20 +96,33 @@ export default function PagesManagerPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!user) return;
     setSaving(true);
 
     try {
-      if (editingPage) {
-        await updateCMSPage(editingPage.id!, formData);
+      if (editingPage?.id) {
+        const res = await adminApiFetch(user, `/api/v1/cms/pages/${editingPage.id}`, {
+          method: "PUT",
+          body: JSON.stringify(formData),
+        });
+        const json = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(json?.error ?? `Save failed (${res.status})`);
         setPages(pages.map((p) => (p.id === editingPage.id ? { ...p, ...formData } : p)));
       } else {
-        const id = await addCMSPage({ ...formData, order: pages.length });
+        const res = await adminApiFetch(user, "/api/v1/cms/pages", {
+          method: "POST",
+          body: JSON.stringify({ ...formData, order: pages.length }),
+        });
+        const json = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(json?.error ?? `Save failed (${res.status})`);
+        const id = String(json?.data?.id ?? "");
         setPages([...pages, { id, ...formData, order: pages.length }]);
       }
       setIsDialogOpen(false);
       resetForm();
     } catch (error) {
       console.error("Error saving page:", error);
+      alert(error instanceof Error ? error.message : "Error saving page.");
     } finally {
       setSaving(false);
     }
@@ -134,15 +146,20 @@ export default function PagesManagerPage() {
   };
 
   const handleDelete = async () => {
-    if (!pageToDelete) return;
+    if (!user || !pageToDelete?.id) return;
 
     try {
-      await deleteCMSPage(pageToDelete.id!);
+      const res = await adminApiFetch(user, `/api/v1/cms/pages/${pageToDelete.id}`, { method: "DELETE" });
+      if (!res.ok && res.status !== 204) {
+        const json = await res.json().catch(() => ({}));
+        throw new Error(json?.error ?? `Delete failed (${res.status})`);
+      }
       setPages(pages.filter((p) => p.id !== pageToDelete.id));
       setDeleteConfirmOpen(false);
       setPageToDelete(null);
     } catch (error) {
       console.error("Error deleting page:", error);
+      alert(error instanceof Error ? error.message : "Error deleting page.");
     }
   };
 
@@ -152,8 +169,14 @@ export default function PagesManagerPage() {
   };
 
   const togglePageStatus = async (page: CMSPage) => {
+    if (!user || !page.id) return;
     try {
-      await updateCMSPage(page.id!, { isActive: !page.isActive });
+      const res = await adminApiFetch(user, `/api/v1/cms/pages/${page.id}`, {
+        method: "PUT",
+        body: JSON.stringify({ isActive: !page.isActive }),
+      });
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(json?.error ?? `Update failed (${res.status})`);
       setPages(pages.map((p) => (p.id === page.id ? { ...p, isActive: !p.isActive } : p)));
     } catch (error) {
       console.error("Error toggling page status:", error);
@@ -198,7 +221,7 @@ export default function PagesManagerPage() {
   }
 
   return (
-    <div className="p-6">
+    <div className="p-4 md:p-6 overflow-x-hidden">
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
         <div>

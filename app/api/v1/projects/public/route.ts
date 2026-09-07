@@ -27,7 +27,7 @@ export async function GET() {
   try {
     const projects = await adminGetProjects();
     const data = projects.map(serializeProject);
-    return NextResponse.json({ data });
+    return NextResponse.json({ data }, { headers: { "Cache-Control": "no-store, no-cache, must-revalidate" } });
   } catch (err) {
     return apiInternalError(err);
   }

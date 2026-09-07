@@ -8,7 +8,6 @@ import { useAuth } from "@/lib/auth-context";
 import { adminApiFetch } from "@/lib/admin-api";
 import { fetchHeroSlidesPublic } from "@/lib/hero-slides";
 import {
-  getProjects, getTestimonials, getArticles,
   type HeroSlide, type Project, type Testimonial, type Article
 } from "@/lib/firestore";
 import { AdminPreviewImage } from "@/components/admin/admin-preview-image";
@@ -21,10 +20,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   Loader2, Plus, Pencil, Trash2, ImageIcon, 
   MoveUp, MoveDown, Layers, MessageSquare,
-  Newspaper, Building, ArrowRight, Video
+  Newspaper, Building, ArrowRight, Video, Award
 } from "lucide-react";
 import { ImageUpload } from "@/components/admin/image-upload";
 import { HomeAboutEditor } from "@/components/admin/home-about-editor";
+import { HomeWhyUsEditor } from "@/components/admin/home-why-us-editor";
 import { HomeVideoEditor } from "@/components/admin/home-video-editor";
 
 const HEADLINE_MAX = 80;
@@ -63,16 +63,21 @@ export default function CMSHomePage() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const [slidesData, projectsData, testimonialsData, articlesData] = await Promise.all([
+        const [slidesData, projectsRes, testimonialsRes, articlesRes] = await Promise.all([
           fetchHeroSlidesPublic(),
-          getProjects(),
-          getTestimonials(),
-          getArticles(),
+          fetch("/api/v1/projects/public", { cache: "no-store" }),
+          fetch("/api/v1/testimonials/public", { cache: "no-store" }),
+          fetch("/api/v1/articles/public", { cache: "no-store" }),
+        ]);
+        const [projectsJson, testimonialsJson, articlesJson] = await Promise.all([
+          projectsRes.json().catch(() => ({})),
+          testimonialsRes.json().catch(() => ({})),
+          articlesRes.json().catch(() => ({})),
         ]);
         setHeroSlides(slidesData);
-        setProjects(projectsData);
-        setTestimonials(testimonialsData);
-        setArticles(articlesData);
+        setProjects((projectsJson.data ?? []) as Project[]);
+        setTestimonials((testimonialsJson.data ?? []) as Testimonial[]);
+        setArticles((articlesJson.data ?? []) as Article[]);
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -210,7 +215,7 @@ export default function CMSHomePage() {
   }
 
   return (
-    <div className="p-6">
+    <div className="p-4 md:p-6 overflow-x-hidden">
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-[#1F2A54]">Home Page CMS</h1>
         <p className="text-muted-foreground text-sm mt-1">
@@ -225,6 +230,9 @@ export default function CMSHomePage() {
           </TabsTrigger>
           <TabsTrigger value="about" className="data-[state=active]:bg-[#1F2A54] data-[state=active]:text-white">
             <Building size={16} className="mr-2" /> About Section
+          </TabsTrigger>
+          <TabsTrigger value="why-us" className="data-[state=active]:bg-[#1F2A54] data-[state=active]:text-white">
+            <Award size={16} className="mr-2" /> Why Us
           </TabsTrigger>
           <TabsTrigger value="projects" className="data-[state=active]:bg-[#1F2A54] data-[state=active]:text-white">
             <ImageIcon size={16} className="mr-2" /> Latest Projects
@@ -330,6 +338,10 @@ export default function CMSHomePage() {
         {/* About Section Tab */}
         <TabsContent value="about">
           <HomeAboutEditor />
+        </TabsContent>
+
+        <TabsContent value="why-us">
+          <HomeWhyUsEditor />
         </TabsContent>
 
         {/* Projects Tab */}

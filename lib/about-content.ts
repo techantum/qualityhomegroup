@@ -31,8 +31,8 @@ function buildDescription(data: Record<string, unknown>): string {
 /** Map CMS / legacy Firestore shapes to homepage About fields. */
 export function normalizeHomeAboutContent(
   raw: Record<string, unknown> | null | undefined
-): HomeAboutContent {
-  if (!raw) return { ...DEFAULT_HOME_ABOUT };
+): HomeAboutContent | null {
+  if (!raw) return null;
 
   const normalized: HomeAboutContent = {
     title: pickString(raw.title, raw.heroTitle, raw.sectionTitle),
@@ -47,14 +47,9 @@ export function normalizeHomeAboutContent(
     normalized.description ||
     normalized.image;
 
-  if (!hasAny) return { ...DEFAULT_HOME_ABOUT };
+  if (!hasAny) return null;
 
-  return {
-    title: normalized.title || DEFAULT_HOME_ABOUT.title,
-    subtitle: normalized.subtitle || DEFAULT_HOME_ABOUT.subtitle,
-    description: normalized.description || DEFAULT_HOME_ABOUT.description,
-    image: normalized.image,
-  };
+  return normalized;
 }
 
 export function hasAboutSourceData(raw: Record<string, unknown> | null | undefined): boolean {

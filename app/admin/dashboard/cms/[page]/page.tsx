@@ -144,7 +144,7 @@ export default function CMSGenericPage() {
   }
 
   return (
-    <div className="p-6">
+    <div className="p-4 md:p-6 overflow-x-hidden">
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-[#1F2A54] capitalize">{config.title}</h1>
         <p className="text-muted-foreground">{config.description}</p>

@@ -1,6 +1,7 @@
 /**
- * PUT /api/v1/projects/[id]/details - Create or update property details (admin only).
- * Uses Admin SDK so data persists and is readable by the public API.
+ * GET /api/v1/projects/[id]/details - Load property details (admin).
+ * PUT /api/v1/projects/[id]/details - Create or update property details (admin).
+ * Persists to property_details and syncs listing fields on projects.
  */
 
 import { NextResponse } from "next/server";
@@ -9,20 +10,45 @@ export const dynamic = "force-dynamic";
 import { requireAuth } from "@/lib/api/auth";
 import { apiError, apiInternalError } from "@/lib/api/errors";
 import { logAdminAction } from "@/lib/api/logger";
-import { adminSetDocument, adminGetPropertyDetails, isAdminConfigured } from "@/lib/firestore-admin";
+import {
+  adminGetPropertyAmenities,
+  adminGetPropertyDetails,
+  adminPatchPropertyDetails,
+  adminSetPropertyDetails,
+  isAdminConfigured,
+  resolveProjectRecord,
+} from "@/lib/firestore-admin";
+import { mergePropertyDetails } from "@/lib/project-page";
 
 const ADMIN_NOT_CONFIGURED_MESSAGE =
-  "Firebase Admin not configured. Add FIREBASE_PROJECT_ID, FIREBASE_CLIENT_EMAIL, and FIREBASE_PRIVATE_KEY to .env and restart the server.";
+  "Database is not configured. Set DATABASE_URL or DIRECT_URL and restart the server.";
 
-function stripUndefined(obj: Record<string, unknown>): Record<string, unknown> {
-  const out: Record<string, unknown> = {};
-  for (const [k, v] of Object.entries(obj)) {
-    if (v === undefined) continue;
-    out[k] = v && typeof v === "object" && !Array.isArray(v) && v.constructor === Object
-      ? stripUndefined(v as Record<string, unknown>)
-      : v;
+export async function GET(
+  _request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const auth = await requireAuth(_request);
+  if ("response" in auth) return auth.response;
+
+  try {
+    const { id } = await params;
+    const project = await resolveProjectRecord(id);
+    if (!project) return apiError("NOT_FOUND", undefined, "Project not found");
+    const [details, amenities] = await Promise.all([
+      adminGetPropertyDetails(project.id),
+      adminGetPropertyAmenities(project.id),
+    ]);
+    return NextResponse.json({
+      data: {
+        projectId: project.id,
+        project,
+        propertyDetails: mergePropertyDetails(project as unknown as Record<string, unknown>, details),
+        propertyAmenities: amenities,
+      },
+    }, { headers: { "Cache-Control": "no-store" } });
+  } catch (err) {
+    return apiInternalError(err);
   }
-  return out;
 }
 
 export async function PUT(
@@ -39,23 +65,60 @@ export async function PUT(
         { status: 503 }
       );
     }
-    const { id: projectId } = await params;
-    if (!projectId) return apiError("BAD_REQUEST", undefined, "Project id required");
+    const { id: projectIdOrSlug } = await params;
+    if (!projectIdOrSlug) return apiError("BAD_REQUEST", undefined, "Project id required");
+
+    const project = await resolveProjectRecord(projectIdOrSlug);
+    if (!project) return apiError("NOT_FOUND", undefined, "Project not found");
 
     const body = (await request.json().catch(() => ({}))) as Record<string, unknown>;
-    const data = stripUndefined({ ...body, projectId });
-    await adminSetDocument("propertyDetails", projectId, data);
-    logAdminAction("project.details.update", auth.user.id, { projectId });
-    const saved = await adminGetPropertyDetails(projectId);
+    const saved = await adminSetPropertyDetails(project.id, body);
+    logAdminAction("project.details.update", auth.user.id, { projectId: project.id });
     return NextResponse.json({
-      data: { projectId, propertyDetails: saved },
+      data: { projectId: project.id, propertyDetails: saved },
       message: "Property details saved successfully.",
     });
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
     console.error("[API] PUT /api/v1/projects/[id]/details error:", message);
     return NextResponse.json(
-      { error: message, code: "firestore_error" },
+      { error: message, code: "save_error" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function PATCH(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const auth = await requireAuth(request);
+  if ("response" in auth) return auth.response;
+
+  try {
+    if (!isAdminConfigured()) {
+      return NextResponse.json(
+        { error: ADMIN_NOT_CONFIGURED_MESSAGE, code: "service_unavailable" },
+        { status: 503 }
+      );
+    }
+    const { id: projectIdOrSlug } = await params;
+    if (!projectIdOrSlug) return apiError("BAD_REQUEST", undefined, "Project id required");
+    const project = await resolveProjectRecord(projectIdOrSlug);
+    if (!project) return apiError("NOT_FOUND", undefined, "Project not found");
+
+    const body = (await request.json().catch(() => ({}))) as Record<string, unknown>;
+    const saved = await adminPatchPropertyDetails(project.id, body);
+    logAdminAction("project.details.patch", auth.user.id, { projectId: project.id });
+    return NextResponse.json({
+      data: { projectId: project.id, propertyDetails: saved },
+      message: "Property details saved successfully.",
+    });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    console.error("[API] PATCH /api/v1/projects/[id]/details error:", message);
+    return NextResponse.json(
+      { error: message, code: "save_error" },
       { status: 500 }
     );
   }

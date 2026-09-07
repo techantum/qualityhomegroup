@@ -5,12 +5,8 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { ImageIcon } from "lucide-react";
 import { useAuth } from "@/lib/auth-context";
+import { adminApiFetch } from "@/lib/admin-api";
 import {
-  getCMSPages,
-  getCMSSections,
-  addCMSSection,
-  updateCMSSection,
-  deleteCMSSection,
   type CMSPage,
   type CMSSection,
   type CMSSectionType,
@@ -125,13 +121,16 @@ export default function SectionsManagerPage({ params }: PageProps) {
   useEffect(() => {
     async function fetchData() {
       try {
-        const [pagesData, sectionsData] = await Promise.all([
-          getCMSPages(),
-          getCMSSections(pageId),
+        const [pagesRes, sectionsRes] = await Promise.all([
+          fetch("/api/v1/cms/pages", { cache: "no-store" }),
+          fetch(`/api/v1/cms/pages/${pageId}/sections`, { cache: "no-store" }),
         ]);
+        const pagesJson = await pagesRes.json().catch(() => ({}));
+        const sectionsJson = await sectionsRes.json().catch(() => ({}));
+        const pagesData = (pagesJson.data ?? []) as CMSPage[];
         const currentPage = pagesData.find((p) => p.id === pageId);
         setPage(currentPage || null);
-        setSections(sectionsData);
+        setSections((sectionsJson.data ?? []) as CMSSection[]);
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -145,20 +144,33 @@ export default function SectionsManagerPage({ params }: PageProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!user) return;
     setSaving(true);
 
     try {
-      if (editingSection) {
-        await updateCMSSection(editingSection.id!, formData);
+      if (editingSection?.id) {
+        const res = await adminApiFetch(user, `/api/v1/cms/sections/${editingSection.id}`, {
+          method: "PUT",
+          body: JSON.stringify(formData),
+        });
+        const json = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(json?.error ?? `Save failed (${res.status})`);
         setSections(sections.map((s) => (s.id === editingSection.id ? { ...s, ...formData } : s)));
       } else {
-        const id = await addCMSSection({ ...formData, order: sections.length });
+        const res = await adminApiFetch(user, `/api/v1/cms/pages/${pageId}/sections`, {
+          method: "POST",
+          body: JSON.stringify({ ...formData, pageId, order: sections.length }),
+        });
+        const json = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(json?.error ?? `Save failed (${res.status})`);
+        const id = String(json?.data?.id ?? "");
         setSections([...sections, { id, ...formData, order: sections.length }]);
       }
       setIsDialogOpen(false);
       resetForm();
     } catch (error) {
       console.error("Error saving section:", error);
+      alert(error instanceof Error ? error.message : "Error saving section.");
     } finally {
       setSaving(false);
     }
@@ -184,15 +196,22 @@ export default function SectionsManagerPage({ params }: PageProps) {
   };
 
   const handleDelete = async () => {
-    if (!sectionToDelete) return;
+    if (!user || !sectionToDelete?.id) return;
 
     try {
-      await deleteCMSSection(sectionToDelete.id!);
+      const res = await adminApiFetch(user, `/api/v1/cms/sections/${sectionToDelete.id}`, {
+        method: "DELETE",
+      });
+      if (!res.ok && res.status !== 204) {
+        const json = await res.json().catch(() => ({}));
+        throw new Error(json?.error ?? `Delete failed (${res.status})`);
+      }
       setSections(sections.filter((s) => s.id !== sectionToDelete.id));
       setDeleteConfirmOpen(false);
       setSectionToDelete(null);
     } catch (error) {
       console.error("Error deleting section:", error);
+      alert(error instanceof Error ? error.message : "Error deleting section.");
     }
   };
 
@@ -202,8 +221,14 @@ export default function SectionsManagerPage({ params }: PageProps) {
   };
 
   const toggleSectionStatus = async (section: CMSSection) => {
+    if (!user || !section.id) return;
     try {
-      await updateCMSSection(section.id!, { isActive: !section.isActive });
+      const res = await adminApiFetch(user, `/api/v1/cms/sections/${section.id}`, {
+        method: "PUT",
+        body: JSON.stringify({ isActive: !section.isActive }),
+      });
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(json?.error ?? `Update failed (${res.status})`);
       setSections(sections.map((s) => (s.id === section.id ? { ...s, isActive: !s.isActive } : s)));
     } catch (error) {
       console.error("Error toggling section status:", error);
@@ -211,6 +236,7 @@ export default function SectionsManagerPage({ params }: PageProps) {
   };
 
   const moveSection = async (section: CMSSection, direction: "up" | "down") => {
+    if (!user) return;
     const currentIndex = sections.findIndex((s) => s.id === section.id);
     const newIndex = direction === "up" ? currentIndex - 1 : currentIndex + 1;
 
@@ -220,19 +246,25 @@ export default function SectionsManagerPage({ params }: PageProps) {
     const [movedSection] = newSections.splice(currentIndex, 1);
     newSections.splice(newIndex, 0, movedSection);
 
-    // Update order for affected sections
     const updates = newSections.map((s, i) => ({ ...s, order: i }));
     setSections(updates);
 
-    // Update in database
     try {
-      await Promise.all(updates.map((s) => updateCMSSection(s.id!, { order: s.order })));
+      await Promise.all(
+        updates.map((s) =>
+          adminApiFetch(user, `/api/v1/cms/sections/${s.id}`, {
+            method: "PUT",
+            body: JSON.stringify({ order: s.order }),
+          }),
+        ),
+      );
     } catch (error) {
       console.error("Error reordering sections:", error);
     }
   };
 
   const duplicateSection = async (section: CMSSection) => {
+    if (!user) return;
     try {
       const newSection = {
         ...section,
@@ -241,10 +273,17 @@ export default function SectionsManagerPage({ params }: PageProps) {
       };
       delete (newSection as { id?: string }).id;
       
-      const id = await addCMSSection(newSection);
+      const res = await adminApiFetch(user, `/api/v1/cms/pages/${pageId}/sections`, {
+        method: "POST",
+        body: JSON.stringify({ ...newSection, pageId }),
+      });
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(json?.error ?? `Duplicate failed (${res.status})`);
+      const id = String(json?.data?.id ?? "");
       setSections([...sections, { ...newSection, id }]);
     } catch (error) {
       console.error("Error duplicating section:", error);
+      alert(error instanceof Error ? error.message : "Error duplicating section.");
     }
   };
 
@@ -280,7 +319,7 @@ export default function SectionsManagerPage({ params }: PageProps) {
   }
 
   return (
-    <div className="p-6">
+    <div className="p-4 md:p-6 overflow-x-hidden">
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
         <div className="flex items-center gap-4">

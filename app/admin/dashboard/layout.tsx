@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/lib/auth-context";
+import { adminApiFetch } from "@/lib/admin-api";
 import {
   LayoutDashboard,
   FileText,
@@ -98,14 +99,10 @@ export default function AdminDashboardLayout({
 
   // Fetch categories via API (uses Admin SDK server-side) to avoid Firestore client permission errors
   useEffect(() => {
-    if (!user || typeof user.getIdToken !== "function") return;
+    if (!user) return;
     async function fetchCategories() {
       try {
-        const token = await user.getIdToken();
-        const res = await fetch("/api/v1/categories", {
-          headers: { Authorization: `Bearer ${token}` },
-          cache: "no-store",
-        });
+        const res = await adminApiFetch(user, "/api/v1/categories");
         if (res.ok) {
           const json = await res.json();
           setCategories(json.data ?? []);
@@ -127,6 +124,10 @@ export default function AdminDashboardLayout({
       router.push("/admin/login");
     }
   }, [user, loading, router]);
+
+  useEffect(() => {
+    setSidebarOpen(false);
+  }, [pathname]);
 
   const handleSignOut = async () => {
     await signOut();
@@ -172,7 +173,7 @@ export default function AdminDashboardLayout({
 
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 z-50 h-screen w-64 bg-[#1F2A54] text-white transform transition-transform duration-300 lg:translate-x-0 ${
+        className={`fixed top-0 left-0 z-50 h-[100dvh] w-[min(16rem,85vw)] bg-[#1F2A54] text-white transform transition-transform duration-300 lg:translate-x-0 ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         } flex flex-col`}
       >
@@ -229,6 +230,7 @@ export default function AdminDashboardLayout({
                         <Link
                           key={child.href}
                           href={child.href}
+                          onClick={() => setSidebarOpen(false)}
                           className={`flex items-center gap-3 px-4 py-2 rounded-lg transition-colors text-sm ${
                             isActive(child.href)
                               ? "bg-gold text-[#1F2A54] font-medium"
@@ -244,6 +246,7 @@ export default function AdminDashboardLayout({
               ) : (
                 <Link
                   href={item.href!}
+                  onClick={() => setSidebarOpen(false)}
                   className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
                     isActive(item.href!)
                       ? "bg-gold text-[#1F2A54] font-medium"
@@ -274,20 +277,21 @@ export default function AdminDashboardLayout({
       <div className="lg:pl-64">
         {/* Header */}
         <header className="sticky top-0 z-30 bg-white border-b">
-          <div className="flex items-center justify-between px-4 py-3">
-            <div className="flex items-center gap-3">
+          <div className="flex items-center justify-between gap-2 px-4 py-3">
+            <div className="flex min-w-0 items-center gap-3">
               <button
                 onClick={() => setSidebarOpen(true)}
-                className="lg:hidden p-2 hover:bg-secondary rounded-lg"
+                className="lg:hidden p-2 hover:bg-secondary rounded-lg shrink-0"
+                aria-label="Open menu"
               >
                 <Menu size={24} />
               </button>
-              <h1 className="text-xl font-semibold text-[#1F2A54] capitalize">
+              <h1 className="truncate text-base sm:text-xl font-semibold text-[#1F2A54] capitalize">
                 {pathname.split('/').pop()?.replace(/-/g, ' ') || 'Dashboard'}
               </h1>
             </div>
-            <div className="flex items-center gap-3">
-              <span className="text-sm text-muted-foreground hidden sm:block">
+            <div className="flex shrink-0 items-center gap-3">
+              <span className="text-sm text-muted-foreground hidden md:block max-w-[200px] truncate">
                 {user.email}
               </span>
               <div className="h-8 w-8 rounded-full bg-[#1F2A54] text-white flex items-center justify-center text-sm font-medium">
@@ -298,7 +302,7 @@ export default function AdminDashboardLayout({
         </header>
 
         {/* Page Content */}
-        <main>{children}</main>
+        <main className="overflow-x-hidden pb-[env(safe-area-inset-bottom)]">{children}</main>
       </div>
     </div>
   );

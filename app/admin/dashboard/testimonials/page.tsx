@@ -4,8 +4,9 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useAuth } from "@/lib/auth-context";
+import { adminApiFetch } from "@/lib/admin-api";
 import { savePageContent } from "@/lib/admin-page-save";
-import { getTestimonials, addTestimonial, updateTestimonial, deleteTestimonial, type Testimonial } from "@/lib/firestore";
+import type { Testimonial } from "@/lib/firestore";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -88,9 +89,12 @@ export default function TestimonialsPage() {
   };
 
   const loadTestimonials = async () => {
+    if (!user) return;
     try {
-      const data = await getTestimonials();
-      setTestimonials(data);
+      const res = await adminApiFetch(user, "/api/v1/testimonials");
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(json?.error ?? `Load failed (${res.status})`);
+      setTestimonials((json.data ?? []) as Testimonial[]);
     } catch (error) {
       console.error("Error loading testimonials:", error);
     } finally {
@@ -120,32 +124,47 @@ export default function TestimonialsPage() {
   };
 
   const handleSave = async () => {
+    if (!user) return;
     setSaving(true);
     try {
-      if (editingTestimonial?.id) {
-        await updateTestimonial(editingTestimonial.id, formData);
-      } else {
-        await addTestimonial(formData);
-      }
+      const res = editingTestimonial?.id
+        ? await adminApiFetch(user, `/api/v1/testimonials/${editingTestimonial.id}`, {
+            method: "PUT",
+            body: JSON.stringify(formData),
+          })
+        : await adminApiFetch(user, "/api/v1/testimonials", {
+            method: "POST",
+            body: JSON.stringify(formData),
+          });
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(json?.error ?? `Save failed (${res.status})`);
       await loadTestimonials();
       setDialogOpen(false);
     } catch (error) {
       console.error("Error saving testimonial:", error);
+      alert(error instanceof Error ? error.message : "Error saving testimonial.");
     } finally {
       setSaving(false);
     }
   };
 
   const handleDelete = async () => {
-    if (!deletingTestimonial?.id) return;
+    if (!user || !deletingTestimonial?.id) return;
     setSaving(true);
     try {
-      await deleteTestimonial(deletingTestimonial.id);
+      const res = await adminApiFetch(user, `/api/v1/testimonials/${deletingTestimonial.id}`, {
+        method: "DELETE",
+      });
+      if (!res.ok && res.status !== 204) {
+        const json = await res.json().catch(() => ({}));
+        throw new Error(json?.error ?? `Delete failed (${res.status})`);
+      }
       await loadTestimonials();
       setDeleteDialogOpen(false);
       setDeletingTestimonial(null);
     } catch (error) {
       console.error("Error deleting testimonial:", error);
+      alert(error instanceof Error ? error.message : "Error deleting testimonial.");
     } finally {
       setSaving(false);
     }
@@ -232,7 +251,7 @@ export default function TestimonialsPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {testimonials.map((testimonial) => (
               <Card key={testimonial.id} className="overflow-hidden">
-                <CardContent className="p-6">
+                <CardContent className="p-4 md:p-6 overflow-x-hidden">
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex items-center gap-3">
                       <div className="relative h-12 w-12 rounded-full overflow-hidden">

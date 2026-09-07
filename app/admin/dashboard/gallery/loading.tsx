@@ -2,7 +2,7 @@ import { Loader2 } from "lucide-react";
 
 export default function GalleryLoading() {
   return (
-    <div className="p-6">
+    <div className="p-4 md:p-6 overflow-x-hidden">
       <div className="flex flex-col lg:flex-row lg:items-center justify-between mb-6 gap-4">
         <div>
           <div className="h-8 w-48 bg-gray-200 rounded animate-pulse" />

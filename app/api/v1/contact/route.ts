@@ -8,6 +8,7 @@ import { adminAddLead } from "@/lib/firestore-admin";
 import { contactSubmissionSchema } from "@/lib/api/schemas";
 import { rateLimit } from "@/lib/api/rate-limit";
 import { sanitizeString } from "@/lib/api/sanitize";
+import { sendLeadNotification } from "@/lib/lead-email";
 
 const RATE_LIMIT = { windowMs: 60_000, maxRequests: 10 };
 
@@ -24,7 +25,8 @@ export async function POST(request: Request) {
         { status: 400 }
       );
     }
-    const { name, email, phone, message, source, projectType, newsletter } = parsed.data;
+    const { name, email, phone, mobile, message, source, projectType, newsletter } = parsed.data;
+    const phoneVal = sanitizeString(phone || mobile || "", 50);
     const notes = [
       projectType && `Project Type: ${sanitizeString(projectType, 200)}`,
       message && `Message: ${sanitizeString(message, 2000)}`,
@@ -36,10 +38,20 @@ export async function POST(request: Request) {
     const leadId = await adminAddLead({
       name: sanitizeString(name, 200),
       email: sanitizeString(email, 320),
-      phone: sanitizeString(phone ?? "", 50),
+      phone: phoneVal,
       message: message ? sanitizeString(message, 5000) : "",
       source: source ? sanitizeString(source, 100) : "Website Enquiry",
       status: "new",
+      notes,
+    });
+
+    await sendLeadNotification({
+      name: sanitizeString(name, 200),
+      email: sanitizeString(email, 320),
+      phone: phoneVal,
+      message: message ? sanitizeString(message, 5000) : "",
+      source: source ? sanitizeString(source, 100) : "Website Enquiry",
+      projectType,
       notes,
     });
 

@@ -1,27 +1,36 @@
 "use client";
 
-import React from "react"
-
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BrandingLogo } from "@/components/branding-logo";
 import { X } from "lucide-react";
 
 interface EnquiryModalProps {
   isOpen: boolean;
   onClose: () => void;
+  projectName?: string;
+  defaultProjectType?: string;
 }
 
-export function EnquiryModal({ isOpen, onClose }: EnquiryModalProps) {
+export function EnquiryModal({ isOpen, onClose, projectName, defaultProjectType }: EnquiryModalProps) {
   const [formData, setFormData] = useState({
     name: "",
     mobile: "",
     email: "",
-    projectType: "",
+    projectType: defaultProjectType || "",
     newsletter: false,
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
+
+  useEffect(() => {
+    if (isOpen && defaultProjectType) {
+      setFormData((prev) => ({
+        ...prev,
+        projectType: prev.projectType || defaultProjectType,
+      }));
+    }
+  }, [isOpen, defaultProjectType]);
 
   const projectTypes = [
     "Apartments",
@@ -70,7 +79,16 @@ export function EnquiryModal({ isOpen, onClose }: EnquiryModalProps) {
       const response = await fetch("/api/enquiry", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.mobile,
+          mobile: formData.mobile,
+          projectType: formData.projectType,
+          newsletter: formData.newsletter,
+          message: projectName ? `Interested in: ${projectName}` : "",
+          source: projectName ? "project_detail" : "enquiry_form",
+        }),
       });
 
       if (response.ok) {
@@ -79,7 +97,7 @@ export function EnquiryModal({ isOpen, onClose }: EnquiryModalProps) {
           name: "",
           mobile: "",
           email: "",
-          projectType: "",
+          projectType: defaultProjectType || "",
           newsletter: false,
         });
         setTimeout(() => {
@@ -115,11 +133,11 @@ export function EnquiryModal({ isOpen, onClose }: EnquiryModalProps) {
 
   return (
     <div
-      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 modal-backdrop-enter overflow-y-auto py-8"
+      className="fixed inset-0 z-[100] flex items-end justify-center bg-black/60 modal-backdrop-enter overflow-y-auto sm:items-center sm:py-8"
       onClick={onClose}
     >
       <div
-        className="relative bg-white rounded-xl w-full max-w-md mx-4 p-6 sm:p-8 shadow-xl modal-content-enter"
+        className="relative w-full max-w-md bg-white p-5 shadow-xl modal-content-enter max-h-[92dvh] overflow-y-auto rounded-t-2xl sm:mx-4 sm:rounded-xl sm:p-8"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button */}

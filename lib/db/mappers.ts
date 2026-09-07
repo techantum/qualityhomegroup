@@ -24,8 +24,13 @@ export function mapCategory(row: Record<string, unknown>) {
 }
 
 export function mapProject(row: Record<string, unknown>) {
-  const extra = (row.extra as Record<string, unknown>) ?? {};
+  const extra = { ...((row.extra as Record<string, unknown>) ?? {}) };
+  delete extra.id;
+  delete extra.projectId;
+  delete extra.createdAt;
+  delete extra.updatedAt;
   return {
+    ...extra,
     id: String(row.id),
     title: row.title as string,
     type: row.type as string,
@@ -40,7 +45,6 @@ export function mapProject(row: Record<string, unknown>) {
     slug: (row.slug as string) ?? undefined,
     createdAt: iso(row.created_at),
     updatedAt: iso(row.updated_at),
-    ...extra,
   };
 }
 
@@ -155,9 +159,10 @@ export function stripUndefined(obj: Record<string, unknown>) {
 
 /** Split project payload into table columns vs JSONB extra fields. */
 const PROJECT_EXTRA_KEYS = new Set([
-  "tagline", "heroImage", "priceLabel", "reraNumber", "possessionDate", "about",
+  "tagline", "heroImage", "priceLabel", "reraNumber", "possessionDate", "about", "aboutImage",
   "projectStatusVideo", "walkThroughVideo", "brochureUrl", "stats", "amenities",
-  "floorPlans", "galleryImages", "nearbyPlaces", "metaTitle", "metaDescription", "metaKeywords",
+  "floorPlans", "galleryImages", "nearbyPlaces", "locationImage", "metaTitle", "metaDescription", "metaKeywords",
+  "videoUrl", "walkthroughVideoUrl", "highlights", "specifications",
 ]);
 
 export function splitProjectPayload(payload: Record<string, unknown>) {

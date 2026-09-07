@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/lib/auth-context";
-import { getProjects } from "@/lib/firestore";
+import { adminApiFetch } from "@/lib/admin-api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -13,8 +13,14 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ArrowLeft, Loader2, Plus, X, ExternalLink } from "lucide-react";
 import { ImageUpload, MultiImageUpload } from "@/components/admin/image-upload";
+import { PdfUpload } from "@/components/admin/pdf-upload";
+import { Switch } from "@/components/ui/switch";
 
-const projectTypes = ["Apartments", "Villas", "Commercial", "Plots", "Farm Lands"];
+interface CategoryOption {
+  id: string;
+  name: string;
+  slug: string;
+}
 
 const defaultStats = {
   totalLandArea: "",
@@ -34,24 +40,30 @@ export default function EditProjectPage() {
   const [project, setProject] = useState<{ id: string } | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [categories, setCategories] = useState<CategoryOption[]>([]);
 
   const [formData, setFormData] = useState({
     title: "",
     type: "",
+    categoryId: "",
+    category: "",
     location: "",
     image: "",
     description: "",
     tagline: "",
     heroImage: "",
+    locationImage: "",
     price: "",
     priceLabel: "Price",
     reraNumber: "",
     stats: { ...defaultStats },
     about: "",
+    aboutImage: "",
     projectStatusVideo: "",
     walkThroughVideo: "",
     brochureUrl: "",
-    status: "Under Construction",
+    status: "ongoing",
+    featured: false,
     possessionDate: "",
     // SEO
     metaTitle: "",
@@ -77,6 +89,51 @@ export default function EditProjectPage() {
   }, [user, authLoading, router]);
 
   useEffect(() => {
+    if (!user) return;
+    const currentUser = user;
+    async function fetchCategories() {
+      try {
+        const res = await adminApiFetch(currentUser, "/api/v1/categories");
+        const json = await res.json().catch(() => ({}));
+        if (res.ok) setCategories(json.data ?? []);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    }
+    fetchCategories();
+  }, [user]);
+
+  useEffect(() => {
+    if (!categories.length || formData.categoryId) return;
+    const match = categories.find(
+      (c) =>
+        c.slug === formData.category ||
+        c.name === formData.type ||
+        c.slug === (formData.type || "").toLowerCase()
+    );
+    if (match) {
+      setFormData((prev) => ({
+        ...prev,
+        categoryId: match.id,
+        category: match.slug,
+        type: match.name,
+      }));
+    }
+  }, [categories, formData.categoryId, formData.category, formData.type]);
+
+  const handleCategoryChange = (categoryId: string) => {
+    const cat = categories.find((c) => c.id === categoryId);
+    if (cat) {
+      setFormData({
+        ...formData,
+        categoryId: cat.id,
+        category: cat.slug,
+        type: cat.name,
+      });
+    }
+  };
+
+  useEffect(() => {
     async function loadProject() {
       try {
         const res = await fetch(`/api/v1/projects/public/${encodeURIComponent(projectId)}`, { cache: "no-store" });
@@ -88,6 +145,8 @@ export default function EditProjectPage() {
             ...prev,
             title: projectData.title ?? "",
             type: projectData.type ?? "",
+            categoryId: projectData.categoryId ?? "",
+            category: projectData.category ?? "",
             location: projectData.location ?? "",
             image: projectData.image ?? "",
             description: projectData.description ?? "",
@@ -98,10 +157,12 @@ export default function EditProjectPage() {
             reraNumber: projectData.reraNumber ?? "",
             possessionDate: projectData.possessionDate ?? "",
             about: projectData.about ?? "",
+            aboutImage: projectData.aboutImage ?? "",
             projectStatusVideo: projectData.projectStatusVideo ?? "",
             walkThroughVideo: projectData.walkThroughVideo ?? "",
             brochureUrl: projectData.brochureUrl ?? "",
-            status: projectData.status ?? "Under Construction",
+            status: projectData.status ?? "ongoing",
+            featured: Boolean(projectData.featured),
             stats: {
               totalLandArea: projectData.stats?.totalLandArea ?? "",
               noOfBlocks: projectData.stats?.noOfBlocks ?? "",
@@ -117,6 +178,19 @@ export default function EditProjectPage() {
           if (Array.isArray(projectData.amenities)) setAmenities(projectData.amenities);
           if (Array.isArray(projectData.floorPlans)) setFloorPlans(projectData.floorPlans);
           if (Array.isArray(projectData.galleryImages)) setGalleryImages(projectData.galleryImages);
+          const details = json?.data?.propertyDetails as { aboutImage?: string; location?: { image?: string } } | undefined;
+          if (details?.location?.image || projectData.locationImage) {
+            setFormData((prev) => ({
+              ...prev,
+              locationImage: String(details?.location?.image || projectData.locationImage || ""),
+            }));
+          }
+          if (details?.aboutImage || projectData.aboutImage) {
+            setFormData((prev) => ({
+              ...prev,
+              aboutImage: String(details?.aboutImage || projectData.aboutImage || ""),
+            }));
+          }
           if (projectData.nearbyPlaces && typeof projectData.nearbyPlaces === "object") {
             setNearbyPlaces({
               hospitals: Array.isArray(projectData.nearbyPlaces.hospitals) ? projectData.nearbyPlaces.hospitals : [],
@@ -126,19 +200,7 @@ export default function EditProjectPage() {
             });
           }
         } else {
-          const projects = await getProjects();
-          const p = projects.find((x) => x.id === projectId);
-          if (p && p.id) {
-            setProject({ id: p.id });
-            setFormData((prev) => ({
-              ...prev,
-              title: p.title,
-              type: p.type,
-              location: p.location,
-              image: p.image,
-              description: p.description || "",
-            }));
-          }
+          setProject(null);
         }
       } catch (error) {
         console.error("Error loading project:", error);
@@ -157,7 +219,7 @@ export default function EditProjectPage() {
       alert("Please fill in required fields: Title, Type, and Location");
       return;
     }
-    if (!user?.getIdToken) {
+    if (!user) {
       alert("You must be logged in to save.");
       return;
     }
@@ -169,16 +231,18 @@ export default function EditProjectPage() {
 
     setSaving(true);
     try {
-      const token = await user.getIdToken();
-      const res = await fetch(
+      const res = await adminApiFetch(
+        user,
         `/api/v1/projects/${idToSave}?t=${Date.now()}`,
         {
           method: "PUT",
-          headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
           body: JSON.stringify({
             title: formData.title,
             type: formData.type,
             location: formData.location,
+            categoryId: formData.categoryId,
+            category: formData.category,
+            featured: formData.featured,
             image: formData.image || formData.heroImage,
             description: formData.description,
             tagline: formData.tagline,
@@ -187,6 +251,7 @@ export default function EditProjectPage() {
             reraNumber: formData.reraNumber,
             possessionDate: formData.possessionDate,
             about: formData.about,
+            aboutImage: formData.aboutImage,
             projectStatusVideo: formData.projectStatusVideo,
             walkThroughVideo: formData.walkThroughVideo,
             brochureUrl: formData.brochureUrl,
@@ -197,6 +262,7 @@ export default function EditProjectPage() {
             floorPlans,
             galleryImages,
             nearbyPlaces,
+            locationImage: formData.locationImage,
             metaTitle: formData.metaTitle,
             metaDescription: formData.metaDescription,
             metaKeywords,
@@ -268,7 +334,7 @@ export default function EditProjectPage() {
   if (!user) return null;
 
   return (
-    <div className="p-6 max-w-5xl mx-auto">
+    <div className="p-4 md:p-6 max-w-5xl mx-auto overflow-x-hidden">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
           <Link href="/admin/dashboard/projects" className="p-2 hover:bg-secondary rounded-lg">
@@ -311,16 +377,19 @@ export default function EditProjectPage() {
               </div>
               <div className="space-y-2">
                 <Label htmlFor="type">Project Type *</Label>
-                <Select value={formData.type} onValueChange={(value) => setFormData({ ...formData, type: value })}>
+                <Select value={formData.categoryId || undefined} onValueChange={handleCategoryChange}>
                   <SelectTrigger>
                     <SelectValue placeholder="Select type" />
                   </SelectTrigger>
                   <SelectContent>
-                    {projectTypes.map((type) => (
-                      <SelectItem key={type} value={type}>{type}</SelectItem>
+                    {categories.map((cat) => (
+                      <SelectItem key={cat.id} value={cat.id}>{cat.name}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
+                {!formData.categoryId && formData.type ? (
+                  <p className="text-xs text-muted-foreground">Current type: {formData.type}. Choose a category to change it.</p>
+                ) : null}
               </div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -340,9 +409,9 @@ export default function EditProjectPage() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="Under Construction">Under Construction</SelectItem>
-                    <SelectItem value="Ready to Move">Ready to Move</SelectItem>
-                    <SelectItem value="Upcoming">Upcoming</SelectItem>
+                    <SelectItem value="ongoing">Under Construction</SelectItem>
+                    <SelectItem value="upcoming">Upcoming</SelectItem>
+                    <SelectItem value="completed">Ready to Move</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -366,6 +435,14 @@ export default function EditProjectPage() {
                 rows={2}
               />
             </div>
+            <div className="flex items-center gap-3">
+              <Switch
+                id="featured"
+                checked={formData.featured}
+                onCheckedChange={(checked) => setFormData({ ...formData, featured: checked })}
+              />
+              <Label htmlFor="featured">Featured project</Label>
+            </div>
           </CardContent>
         </Card>
 
@@ -373,7 +450,7 @@ export default function EditProjectPage() {
         <Card>
           <CardHeader>
             <CardTitle>Hero Image</CardTitle>
-            <CardDescription>Main banner image for the project page</CardDescription>
+            <CardDescription>Top banner only. Not used in About or Gallery.</CardDescription>
           </CardHeader>
           <CardContent>
             <ImageUpload
@@ -497,15 +574,25 @@ export default function EditProjectPage() {
         <Card>
           <CardHeader>
             <CardTitle>About Project</CardTitle>
-            <CardDescription>Detailed description shown in the Overview section</CardDescription>
+            <CardDescription>Text and image for the Overview section. Use a different image from the hero.</CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="space-y-4">
             <Textarea
               value={formData.about}
               onChange={(e) => setFormData({ ...formData, about: e.target.value })}
               placeholder="Enter detailed project description..."
               rows={6}
             />
+            <div className="space-y-2">
+              <Label>About section image</Label>
+              <ImageUpload
+                value={formData.aboutImage}
+                onChange={(url) => setFormData({ ...formData, aboutImage: url })}
+                folder="projects/about"
+                aspectRatio="portrait"
+                placeholder="Upload about section image"
+              />
+            </div>
           </CardContent>
         </Card>
 
@@ -597,6 +684,7 @@ export default function EditProjectPage() {
         <Card>
           <CardHeader>
             <CardTitle>Gallery Images</CardTitle>
+            <CardDescription>Gallery section only — not reused as hero or About image</CardDescription>
           </CardHeader>
           <CardContent>
             <MultiImageUpload
@@ -615,6 +703,15 @@ export default function EditProjectPage() {
             <CardDescription>Nearby places and connectivity</CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
+            <div className="space-y-2">
+              <Label>Right-side location image</Label>
+              <ImageUpload
+                value={formData.locationImage}
+                onChange={(url) => setFormData({ ...formData, locationImage: url })}
+                folder="projects/location"
+                placeholder="Upload the Location Advantages image"
+              />
+            </div>
             {(["hospitals", "schools", "itParks", "connectivity"] as const).map((category) => (
               <div key={category} className="space-y-3">
                 <Label className="capitalize">{category === "itParks" ? "IT Parks" : category}</Label>
@@ -686,11 +783,12 @@ export default function EditProjectPage() {
           </CardHeader>
           <CardContent>
             <div className="space-y-2">
-              <Label>Brochure PDF URL</Label>
-              <Input
+              <Label>Brochure PDF</Label>
+              <PdfUpload
                 value={formData.brochureUrl}
-                onChange={(e) => setFormData({ ...formData, brochureUrl: e.target.value })}
-                placeholder="https://..."
+                onChange={(url) => setFormData({ ...formData, brochureUrl: url })}
+                folder="projects/brochures"
+                placeholder="Upload brochure PDF for this project"
               />
             </div>
           </CardContent>

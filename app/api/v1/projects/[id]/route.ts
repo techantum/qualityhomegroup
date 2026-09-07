@@ -13,6 +13,8 @@ import {
   adminDeleteProject,
   adminGetProjectById,
   adminGetProjectBySlug,
+  adminReplacePropertyAmenities,
+  adminUpsertPropertyDetailsFromProject,
   isAdminConfigured,
   type ProjectItem,
 } from "@/lib/firestore-admin";
@@ -31,7 +33,7 @@ function serializeProject(p: ProjectItem): Record<string, unknown> {
 }
 
 const ADMIN_NOT_CONFIGURED_MESSAGE =
-  "Firebase Admin not configured. Add FIREBASE_PROJECT_ID, FIREBASE_CLIENT_EMAIL, and FIREBASE_PRIVATE_KEY to .env and restart the server.";
+  "Database is not configured. Set DATABASE_URL or DIRECT_URL and restart the server.";
 
 /** Resolve route id to Firestore document id (id or slug). */
 async function resolveProjectId(idOrSlug: string): Promise<string | null> {
@@ -62,16 +64,16 @@ export async function PUT(
     const body = await request.json().catch(() => ({}));
     const {
       title, type, location, image, description, categoryId, category, status, price, featured,
-      tagline, heroImage, priceLabel, reraNumber, possessionDate, about,
+      tagline, heroImage, priceLabel, reraNumber, possessionDate, about, aboutImage,
       projectStatusVideo, walkThroughVideo, brochureUrl, stats,
-      amenities, floorPlans, galleryImages, nearbyPlaces,
+      amenities, floorPlans, galleryImages, nearbyPlaces, locationImage,
       metaTitle, metaDescription, metaKeywords,
     } = body;
     if (!title || !type || !location) {
       return apiError("BAD_REQUEST", undefined, "title, type, and location are required");
     }
     console.info("[API] PUT /api/v1/projects updating document:", projectId);
-    await adminUpdateProject(projectId, {
+    const projectPayload = {
       title: String(title),
       type: String(type),
       location: String(location),
@@ -88,6 +90,7 @@ export async function PUT(
       reraNumber: reraNumber != null ? String(reraNumber) : undefined,
       possessionDate: possessionDate != null ? String(possessionDate) : undefined,
       about: about != null ? String(about) : undefined,
+      aboutImage: aboutImage != null ? String(aboutImage) : undefined,
       projectStatusVideo: projectStatusVideo != null ? String(projectStatusVideo) : undefined,
       walkThroughVideo: walkThroughVideo != null ? String(walkThroughVideo) : undefined,
       brochureUrl: brochureUrl != null ? String(brochureUrl) : undefined,
@@ -96,10 +99,20 @@ export async function PUT(
       floorPlans: Array.isArray(floorPlans) ? floorPlans : undefined,
       galleryImages: Array.isArray(galleryImages) ? galleryImages : undefined,
       nearbyPlaces: nearbyPlaces && typeof nearbyPlaces === "object" ? nearbyPlaces : undefined,
+      locationImage: locationImage != null ? String(locationImage) : undefined,
       metaTitle: metaTitle != null ? String(metaTitle) : undefined,
       metaDescription: metaDescription != null ? String(metaDescription) : undefined,
       metaKeywords: Array.isArray(metaKeywords) ? metaKeywords : undefined,
+    };
+    await adminUpdateProject(projectId, projectPayload);
+    await adminUpsertPropertyDetailsFromProject(projectId, {
+      ...projectPayload,
+      videoUrl: projectStatusVideo != null ? String(projectStatusVideo) : undefined,
+      walkthroughVideoUrl: walkThroughVideo != null ? String(walkThroughVideo) : undefined,
     });
+    if (Array.isArray(amenities)) {
+      await adminReplacePropertyAmenities(projectId, amenities);
+    }
     logAdminAction("project.update", auth.user.id, { projectId });
     const updated = await adminGetProjectById(projectId);
     if (!updated) {

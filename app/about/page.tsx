@@ -7,6 +7,8 @@ import { ListingHero } from "@/components/listing-hero";
 import { SafeImage } from "@/components/safe-image";
 import { isValidImageUrl } from "@/lib/media";
 import { Loader2 } from "lucide-react";
+import { CompanyHistorySection } from "@/components/company-history-section";
+import { normalizeCompanyHistory, type CompanyHistoryItem } from "@/lib/company-history";
 
 interface TeamMember {
   id: string;
@@ -31,6 +33,13 @@ interface AboutPageContent {
   leadersTitle?: string;
   leadersSubtitle?: string;
   teamMembers?: TeamMember[];
+  leaderName?: string;
+  leaderRole?: string;
+  leaderBio?: string;
+  leaderImage?: string;
+  history?: CompanyHistoryItem[];
+  historyEyebrow?: string;
+  historyTitle?: string;
 }
 
 export default function AboutPage() {
@@ -79,7 +88,7 @@ export default function AboutPage() {
             <div className="flex flex-col md:flex-row gap-12 md:gap-16 items-start">
               {content?.tagline && (
                 <div className="md:w-[35%]">
-                  <h2 className="font-serif text-[40px] leading-[1.2] text-[#1F2A54] whitespace-pre-line">
+                  <h2 className="font-serif text-3xl sm:text-[40px] leading-[1.2] text-[#1F2A54] whitespace-pre-line">
                     {content.tagline}
                   </h2>
                 </div>
@@ -122,6 +131,43 @@ export default function AboutPage() {
         </section>
       )}
 
+      <CompanyHistorySection
+        items={normalizeCompanyHistory(content?.history)}
+        loadFromCms={false}
+        eyebrow={content?.historyEyebrow}
+        title={content?.historyTitle}
+      />
+
+      {(content?.leaderName || content?.leaderBio || content?.leaderImage) && (
+        <section className="py-16 md:py-24 bg-white">
+          <div className="max-w-[900px] mx-auto px-4">
+            <div className={`grid gap-8 items-start ${content?.leaderImage ? "md:grid-cols-[240px_1fr]" : ""}`}>
+              {content?.leaderImage && (
+                <div className="relative mx-auto aspect-[3/4] w-full max-w-[240px] overflow-hidden rounded-2xl">
+                  <SafeImage src={content.leaderImage} alt={content.leaderName || "Leadership"} fill className="object-cover" />
+                </div>
+              )}
+              <div>
+                {content?.leadersTitle && (
+                  <p className="text-[#DDA21A] text-sm font-semibold tracking-[0.2em] uppercase mb-3">{content.leadersTitle}</p>
+                )}
+                {content?.leaderRole && (
+                  <p className="text-[#1F2A54] text-sm font-medium mb-1">{content.leaderRole}</p>
+                )}
+                {content?.leaderName && (
+                  <h2 className="font-royal text-3xl md:text-4xl text-[#1F2A54] mb-6">{content.leaderName}</h2>
+                )}
+                {content?.leaderBio && (
+                  <div className="space-y-4 text-[#6B7280] text-sm md:text-base leading-[1.8] whitespace-pre-line">
+                    {content.leaderBio}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
       {team.length > 0 && (
         <section className="py-16 md:py-24 bg-white">
           <div className="max-w-[1200px] mx-auto px-4">
@@ -149,12 +195,6 @@ export default function AboutPage() {
               ))}
             </div>
           </div>
-        </section>
-      )}
-
-      {!content && (
-        <section className="py-24 text-center text-muted-foreground">
-          <p>About page content can be configured in the admin panel.</p>
         </section>
       )}
 

@@ -109,7 +109,7 @@ export function VideoSection() {
     : { backgroundColor: "#1e3a5f" };
 
   return (
-    <section ref={sectionRef} className="relative h-[500px] md:h-[600px] overflow-hidden">
+    <section ref={sectionRef} className="relative h-[280px] sm:h-[500px] md:h-[600px] overflow-hidden">
       {/* Poster / background */}
       <motion.div
         className={`absolute inset-0 bg-cover bg-center bg-no-repeat transition-opacity duration-500 ${

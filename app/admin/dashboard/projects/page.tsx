@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { useAuth } from "@/lib/auth-context";
+import { adminApiFetch } from "@/lib/admin-api";
 import { getProjects, type Project } from "@/lib/firestore";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -59,16 +60,13 @@ export default function ProjectsPage() {
 
   const loadProjects = async () => {
     try {
-      // Prefer API (Admin SDK) so list works even when client Firestore rules block read
-      if (user && typeof user.getIdToken === "function") {
-        const token = await user.getIdToken();
-        const res = await fetch("/api/v1/projects", { headers: { Authorization: `Bearer ${token}` }, cache: "no-store" });
-        if (res.ok) {
-          const json = await res.json();
-          setProjects(json.data ?? []);
-          setLoading(false);
-          return;
-        }
+      if (!user) return;
+      const res = await adminApiFetch(user, "/api/v1/projects");
+      const json = await res.json().catch(() => ({}));
+      if (res.ok) {
+        setProjects(json.data ?? []);
+        setLoading(false);
+        return;
       }
       const data = await getProjects();
       setProjects(data);
@@ -83,10 +81,8 @@ export default function ProjectsPage() {
     if (!deletingProject?.id || !user) return;
     setSaving(true);
     try {
-      const token = await user.getIdToken();
-      const res = await fetch(`/api/v1/projects/${deletingProject.id}`, {
+      const res = await adminApiFetch(user, `/api/v1/projects/${deletingProject.id}`, {
         method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
       });
       if (!res.ok) {
         const err = await res.json().catch(() => ({}));
@@ -107,10 +103,8 @@ export default function ProjectsPage() {
     if (!user) return;
     setSeeding(true);
     try {
-      const token = await user.getIdToken();
-      const res = await fetch("/api/v1/seed/projects", {
+      const res = await adminApiFetch(user, "/api/v1/seed/projects", {
         method: "POST",
-        headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
@@ -134,10 +128,8 @@ export default function ProjectsPage() {
     if (!user) return;
     setCleaningDuplicates(true);
     try {
-      const token = await user.getIdToken();
-      const res = await fetch("/api/v1/seed/clean-duplicate-projects", {
+      const res = await adminApiFetch(user, "/api/v1/seed/clean-duplicate-projects", {
         method: "POST",
-        headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
@@ -169,7 +161,7 @@ export default function ProjectsPage() {
   if (!user) return null;
 
   return (
-    <div className="p-6">
+    <div className="p-4 md:p-6 overflow-x-hidden">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4">
         <h1 className="text-2xl font-bold text-[#1F2A54]">All Projects</h1>
         <div className="flex flex-wrap gap-2">

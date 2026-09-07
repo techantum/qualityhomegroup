@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/auth-context";
-import { getDashboardStats, getLeads, type Lead } from "@/lib/firestore";
+import { adminApiFetch } from "@/lib/admin-api";
+import { type Lead } from "@/lib/firestore";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Loader2, TrendingUp, Users, Eye, MousePointer, ArrowUpRight, ArrowDownRight } from "lucide-react";
 
@@ -28,13 +29,26 @@ export default function AnalyticsPage() {
 
   useEffect(() => {
     async function fetchData() {
+      if (!user) return;
       try {
-        const [statsData, leadsData] = await Promise.all([
-          getDashboardStats(),
-          getLeads(),
+        const [statsRes, leadsRes] = await Promise.all([
+          adminApiFetch(user, "/api/v1/dashboard/stats"),
+          adminApiFetch(user, "/api/v1/leads?limit=500"),
         ]);
-        setStats(statsData);
-        setLeads(leadsData);
+        const [statsJson, leadsJson] = await Promise.all([
+          statsRes.json().catch(() => ({})),
+          leadsRes.json().catch(() => ({})),
+        ]);
+        if (statsRes.ok && statsJson?.data) {
+          setStats({
+            projects: statsJson.data.projects ?? 0,
+            testimonials: statsJson.data.testimonials ?? 0,
+            articles: statsJson.data.articles ?? 0,
+            leads: statsJson.data.leads ?? 0,
+            gallery: statsJson.data.gallery ?? 0,
+          });
+        }
+        setLeads((leadsJson.data ?? []) as Lead[]);
       } catch (error) {
         console.error("Error fetching analytics:", error);
       } finally {
@@ -67,7 +81,7 @@ export default function AnalyticsPage() {
   }
 
   return (
-    <div className="p-6">
+    <div className="p-4 md:p-6 overflow-x-hidden">
       <h1 className="text-2xl font-bold text-[#1F2A54] mb-6">Analytics Overview</h1>
 
       {loadingData ? (

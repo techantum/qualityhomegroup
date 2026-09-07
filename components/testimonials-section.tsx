@@ -1,14 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight, Quote } from "lucide-react";
 import { Reveal } from "@/components/motion/reveal";
 import { usePageContent } from "@/hooks/use-page-content";
 import { FloatingOrbs } from "@/components/motion/floating-orbs";
-import { Magnetic } from "@/components/motion/magnetic";
 import { SafeImage } from "@/components/safe-image";
 interface TestimonialDisplay {
   id: string;
@@ -24,6 +21,14 @@ export function TestimonialsSection() {
   const [isLoading, setIsLoading] = useState(true);
   const [startIndex, setStartIndex] = useState(0);
   const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [visibleCount, setVisibleCount] = useState(2);
+
+  useEffect(() => {
+    const updateCount = () => setVisibleCount(window.innerWidth < 768 ? 1 : 2);
+    updateCount();
+    window.addEventListener("resize", updateCount);
+    return () => window.removeEventListener("resize", updateCount);
+  }, []);
 
   useEffect(() => {
     async function fetchTestimonials() {
@@ -64,7 +69,7 @@ export function TestimonialsSection() {
   const getVisibleTestimonials = () => {
     if (testimonials.length === 0) return [];
     const visible = [];
-    for (let i = 0; i < Math.min(2, testimonials.length); i++) {
+    for (let i = 0; i < Math.min(visibleCount, testimonials.length); i++) {
       const index = (startIndex + i) % testimonials.length;
       visible.push(testimonials[index]);
     }
@@ -86,8 +91,10 @@ export function TestimonialsSection() {
   const sectionTitle = String(sectionContent?.title ?? "").trim();
   const showSectionHeader = Boolean(sectionEyebrow || sectionTitle);
 
+  if (!isLoading && testimonials.length === 0) return null;
+
   return (
-    <section className="py-20 relative overflow-hidden bg-gradient-to-br from-[#1F2A54] via-[#2a3a6e] to-[#1F2A54]">
+    <section className="py-12 md:py-20 relative overflow-hidden bg-gradient-to-br from-[#1F2A54] via-[#2a3a6e] to-[#1F2A54]">
       <FloatingOrbs />
       <div className="container mx-auto px-4 relative z-10">
         {!sectionLoading && showSectionHeader && (
@@ -110,13 +117,6 @@ export function TestimonialsSection() {
           </div>
         )}
 
-        {/* Empty State */}
-        {!isLoading && testimonials.length === 0 && (
-          <div className="text-center py-16">
-            <p className="text-white/60 text-lg">No testimonials available yet.</p>
-          </div>
-        )}
-
         {/* Testimonials Carousel */}
         {!isLoading && testimonials.length > 0 && (
           <div className="max-w-[1200px] mx-auto relative">
@@ -124,7 +124,7 @@ export function TestimonialsSection() {
             <motion.button
               type="button"
               onClick={prevSlide}
-              className="absolute left-0 md:-left-6 top-1/2 -translate-y-1/2 z-10 w-12 h-12 hidden md:flex items-center justify-center text-white"
+              className="absolute left-2 md:-left-6 top-1/2 -translate-y-1/2 z-10 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center text-white bg-black/20 md:bg-transparent rounded-full"
               whileHover={{ scale: 1.15, x: -4 }}
               whileTap={{ scale: 0.95 }}
               aria-label="Previous testimonial"
@@ -134,7 +134,7 @@ export function TestimonialsSection() {
             <motion.button
               type="button"
               onClick={nextSlide}
-              className="absolute right-0 md:-right-6 top-1/2 -translate-y-1/2 z-10 w-12 h-12 hidden md:flex items-center justify-center text-white"
+              className="absolute right-2 md:-right-6 top-1/2 -translate-y-1/2 z-10 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center text-white bg-black/20 md:bg-transparent rounded-full"
               whileHover={{ scale: 1.15, x: 4 }}
               whileTap={{ scale: 0.95 }}
               aria-label="Next testimonial"
@@ -145,7 +145,7 @@ export function TestimonialsSection() {
             <AnimatePresence mode="wait">
             <motion.div
               key={startIndex}
-              className="grid grid-cols-1 md:grid-cols-2 gap-8 px-4 md:px-12"
+              className="grid grid-cols-1 md:grid-cols-2 gap-8 px-8 md:px-12"
               initial={{ opacity: 0, x: 40 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -40 }}
@@ -156,7 +156,7 @@ export function TestimonialsSection() {
               {getVisibleTestimonials().map((testimonial, index) => (
                 <motion.div
                   key={testimonial.id}
-                  className="bg-white rounded-2xl p-8 pt-14 relative shadow-lg"
+                  className="bg-white rounded-2xl p-6 sm:p-8 pt-14 relative shadow-lg"
                   initial={{ opacity: 0, y: 24 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
@@ -193,14 +193,6 @@ export function TestimonialsSection() {
               ))}
             </motion.div>
             </AnimatePresence>
-
-            <Reveal className="text-center mt-12">
-              <Magnetic>
-                <Button className="bg-[#DDA21A] hover:bg-[#c99318] text-white px-8 py-6 rounded-full text-base font-medium">
-                  See All Testimonials <ArrowRight className="w-4 h-4 ml-2" />
-                </Button>
-              </Magnetic>
-            </Reveal>
           </div>
         )}
       </div>

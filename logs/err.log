@@ -525,3 +525,901 @@
 2026-08-17 05:52:41 +00:00:   line: undefined,
 2026-08-17 05:52:41 +00:00:   routine: undefined
 2026-08-17 05:52:41 +00:00: }
+2026-08-17 06:07:32 +00:00: [API] GET /api/v1/content/pages/[page] error: error: (EMAXCONNSESSION) max clients reached in session mode - max clients are limited to pool_size: 15
+2026-08-17 06:07:32 +00:00:     at async L (.next/server/chunks/[root-of-the-server]__c753f860._.js:5:739)
+2026-08-17 06:07:32 +00:00:     at async l (.next/server/chunks/[root-of-the-server]__5f20ed72._.js:1:2457)
+2026-08-17 06:07:32 +00:00:     at async d (.next/server/chunks/[root-of-the-server]__5f20ed72._.js:1:6666)
+2026-08-17 06:07:32 +00:00:     at async u (.next/server/chunks/[root-of-the-server]__5f20ed72._.js:1:7704)
+2026-08-17 06:07:32 +00:00:     at async C (.next/server/chunks/[root-of-the-server]__5f20ed72._.js:1:8782) {
+2026-08-17 06:07:32 +00:00:   length: 117,
+2026-08-17 06:07:32 +00:00:   severity: 'FATAL',
+2026-08-17 06:07:32 +00:00:   code: 'XX000',
+2026-08-17 06:07:32 +00:00:   detail: undefined,
+2026-08-17 06:07:32 +00:00:   hint: undefined,
+2026-08-17 06:07:32 +00:00:   position: undefined,
+2026-08-17 06:07:32 +00:00:   internalPosition: undefined,
+2026-08-17 06:07:32 +00:00:   internalQuery: undefined,
+2026-08-17 06:07:32 +00:00:   where: undefined,
+2026-08-17 06:07:32 +00:00:   schema: undefined,
+2026-08-17 06:07:32 +00:00:   table: undefined,
+2026-08-17 06:07:32 +00:00:   column: undefined,
+2026-08-17 06:07:32 +00:00:   dataType: undefined,
+2026-08-17 06:07:32 +00:00:   constraint: undefined,
+2026-08-17 06:07:32 +00:00:   file: undefined,
+2026-08-17 06:07:32 +00:00:   line: undefined,
+2026-08-17 06:07:32 +00:00:   routine: undefined
+2026-08-17 06:07:32 +00:00: }
+2026-08-17 06:07:32 +00:00: [API] GET /api/v1/content/branding error: error: (EMAXCONNSESSION) max clients reached in session mode - max clients are limited to pool_size: 15
+2026-08-17 06:07:32 +00:00:     at async L (.next/server/chunks/[root-of-the-server]__c753f860._.js:5:604)
+2026-08-17 06:07:32 +00:00:     at async l (.next/server/chunks/[root-of-the-server]__ee8a0a63._.js:1:2467)
+2026-08-17 06:07:32 +00:00:     at async d (.next/server/chunks/[root-of-the-server]__ee8a0a63._.js:1:6697)
+2026-08-17 06:07:32 +00:00:     at async u (.next/server/chunks/[root-of-the-server]__ee8a0a63._.js:1:7735)
+2026-08-17 06:07:32 +00:00:     at async C (.next/server/chunks/[root-of-the-server]__ee8a0a63._.js:1:8813) {
+2026-08-17 06:07:32 +00:00:   length: 117,
+2026-08-17 06:07:32 +00:00:   severity: 'FATAL',
+2026-08-17 06:07:32 +00:00:   code: 'XX000',
+2026-08-17 06:07:32 +00:00:   detail: undefined,
+2026-08-17 06:07:32 +00:00:   hint: undefined,
+2026-08-17 06:07:32 +00:00:   position: undefined,
+2026-08-17 06:07:32 +00:00:   internalPosition: undefined,
+2026-08-17 06:07:32 +00:00:   internalQuery: undefined,
+2026-08-17 06:07:32 +00:00:   where: undefined,
+2026-08-17 06:07:32 +00:00:   schema: undefined,
+2026-08-17 06:07:32 +00:00:   table: undefined,
+2026-08-17 06:07:32 +00:00:   column: undefined,
+2026-08-17 06:07:32 +00:00:   dataType: undefined,
+2026-08-17 06:07:32 +00:00:   constraint: undefined,
+2026-08-17 06:07:32 +00:00:   file: undefined,
+2026-08-17 06:07:32 +00:00:   line: undefined,
+2026-08-17 06:07:32 +00:00:   routine: undefined
+2026-08-17 06:07:32 +00:00: }
+2026-08-17 06:07:33 +00:00: [API] GET /api/v1/content/branding error: error: (EMAXCONNSESSION) max clients reached in session mode - max clients are limited to pool_size: 15
+2026-08-17 06:07:33 +00:00:     at async L (.next/server/chunks/[root-of-the-server]__c753f860._.js:5:604)
+2026-08-17 06:07:33 +00:00:     at async l (.next/server/chunks/[root-of-the-server]__ee8a0a63._.js:1:2467)
+2026-08-17 06:07:33 +00:00:     at async d (.next/server/chunks/[root-of-the-server]__ee8a0a63._.js:1:6697)
+2026-08-17 06:07:33 +00:00:     at async u (.next/server/chunks/[root-of-the-server]__ee8a0a63._.js:1:7735)
+2026-08-17 06:07:33 +00:00:     at async C (.next/server/chunks/[root-of-the-server]__ee8a0a63._.js:1:8813) {
+2026-08-17 06:07:33 +00:00:   length: 117,
+2026-08-17 06:07:33 +00:00:   severity: 'FATAL',
+2026-08-17 06:07:33 +00:00:   code: 'XX000',
+2026-08-17 06:07:33 +00:00:   detail: undefined,
+2026-08-17 06:07:33 +00:00:   hint: undefined,
+2026-08-17 06:07:33 +00:00:   position: undefined,
+2026-08-17 06:07:33 +00:00:   internalPosition: undefined,
+2026-08-17 06:07:33 +00:00:   internalQuery: undefined,
+2026-08-17 06:07:33 +00:00:   where: undefined,
+2026-08-17 06:07:33 +00:00:   schema: undefined,
+2026-08-17 06:07:33 +00:00:   table: undefined,
+2026-08-17 06:07:33 +00:00:   column: undefined,
+2026-08-17 06:07:33 +00:00:   dataType: undefined,
+2026-08-17 06:07:33 +00:00:   constraint: undefined,
+2026-08-17 06:07:33 +00:00:   file: undefined,
+2026-08-17 06:07:33 +00:00:   line: undefined,
+2026-08-17 06:07:33 +00:00:   routine: undefined
+2026-08-17 06:07:33 +00:00: }
+2026-08-17 06:07:33 +00:00: [API] GET /api/v1/testimonials/public error: error: (EMAXCONNSESSION) max clients reached in session mode - max clients are limited to pool_size: 15
+2026-08-17 06:07:33 +00:00:     at async U (.next/server/chunks/[root-of-the-server]__c753f860._.js:15:259)
+2026-08-17 06:07:33 +00:00:     at async i (.next/server/chunks/[root-of-the-server]__edd8a1fb._.js:1:1891)
+2026-08-17 06:07:33 +00:00:     at async d (.next/server/chunks/[root-of-the-server]__edd8a1fb._.js:1:5551)
+2026-08-17 06:07:33 +00:00:     at async u (.next/server/chunks/[root-of-the-server]__edd8a1fb._.js:1:6589)
+2026-08-17 06:07:33 +00:00:     at async A (.next/server/chunks/[root-of-the-server]__edd8a1fb._.js:1:7667) {
+2026-08-17 06:07:33 +00:00:   length: 117,
+2026-08-17 06:07:33 +00:00:   severity: 'FATAL',
+2026-08-17 06:07:33 +00:00:   code: 'XX000',
+2026-08-17 06:07:33 +00:00:   detail: undefined,
+2026-08-17 06:07:33 +00:00:   hint: undefined,
+2026-08-17 06:07:33 +00:00:   position: undefined,
+2026-08-17 06:07:33 +00:00:   internalPosition: undefined,
+2026-08-17 06:07:33 +00:00:   internalQuery: undefined,
+2026-08-17 06:07:33 +00:00:   where: undefined,
+2026-08-17 06:07:33 +00:00:   schema: undefined,
+2026-08-17 06:07:33 +00:00:   table: undefined,
+2026-08-17 06:07:33 +00:00:   column: undefined,
+2026-08-17 06:07:33 +00:00:   dataType: undefined,
+2026-08-17 06:07:33 +00:00:   constraint: undefined,
+2026-08-17 06:07:33 +00:00:   file: undefined,
+2026-08-17 06:07:33 +00:00:   line: undefined,
+2026-08-17 06:07:33 +00:00:   routine: undefined
+2026-08-17 06:07:33 +00:00: }
+2026-08-17 06:07:33 +00:00: [API] GET /api/v1/content/pages/[page] error: error: (EMAXCONNSESSION) max clients reached in session mode - max clients are limited to pool_size: 15
+2026-08-17 06:07:33 +00:00:     at async L (.next/server/chunks/[root-of-the-server]__c753f860._.js:5:739)
+2026-08-17 06:07:33 +00:00:     at async l (.next/server/chunks/[root-of-the-server]__5f20ed72._.js:1:2457)
+2026-08-17 06:07:33 +00:00:     at async d (.next/server/chunks/[root-of-the-server]__5f20ed72._.js:1:6666)
+2026-08-17 06:07:33 +00:00:     at async u (.next/server/chunks/[root-of-the-server]__5f20ed72._.js:1:7704)
+2026-08-17 06:07:33 +00:00:     at async C (.next/server/chunks/[root-of-the-server]__5f20ed72._.js:1:8782) {
+2026-08-17 06:07:33 +00:00:   length: 117,
+2026-08-17 06:07:33 +00:00:   severity: 'FATAL',
+2026-08-17 06:07:33 +00:00:   code: 'XX000',
+2026-08-17 06:07:33 +00:00:   detail: undefined,
+2026-08-17 06:07:33 +00:00:   hint: undefined,
+2026-08-17 06:07:33 +00:00:   position: undefined,
+2026-08-17 06:07:33 +00:00:   internalPosition: undefined,
+2026-08-17 06:07:33 +00:00:   internalQuery: undefined,
+2026-08-17 06:07:33 +00:00:   where: undefined,
+2026-08-17 06:07:33 +00:00:   schema: undefined,
+2026-08-17 06:07:33 +00:00:   table: undefined,
+2026-08-17 06:07:33 +00:00:   column: undefined,
+2026-08-17 06:07:33 +00:00:   dataType: undefined,
+2026-08-17 06:07:33 +00:00:   constraint: undefined,
+2026-08-17 06:07:33 +00:00:   file: undefined,
+2026-08-17 06:07:33 +00:00:   line: undefined,
+2026-08-17 06:07:33 +00:00:   routine: undefined
+2026-08-17 06:07:33 +00:00: }
+2026-08-17 06:07:33 +00:00: [API] GET /api/v1/content/pages/[page] error: error: (EMAXCONNSESSION) max clients reached in session mode - max clients are limited to pool_size: 15
+2026-08-17 06:07:33 +00:00:     at async L (.next/server/chunks/[root-of-the-server]__c753f860._.js:5:739)
+2026-08-17 06:07:33 +00:00:     at async l (.next/server/chunks/[root-of-the-server]__5f20ed72._.js:1:2457)
+2026-08-17 06:07:33 +00:00:     at async d (.next/server/chunks/[root-of-the-server]__5f20ed72._.js:1:6666)
+2026-08-17 06:07:33 +00:00:     at async u (.next/server/chunks/[root-of-the-server]__5f20ed72._.js:1:7704)
+2026-08-17 06:07:33 +00:00:     at async C (.next/server/chunks/[root-of-the-server]__5f20ed72._.js:1:8782) {
+2026-08-17 06:07:33 +00:00:   length: 117,
+2026-08-17 06:07:33 +00:00:   severity: 'FATAL',
+2026-08-17 06:07:33 +00:00:   code: 'XX000',
+2026-08-17 06:07:33 +00:00:   detail: undefined,
+2026-08-17 06:07:33 +00:00:   hint: undefined,
+2026-08-17 06:07:33 +00:00:   position: undefined,
+2026-08-17 06:07:33 +00:00:   internalPosition: undefined,
+2026-08-17 06:07:33 +00:00:   internalQuery: undefined,
+2026-08-17 06:07:33 +00:00:   where: undefined,
+2026-08-17 06:07:33 +00:00:   schema: undefined,
+2026-08-17 06:07:33 +00:00:   table: undefined,
+2026-08-17 06:07:33 +00:00:   column: undefined,
+2026-08-17 06:07:33 +00:00:   dataType: undefined,
+2026-08-17 06:07:33 +00:00:   constraint: undefined,
+2026-08-17 06:07:33 +00:00:   file: undefined,
+2026-08-17 06:07:33 +00:00:   line: undefined,
+2026-08-17 06:07:33 +00:00:   routine: undefined
+2026-08-17 06:07:33 +00:00: }
+2026-08-17 06:07:33 +00:00: [API] GET /api/v1/content/pages/[page] error: error: (EMAXCONNSESSION) max clients reached in session mode - max clients are limited to pool_size: 15
+2026-08-17 06:07:33 +00:00:     at async L (.next/server/chunks/[root-of-the-server]__c753f860._.js:5:739)
+2026-08-17 06:07:33 +00:00:     at async l (.next/server/chunks/[root-of-the-server]__5f20ed72._.js:1:2457)
+2026-08-17 06:07:33 +00:00:     at async d (.next/server/chunks/[root-of-the-server]__5f20ed72._.js:1:6666)
+2026-08-17 06:07:33 +00:00:     at async u (.next/server/chunks/[root-of-the-server]__5f20ed72._.js:1:7704)
+2026-08-17 06:07:33 +00:00:     at async C (.next/server/chunks/[root-of-the-server]__5f20ed72._.js:1:8782) {
+2026-08-17 06:07:33 +00:00:   length: 117,
+2026-08-17 06:07:33 +00:00:   severity: 'FATAL',
+2026-08-17 06:07:33 +00:00:   code: 'XX000',
+2026-08-17 06:07:33 +00:00:   detail: undefined,
+2026-08-17 06:07:33 +00:00:   hint: undefined,
+2026-08-17 06:07:33 +00:00:   position: undefined,
+2026-08-17 06:07:33 +00:00:   internalPosition: undefined,
+2026-08-17 06:07:33 +00:00:   internalQuery: undefined,
+2026-08-17 06:07:33 +00:00:   where: undefined,
+2026-08-17 06:07:33 +00:00:   schema: undefined,
+2026-08-17 06:07:33 +00:00:   table: undefined,
+2026-08-17 06:07:33 +00:00:   column: undefined,
+2026-08-17 06:07:33 +00:00:   dataType: undefined,
+2026-08-17 06:07:33 +00:00:   constraint: undefined,
+2026-08-17 06:07:33 +00:00:   file: undefined,
+2026-08-17 06:07:33 +00:00:   line: undefined,
+2026-08-17 06:07:33 +00:00:   routine: undefined
+2026-08-17 06:07:33 +00:00: }
+2026-08-17 06:07:34 +00:00: [API] GET /api/v1/articles/public error: error: (EMAXCONNSESSION) max clients reached in session mode - max clients are limited to pool_size: 15
+2026-08-17 06:07:34 +00:00:     at async q (.next/server/chunks/[root-of-the-server]__c753f860._.js:15:431)
+2026-08-17 06:07:34 +00:00:     at async o (.next/server/chunks/[root-of-the-server]__d2ca3482._.js:1:1990)
+2026-08-17 06:07:34 +00:00:     at async d (.next/server/chunks/[root-of-the-server]__d2ca3482._.js:1:5626)
+2026-08-17 06:07:34 +00:00:     at async u (.next/server/chunks/[root-of-the-server]__d2ca3482._.js:1:6664)
+2026-08-17 06:07:34 +00:00:     at async A (.next/server/chunks/[root-of-the-server]__d2ca3482._.js:1:7742) {
+2026-08-17 06:07:34 +00:00:   length: 117,
+2026-08-17 06:07:34 +00:00:   severity: 'FATAL',
+2026-08-17 06:07:34 +00:00:   code: 'XX000',
+2026-08-17 06:07:34 +00:00:   detail: undefined,
+2026-08-17 06:07:34 +00:00:   hint: undefined,
+2026-08-17 06:07:34 +00:00:   position: undefined,
+2026-08-17 06:07:34 +00:00:   internalPosition: undefined,
+2026-08-17 06:07:34 +00:00:   internalQuery: undefined,
+2026-08-17 06:07:34 +00:00:   where: undefined,
+2026-08-17 06:07:34 +00:00:   schema: undefined,
+2026-08-17 06:07:34 +00:00:   table: undefined,
+2026-08-17 06:07:34 +00:00:   column: undefined,
+2026-08-17 06:07:34 +00:00:   dataType: undefined,
+2026-08-17 06:07:34 +00:00:   constraint: undefined,
+2026-08-17 06:07:34 +00:00:   file: undefined,
+2026-08-17 06:07:34 +00:00:   line: undefined,
+2026-08-17 06:07:34 +00:00:   routine: undefined
+2026-08-17 06:07:34 +00:00: }
+2026-08-17 06:07:34 +00:00: [API] GET /api/v1/content/branding error: error: (EMAXCONNSESSION) max clients reached in session mode - max clients are limited to pool_size: 15
+2026-08-17 06:07:34 +00:00:     at async L (.next/server/chunks/[root-of-the-server]__c753f860._.js:5:604)
+2026-08-17 06:07:34 +00:00:     at async l (.next/server/chunks/[root-of-the-server]__ee8a0a63._.js:1:2467)
+2026-08-17 06:07:34 +00:00:     at async d (.next/server/chunks/[root-of-the-server]__ee8a0a63._.js:1:6697)
+2026-08-17 06:07:34 +00:00:     at async u (.next/server/chunks/[root-of-the-server]__ee8a0a63._.js:1:7735)
+2026-08-17 06:07:34 +00:00:     at async C (.next/server/chunks/[root-of-the-server]__ee8a0a63._.js:1:8813) {
+2026-08-17 06:07:34 +00:00:   length: 117,
+2026-08-17 06:07:34 +00:00:   severity: 'FATAL',
+2026-08-17 06:07:34 +00:00:   code: 'XX000',
+2026-08-17 06:07:34 +00:00:   detail: undefined,
+2026-08-17 06:07:34 +00:00:   hint: undefined,
+2026-08-17 06:07:34 +00:00:   position: undefined,
+2026-08-17 06:07:34 +00:00:   internalPosition: undefined,
+2026-08-17 06:07:34 +00:00:   internalQuery: undefined,
+2026-08-17 06:07:34 +00:00:   where: undefined,
+2026-08-17 06:07:34 +00:00:   schema: undefined,
+2026-08-17 06:07:34 +00:00:   table: undefined,
+2026-08-17 06:07:34 +00:00:   column: undefined,
+2026-08-17 06:07:34 +00:00:   dataType: undefined,
+2026-08-17 06:07:34 +00:00:   constraint: undefined,
+2026-08-17 06:07:34 +00:00:   file: undefined,
+2026-08-17 06:07:34 +00:00:   line: undefined,
+2026-08-17 06:07:34 +00:00:   routine: undefined
+2026-08-17 06:07:34 +00:00: }
+2026-08-17 06:07:34 +00:00: [API] GET /api/v1/content/pages/[page] error: error: (EMAXCONNSESSION) max clients reached in session mode - max clients are limited to pool_size: 15
+2026-08-17 06:07:34 +00:00:     at async L (.next/server/chunks/[root-of-the-server]__c753f860._.js:5:739)
+2026-08-17 06:07:34 +00:00:     at async l (.next/server/chunks/[root-of-the-server]__5f20ed72._.js:1:2457)
+2026-08-17 06:07:34 +00:00:     at async d (.next/server/chunks/[root-of-the-server]__5f20ed72._.js:1:6666)
+2026-08-17 06:07:34 +00:00:     at async u (.next/server/chunks/[root-of-the-server]__5f20ed72._.js:1:7704)
+2026-08-17 06:07:34 +00:00:     at async C (.next/server/chunks/[root-of-the-server]__5f20ed72._.js:1:8782) {
+2026-08-17 06:07:34 +00:00:   length: 117,
+2026-08-17 06:07:34 +00:00:   severity: 'FATAL',
+2026-08-17 06:07:34 +00:00:   code: 'XX000',
+2026-08-17 06:07:34 +00:00:   detail: undefined,
+2026-08-17 06:07:34 +00:00:   hint: undefined,
+2026-08-17 06:07:34 +00:00:   position: undefined,
+2026-08-17 06:07:34 +00:00:   internalPosition: undefined,
+2026-08-17 06:07:34 +00:00:   internalQuery: undefined,
+2026-08-17 06:07:34 +00:00:   where: undefined,
+2026-08-17 06:07:34 +00:00:   schema: undefined,
+2026-08-17 06:07:34 +00:00:   table: undefined,
+2026-08-17 06:07:34 +00:00:   column: undefined,
+2026-08-17 06:07:34 +00:00:   dataType: undefined,
+2026-08-17 06:07:34 +00:00:   constraint: undefined,
+2026-08-17 06:07:34 +00:00:   file: undefined,
+2026-08-17 06:07:34 +00:00:   line: undefined,
+2026-08-17 06:07:34 +00:00:   routine: undefined
+2026-08-17 06:07:34 +00:00: }
+2026-08-17 06:33:29 +00:00: [API] PUT /api/v1/content/hero/slides/[id] error: Error: adminSetDocument not supported for collection: hero_slides
+2026-08-17 06:33:29 +00:00:     at v (.next/server/chunks/[root-of-the-server]__c753f860._.js:15:143)
+2026-08-17 06:33:29 +00:00:     at D (.next/server/chunks/[root-of-the-server]__c753f860._.js:5:200)
+2026-08-17 06:33:29 +00:00:     at l (.next/server/chunks/[root-of-the-server]__188467eb._.js:1:2909)
+2026-08-17 06:33:29 +00:00:     at async u (.next/server/chunks/[root-of-the-server]__188467eb._.js:1:7245)
+2026-08-17 06:33:29 +00:00:     at async d (.next/server/chunks/[root-of-the-server]__188467eb._.js:1:8283)
+2026-08-17 06:33:29 +00:00:     at async C (.next/server/chunks/[root-of-the-server]__188467eb._.js:1:9361)
+2026-08-17 06:33:38 +00:00: [API] PUT /api/v1/content/hero/slides/[id] error: Error: adminSetDocument not supported for collection: hero_slides
+2026-08-17 06:33:38 +00:00:     at v (.next/server/chunks/[root-of-the-server]__c753f860._.js:15:143)
+2026-08-17 06:33:38 +00:00:     at D (.next/server/chunks/[root-of-the-server]__c753f860._.js:5:200)
+2026-08-17 06:33:38 +00:00:     at l (.next/server/chunks/[root-of-the-server]__188467eb._.js:1:2909)
+2026-08-17 06:33:38 +00:00:     at async u (.next/server/chunks/[root-of-the-server]__188467eb._.js:1:7245)
+2026-08-17 06:33:38 +00:00:     at async d (.next/server/chunks/[root-of-the-server]__188467eb._.js:1:8283)
+2026-08-17 06:33:38 +00:00:     at async C (.next/server/chunks/[root-of-the-server]__188467eb._.js:1:9361)
+2026-08-17 06:33:58 +00:00: [API] PUT /api/v1/content/hero/slides/[id] error: Error: adminSetDocument not supported for collection: hero_slides
+2026-08-17 06:33:58 +00:00:     at v (.next/server/chunks/[root-of-the-server]__c753f860._.js:15:143)
+2026-08-17 06:33:58 +00:00:     at D (.next/server/chunks/[root-of-the-server]__c753f860._.js:5:200)
+2026-08-17 06:33:58 +00:00:     at l (.next/server/chunks/[root-of-the-server]__188467eb._.js:1:2909)
+2026-08-17 06:33:58 +00:00:     at async u (.next/server/chunks/[root-of-the-server]__188467eb._.js:1:7245)
+2026-08-17 06:33:58 +00:00:     at async d (.next/server/chunks/[root-of-the-server]__188467eb._.js:1:8283)
+2026-08-17 06:33:58 +00:00:     at async C (.next/server/chunks/[root-of-the-server]__188467eb._.js:1:9361)
+2026-08-17 08:23:07 +00:00: [API] GET /api/v1/projects/public/[id] error: error: invalid input syntax for type uuid: "quality-home-s-alpino-c85f22ea"
+2026-08-17 08:23:07 +00:00:     at async T (.next/server/chunks/[root-of-the-server]__c753f860._.js:4:1458)
+2026-08-17 08:23:07 +00:00:     at async i (.next/server/chunks/[root-of-the-server]__03f1d76c._.js:1:2003)
+2026-08-17 08:23:07 +00:00:     at async u (.next/server/chunks/[root-of-the-server]__03f1d76c._.js:1:6316)
+2026-08-17 08:23:07 +00:00:     at async d (.next/server/chunks/[root-of-the-server]__03f1d76c._.js:1:7354)
+2026-08-17 08:23:07 +00:00:     at async C (.next/server/chunks/[root-of-the-server]__03f1d76c._.js:1:8432) {
+2026-08-17 08:23:07 +00:00:   length: 162,
+2026-08-17 08:23:07 +00:00:   severity: 'ERROR',
+2026-08-17 08:23:07 +00:00:   code: '22P02',
+2026-08-17 08:23:07 +00:00:   detail: undefined,
+2026-08-17 08:23:07 +00:00:   hint: undefined,
+2026-08-17 08:23:07 +00:00:   position: undefined,
+2026-08-17 08:23:07 +00:00:   internalPosition: undefined,
+2026-08-17 08:23:07 +00:00:   internalQuery: undefined,
+2026-08-17 08:23:07 +00:00:   where: "unnamed portal parameter $1 = '...'",
+2026-08-17 08:23:07 +00:00:   schema: undefined,
+2026-08-17 08:23:07 +00:00:   table: undefined,
+2026-08-17 08:23:07 +00:00:   column: undefined,
+2026-08-17 08:23:07 +00:00:   dataType: undefined,
+2026-08-17 08:23:07 +00:00:   constraint: undefined,
+2026-08-17 08:23:07 +00:00:   file: 'uuid.c',
+2026-08-17 08:23:07 +00:00:   line: '138',
+2026-08-17 08:23:07 +00:00:   routine: 'string_to_uuid'
+2026-08-17 08:23:07 +00:00: }
+2026-08-17 08:25:25 +00:00: [API] GET /api/v1/projects/public/[id] error: error: invalid input syntax for type uuid: "iconic-city-d819e938"
+2026-08-17 08:25:25 +00:00:     at async T (.next/server/chunks/[root-of-the-server]__c753f860._.js:4:1458)
+2026-08-17 08:25:25 +00:00:     at async i (.next/server/chunks/[root-of-the-server]__03f1d76c._.js:1:2003)
+2026-08-17 08:25:25 +00:00:     at async u (.next/server/chunks/[root-of-the-server]__03f1d76c._.js:1:6316)
+2026-08-17 08:25:25 +00:00:     at async d (.next/server/chunks/[root-of-the-server]__03f1d76c._.js:1:7354)
+2026-08-17 08:25:25 +00:00:     at async C (.next/server/chunks/[root-of-the-server]__03f1d76c._.js:1:8432) {
+2026-08-17 08:25:25 +00:00:   length: 152,
+2026-08-17 08:25:25 +00:00:   severity: 'ERROR',
+2026-08-17 08:25:25 +00:00:   code: '22P02',
+2026-08-17 08:25:25 +00:00:   detail: undefined,
+2026-08-17 08:25:25 +00:00:   hint: undefined,
+2026-08-17 08:25:25 +00:00:   position: undefined,
+2026-08-17 08:25:25 +00:00:   internalPosition: undefined,
+2026-08-17 08:25:25 +00:00:   internalQuery: undefined,
+2026-08-17 08:25:25 +00:00:   where: "unnamed portal parameter $1 = '...'",
+2026-08-17 08:25:25 +00:00:   schema: undefined,
+2026-08-17 08:25:25 +00:00:   table: undefined,
+2026-08-17 08:25:25 +00:00:   column: undefined,
+2026-08-17 08:25:25 +00:00:   dataType: undefined,
+2026-08-17 08:25:25 +00:00:   constraint: undefined,
+2026-08-17 08:25:25 +00:00:   file: 'uuid.c',
+2026-08-17 08:25:25 +00:00:   line: '138',
+2026-08-17 08:25:25 +00:00:   routine: 'string_to_uuid'
+2026-08-17 08:25:25 +00:00: }
+2026-08-17 08:25:33 +00:00: [API] GET /api/v1/projects/public/[id] error: error: invalid input syntax for type uuid: "gagan-vihar-98967081"
+2026-08-17 08:25:33 +00:00:     at async T (.next/server/chunks/[root-of-the-server]__c753f860._.js:4:1458)
+2026-08-17 08:25:33 +00:00:     at async i (.next/server/chunks/[root-of-the-server]__03f1d76c._.js:1:2003)
+2026-08-17 08:25:33 +00:00:     at async u (.next/server/chunks/[root-of-the-server]__03f1d76c._.js:1:6316)
+2026-08-17 08:25:33 +00:00:     at async d (.next/server/chunks/[root-of-the-server]__03f1d76c._.js:1:7354)
+2026-08-17 08:25:33 +00:00:     at async C (.next/server/chunks/[root-of-the-server]__03f1d76c._.js:1:8432) {
+2026-08-17 08:25:33 +00:00:   length: 152,
+2026-08-17 08:25:33 +00:00:   severity: 'ERROR',
+2026-08-17 08:25:33 +00:00:   code: '22P02',
+2026-08-17 08:25:33 +00:00:   detail: undefined,
+2026-08-17 08:25:33 +00:00:   hint: undefined,
+2026-08-17 08:25:33 +00:00:   position: undefined,
+2026-08-17 08:25:33 +00:00:   internalPosition: undefined,
+2026-08-17 08:25:33 +00:00:   internalQuery: undefined,
+2026-08-17 08:25:33 +00:00:   where: "unnamed portal parameter $1 = '...'",
+2026-08-17 08:25:33 +00:00:   schema: undefined,
+2026-08-17 08:25:33 +00:00:   table: undefined,
+2026-08-17 08:25:33 +00:00:   column: undefined,
+2026-08-17 08:25:33 +00:00:   dataType: undefined,
+2026-08-17 08:25:33 +00:00:   constraint: undefined,
+2026-08-17 08:25:33 +00:00:   file: 'uuid.c',
+2026-08-17 08:25:33 +00:00:   line: '138',
+2026-08-17 08:25:33 +00:00:   routine: 'string_to_uuid'
+2026-08-17 08:25:33 +00:00: }
+2026-08-17 08:29:39 +00:00: [API] GET /api/v1/projects/public/[id] error: error: invalid input syntax for type uuid: "iconic-city-d819e938"
+2026-08-17 08:29:39 +00:00:     at async T (.next/server/chunks/[root-of-the-server]__c753f860._.js:4:1458)
+2026-08-17 08:29:39 +00:00:     at async i (.next/server/chunks/[root-of-the-server]__03f1d76c._.js:1:2003)
+2026-08-17 08:29:39 +00:00:     at async u (.next/server/chunks/[root-of-the-server]__03f1d76c._.js:1:6316)
+2026-08-17 08:29:39 +00:00:     at async d (.next/server/chunks/[root-of-the-server]__03f1d76c._.js:1:7354)
+2026-08-17 08:29:39 +00:00:     at async C (.next/server/chunks/[root-of-the-server]__03f1d76c._.js:1:8432) {
+2026-08-17 08:29:39 +00:00:   length: 152,
+2026-08-17 08:29:39 +00:00:   severity: 'ERROR',
+2026-08-17 08:29:39 +00:00:   code: '22P02',
+2026-08-17 08:29:39 +00:00:   detail: undefined,
+2026-08-17 08:29:39 +00:00:   hint: undefined,
+2026-08-17 08:29:39 +00:00:   position: undefined,
+2026-08-17 08:29:39 +00:00:   internalPosition: undefined,
+2026-08-17 08:29:39 +00:00:   internalQuery: undefined,
+2026-08-17 08:29:39 +00:00:   where: "unnamed portal parameter $1 = '...'",
+2026-08-17 08:29:39 +00:00:   schema: undefined,
+2026-08-17 08:29:39 +00:00:   table: undefined,
+2026-08-17 08:29:39 +00:00:   column: undefined,
+2026-08-17 08:29:39 +00:00:   dataType: undefined,
+2026-08-17 08:29:39 +00:00:   constraint: undefined,
+2026-08-17 08:29:39 +00:00:   file: 'uuid.c',
+2026-08-17 08:29:39 +00:00:   line: '138',
+2026-08-17 08:29:39 +00:00:   routine: 'string_to_uuid'
+2026-08-17 08:29:39 +00:00: }
+2026-08-17 08:29:41 +00:00: [API] GET /api/v1/projects/public/[id] error: error: invalid input syntax for type uuid: "iconic-city-d819e938"
+2026-08-17 08:29:41 +00:00:     at async T (.next/server/chunks/[root-of-the-server]__c753f860._.js:4:1458)
+2026-08-17 08:29:41 +00:00:     at async i (.next/server/chunks/[root-of-the-server]__03f1d76c._.js:1:2003)
+2026-08-17 08:29:41 +00:00:     at async u (.next/server/chunks/[root-of-the-server]__03f1d76c._.js:1:6316)
+2026-08-17 08:29:41 +00:00:     at async d (.next/server/chunks/[root-of-the-server]__03f1d76c._.js:1:7354)
+2026-08-17 08:29:41 +00:00:     at async C (.next/server/chunks/[root-of-the-server]__03f1d76c._.js:1:8432) {
+2026-08-17 08:29:41 +00:00:   length: 152,
+2026-08-17 08:29:41 +00:00:   severity: 'ERROR',
+2026-08-17 08:29:41 +00:00:   code: '22P02',
+2026-08-17 08:29:41 +00:00:   detail: undefined,
+2026-08-17 08:29:41 +00:00:   hint: undefined,
+2026-08-17 08:29:41 +00:00:   position: undefined,
+2026-08-17 08:29:41 +00:00:   internalPosition: undefined,
+2026-08-17 08:29:41 +00:00:   internalQuery: undefined,
+2026-08-17 08:29:41 +00:00:   where: "unnamed portal parameter $1 = '...'",
+2026-08-17 08:29:41 +00:00:   schema: undefined,
+2026-08-17 08:29:41 +00:00:   table: undefined,
+2026-08-17 08:29:41 +00:00:   column: undefined,
+2026-08-17 08:29:41 +00:00:   dataType: undefined,
+2026-08-17 08:29:41 +00:00:   constraint: undefined,
+2026-08-17 08:29:41 +00:00:   file: 'uuid.c',
+2026-08-17 08:29:41 +00:00:   line: '138',
+2026-08-17 08:29:41 +00:00:   routine: 'string_to_uuid'
+2026-08-17 08:29:41 +00:00: }
+2026-08-17 08:37:56 +00:00:  ⨯ error: invalid input syntax for type uuid: "quality-home-s-palacio-f67738d5"
+2026-08-17 08:37:56 +00:00:     at async h (.next/server/chunks/ssr/_410eb2c3._.js:1:5789)
+2026-08-17 08:37:56 +00:00:     at async i (.next/server/chunks/ssr/_410eb2c3._.js:1:6968)
+2026-08-17 08:37:56 +00:00:     at async l (.next/server/chunks/ssr/_410eb2c3._.js:1:7636) {
+2026-08-17 08:37:56 +00:00:   length: 163,
+2026-08-17 08:37:56 +00:00:   severity: 'ERROR',
+2026-08-17 08:37:56 +00:00:   code: '22P02',
+2026-08-17 08:37:56 +00:00:   detail: undefined,
+2026-08-17 08:37:56 +00:00:   hint: undefined,
+2026-08-17 08:37:56 +00:00:   position: undefined,
+2026-08-17 08:37:56 +00:00:   internalPosition: undefined,
+2026-08-17 08:37:56 +00:00:   internalQuery: undefined,
+2026-08-17 08:37:56 +00:00:   where: "unnamed portal parameter $1 = '...'",
+2026-08-17 08:37:56 +00:00:   schema: undefined,
+2026-08-17 08:37:56 +00:00:   table: undefined,
+2026-08-17 08:37:56 +00:00:   column: undefined,
+2026-08-17 08:37:56 +00:00:   dataType: undefined,
+2026-08-17 08:37:56 +00:00:   constraint: undefined,
+2026-08-17 08:37:56 +00:00:   file: 'uuid.c',
+2026-08-17 08:37:56 +00:00:   line: '138',
+2026-08-17 08:37:56 +00:00:   routine: 'string_to_uuid',
+2026-08-17 08:37:56 +00:00:   digest: '1998075093'
+2026-08-17 08:37:56 +00:00: }
+2026-08-17 08:37:57 +00:00:  ⨯ error: invalid input syntax for type uuid: "quality-home-s-palacio-f67738d5"
+2026-08-17 08:37:57 +00:00:     at async h (.next/server/chunks/ssr/_410eb2c3._.js:1:5789)
+2026-08-17 08:37:57 +00:00:     at async i (.next/server/chunks/ssr/_410eb2c3._.js:1:6968)
+2026-08-17 08:37:57 +00:00:     at async Module.k (.next/server/chunks/ssr/_410eb2c3._.js:1:7268) {
+2026-08-17 08:37:57 +00:00:   length: 163,
+2026-08-17 08:37:57 +00:00:   severity: 'ERROR',
+2026-08-17 08:37:57 +00:00:   code: '22P02',
+2026-08-17 08:37:57 +00:00:   detail: undefined,
+2026-08-17 08:37:57 +00:00:   hint: undefined,
+2026-08-17 08:37:57 +00:00:   position: undefined,
+2026-08-17 08:37:57 +00:00:   internalPosition: undefined,
+2026-08-17 08:37:57 +00:00:   internalQuery: undefined,
+2026-08-17 08:37:57 +00:00:   where: "unnamed portal parameter $1 = '...'",
+2026-08-17 08:37:57 +00:00:   schema: undefined,
+2026-08-17 08:37:57 +00:00:   table: undefined,
+2026-08-17 08:37:57 +00:00:   column: undefined,
+2026-08-17 08:37:57 +00:00:   dataType: undefined,
+2026-08-17 08:37:57 +00:00:   constraint: undefined,
+2026-08-17 08:37:57 +00:00:   file: 'uuid.c',
+2026-08-17 08:37:57 +00:00:   line: '138',
+2026-08-17 08:37:57 +00:00:   routine: 'string_to_uuid',
+2026-08-17 08:37:57 +00:00:   digest: '1319811401'
+2026-08-17 08:37:57 +00:00: }
+2026-08-17 08:37:57 +00:00:  ⨯ error: invalid input syntax for type uuid: "quality-home-s-palacio-f67738d5"
+2026-08-17 08:37:57 +00:00:     at async h (.next/server/chunks/ssr/_410eb2c3._.js:1:5789)
+2026-08-17 08:37:57 +00:00:     at async i (.next/server/chunks/ssr/_410eb2c3._.js:1:6968)
+2026-08-17 08:37:57 +00:00:     at async l (.next/server/chunks/ssr/_410eb2c3._.js:1:7636) {
+2026-08-17 08:37:57 +00:00:   length: 163,
+2026-08-17 08:37:57 +00:00:   severity: 'ERROR',
+2026-08-17 08:37:57 +00:00:   code: '22P02',
+2026-08-17 08:37:57 +00:00:   detail: undefined,
+2026-08-17 08:37:57 +00:00:   hint: undefined,
+2026-08-17 08:37:57 +00:00:   position: undefined,
+2026-08-17 08:37:57 +00:00:   internalPosition: undefined,
+2026-08-17 08:37:57 +00:00:   internalQuery: undefined,
+2026-08-17 08:37:57 +00:00:   where: "unnamed portal parameter $1 = '...'",
+2026-08-17 08:37:57 +00:00:   schema: undefined,
+2026-08-17 08:37:57 +00:00:   table: undefined,
+2026-08-17 08:37:57 +00:00:   column: undefined,
+2026-08-17 08:37:57 +00:00:   dataType: undefined,
+2026-08-17 08:37:57 +00:00:   constraint: undefined,
+2026-08-17 08:37:57 +00:00:   file: 'uuid.c',
+2026-08-17 08:37:57 +00:00:   line: '138',
+2026-08-17 08:37:57 +00:00:   routine: 'string_to_uuid',
+2026-08-17 08:37:57 +00:00:   digest: '1998075093'
+2026-08-17 08:37:57 +00:00: }
+2026-08-17 08:37:57 +00:00:  ⨯ error: invalid input syntax for type uuid: "quality-home-s-palacio-f67738d5"
+2026-08-17 08:37:57 +00:00:     at async h (.next/server/chunks/ssr/_410eb2c3._.js:1:5789)
+2026-08-17 08:37:57 +00:00:     at async i (.next/server/chunks/ssr/_410eb2c3._.js:1:6968)
+2026-08-17 08:37:57 +00:00:     at async Module.k (.next/server/chunks/ssr/_410eb2c3._.js:1:7268) {
+2026-08-17 08:37:57 +00:00:   length: 163,
+2026-08-17 08:37:57 +00:00:   severity: 'ERROR',
+2026-08-17 08:37:57 +00:00:   code: '22P02',
+2026-08-17 08:37:57 +00:00:   detail: undefined,
+2026-08-17 08:37:57 +00:00:   hint: undefined,
+2026-08-17 08:37:57 +00:00:   position: undefined,
+2026-08-17 08:37:57 +00:00:   internalPosition: undefined,
+2026-08-17 08:37:57 +00:00:   internalQuery: undefined,
+2026-08-17 08:37:57 +00:00:   where: "unnamed portal parameter $1 = '...'",
+2026-08-17 08:37:57 +00:00:   schema: undefined,
+2026-08-17 08:37:57 +00:00:   table: undefined,
+2026-08-17 08:37:57 +00:00:   column: undefined,
+2026-08-17 08:37:57 +00:00:   dataType: undefined,
+2026-08-17 08:37:57 +00:00:   constraint: undefined,
+2026-08-17 08:37:57 +00:00:   file: 'uuid.c',
+2026-08-17 08:37:57 +00:00:   line: '138',
+2026-08-17 08:37:57 +00:00:   routine: 'string_to_uuid',
+2026-08-17 08:37:57 +00:00:   digest: '1319811401'
+2026-08-17 08:37:57 +00:00: }
+2026-08-17 08:38:03 +00:00:  ⨯ error: invalid input syntax for type uuid: "iconic-city-d819e938"
+2026-08-17 08:38:03 +00:00:     at async h (.next/server/chunks/ssr/_410eb2c3._.js:1:5789)
+2026-08-17 08:38:03 +00:00:     at async i (.next/server/chunks/ssr/_410eb2c3._.js:1:6968)
+2026-08-17 08:38:03 +00:00:     at async Module.k (.next/server/chunks/ssr/_410eb2c3._.js:1:7268) {
+2026-08-17 08:38:03 +00:00:   length: 152,
+2026-08-17 08:38:03 +00:00:   severity: 'ERROR',
+2026-08-17 08:38:03 +00:00:   code: '22P02',
+2026-08-17 08:38:03 +00:00:   detail: undefined,
+2026-08-17 08:38:03 +00:00:   hint: undefined,
+2026-08-17 08:38:03 +00:00:   position: undefined,
+2026-08-17 08:38:03 +00:00:   internalPosition: undefined,
+2026-08-17 08:38:03 +00:00:   internalQuery: undefined,
+2026-08-17 08:38:03 +00:00:   where: "unnamed portal parameter $1 = '...'",
+2026-08-17 08:38:03 +00:00:   schema: undefined,
+2026-08-17 08:38:03 +00:00:   table: undefined,
+2026-08-17 08:38:03 +00:00:   column: undefined,
+2026-08-17 08:38:03 +00:00:   dataType: undefined,
+2026-08-17 08:38:03 +00:00:   constraint: undefined,
+2026-08-17 08:38:03 +00:00:   file: 'uuid.c',
+2026-08-17 08:38:03 +00:00:   line: '138',
+2026-08-17 08:38:03 +00:00:   routine: 'string_to_uuid',
+2026-08-17 08:38:03 +00:00:   digest: '2092851049'
+2026-08-17 08:38:03 +00:00: }
+2026-08-17 08:38:03 +00:00:  ⨯ error: invalid input syntax for type uuid: "iconic-city-d819e938"
+2026-08-17 08:38:03 +00:00:     at async h (.next/server/chunks/ssr/_410eb2c3._.js:1:5789)
+2026-08-17 08:38:03 +00:00:     at async i (.next/server/chunks/ssr/_410eb2c3._.js:1:6968)
+2026-08-17 08:38:03 +00:00:     at async l (.next/server/chunks/ssr/_410eb2c3._.js:1:7636) {
+2026-08-17 08:38:03 +00:00:   length: 152,
+2026-08-17 08:38:03 +00:00:   severity: 'ERROR',
+2026-08-17 08:38:03 +00:00:   code: '22P02',
+2026-08-17 08:38:03 +00:00:   detail: undefined,
+2026-08-17 08:38:03 +00:00:   hint: undefined,
+2026-08-17 08:38:03 +00:00:   position: undefined,
+2026-08-17 08:38:03 +00:00:   internalPosition: undefined,
+2026-08-17 08:38:03 +00:00:   internalQuery: undefined,
+2026-08-17 08:38:03 +00:00:   where: "unnamed portal parameter $1 = '...'",
+2026-08-17 08:38:03 +00:00:   schema: undefined,
+2026-08-17 08:38:03 +00:00:   table: undefined,
+2026-08-17 08:38:03 +00:00:   column: undefined,
+2026-08-17 08:38:03 +00:00:   dataType: undefined,
+2026-08-17 08:38:03 +00:00:   constraint: undefined,
+2026-08-17 08:38:03 +00:00:   file: 'uuid.c',
+2026-08-17 08:38:03 +00:00:   line: '138',
+2026-08-17 08:38:03 +00:00:   routine: 'string_to_uuid',
+2026-08-17 08:38:03 +00:00:   digest: '2944763637'
+2026-08-17 08:38:03 +00:00: }
+2026-08-17 08:38:06 +00:00:  ⨯ error: invalid input syntax for type uuid: "prime-avenue-b03f0ee9"
+2026-08-17 08:38:06 +00:00:     at async h (.next/server/chunks/ssr/_410eb2c3._.js:1:5789)
+2026-08-17 08:38:06 +00:00:     at async i (.next/server/chunks/ssr/_410eb2c3._.js:1:6968)
+2026-08-17 08:38:06 +00:00:     at async Module.k (.next/server/chunks/ssr/_410eb2c3._.js:1:7268) {
+2026-08-17 08:38:06 +00:00:   length: 153,
+2026-08-17 08:38:06 +00:00:   severity: 'ERROR',
+2026-08-17 08:38:06 +00:00:   code: '22P02',
+2026-08-17 08:38:06 +00:00:   detail: undefined,
+2026-08-17 08:38:06 +00:00:   hint: undefined,
+2026-08-17 08:38:06 +00:00:   position: undefined,
+2026-08-17 08:38:06 +00:00:   internalPosition: undefined,
+2026-08-17 08:38:06 +00:00:   internalQuery: undefined,
+2026-08-17 08:38:06 +00:00:   where: "unnamed portal parameter $1 = '...'",
+2026-08-17 08:38:06 +00:00:   schema: undefined,
+2026-08-17 08:38:06 +00:00:   table: undefined,
+2026-08-17 08:38:06 +00:00:   column: undefined,
+2026-08-17 08:38:06 +00:00:   dataType: undefined,
+2026-08-17 08:38:06 +00:00:   constraint: undefined,
+2026-08-17 08:38:06 +00:00:   file: 'uuid.c',
+2026-08-17 08:38:06 +00:00:   line: '138',
+2026-08-17 08:38:06 +00:00:   routine: 'string_to_uuid',
+2026-08-17 08:38:06 +00:00:   digest: '1470855177'
+2026-08-17 08:38:06 +00:00: }
+2026-08-17 08:38:06 +00:00:  ⨯ error: invalid input syntax for type uuid: "prime-avenue-b03f0ee9"
+2026-08-17 08:38:06 +00:00:     at async h (.next/server/chunks/ssr/_410eb2c3._.js:1:5789)
+2026-08-17 08:38:06 +00:00:     at async i (.next/server/chunks/ssr/_410eb2c3._.js:1:6968)
+2026-08-17 08:38:06 +00:00:     at async l (.next/server/chunks/ssr/_410eb2c3._.js:1:7636) {
+2026-08-17 08:38:06 +00:00:   length: 153,
+2026-08-17 08:38:06 +00:00:   severity: 'ERROR',
+2026-08-17 08:38:06 +00:00:   code: '22P02',
+2026-08-17 08:38:06 +00:00:   detail: undefined,
+2026-08-17 08:38:06 +00:00:   hint: undefined,
+2026-08-17 08:38:06 +00:00:   position: undefined,
+2026-08-17 08:38:06 +00:00:   internalPosition: undefined,
+2026-08-17 08:38:06 +00:00:   internalQuery: undefined,
+2026-08-17 08:38:06 +00:00:   where: "unnamed portal parameter $1 = '...'",
+2026-08-17 08:38:06 +00:00:   schema: undefined,
+2026-08-17 08:38:06 +00:00:   table: undefined,
+2026-08-17 08:38:06 +00:00:   column: undefined,
+2026-08-17 08:38:06 +00:00:   dataType: undefined,
+2026-08-17 08:38:06 +00:00:   constraint: undefined,
+2026-08-17 08:38:06 +00:00:   file: 'uuid.c',
+2026-08-17 08:38:06 +00:00:   line: '138',
+2026-08-17 08:38:06 +00:00:   routine: 'string_to_uuid',
+2026-08-17 08:38:06 +00:00:   digest: '955453333'
+2026-08-17 08:38:06 +00:00: }
+2026-08-17 08:38:09 +00:00:  ⨯ error: invalid input syntax for type uuid: "quality-home-s-the-valley-4000a61f"
+2026-08-17 08:38:09 +00:00:     at async h (.next/server/chunks/ssr/_410eb2c3._.js:1:5789)
+2026-08-17 08:38:09 +00:00:     at async i (.next/server/chunks/ssr/_410eb2c3._.js:1:6968)
+2026-08-17 08:38:09 +00:00:     at async Module.k (.next/server/chunks/ssr/_410eb2c3._.js:1:7268) {
+2026-08-17 08:38:09 +00:00:   length: 166,
+2026-08-17 08:38:09 +00:00:   severity: 'ERROR',
+2026-08-17 08:38:09 +00:00:   code: '22P02',
+2026-08-17 08:38:09 +00:00:   detail: undefined,
+2026-08-17 08:38:09 +00:00:   hint: undefined,
+2026-08-17 08:38:09 +00:00:   position: undefined,
+2026-08-17 08:38:09 +00:00:   internalPosition: undefined,
+2026-08-17 08:38:09 +00:00:   internalQuery: undefined,
+2026-08-17 08:38:09 +00:00:   where: "unnamed portal parameter $1 = '...'",
+2026-08-17 08:38:09 +00:00:   schema: undefined,
+2026-08-17 08:38:09 +00:00:   table: undefined,
+2026-08-17 08:38:09 +00:00:   column: undefined,
+2026-08-17 08:38:09 +00:00:   dataType: undefined,
+2026-08-17 08:38:09 +00:00:   constraint: undefined,
+2026-08-17 08:38:09 +00:00:   file: 'uuid.c',
+2026-08-17 08:38:09 +00:00:   line: '138',
+2026-08-17 08:38:09 +00:00:   routine: 'string_to_uuid',
+2026-08-17 08:38:09 +00:00:   digest: '1843168457'
+2026-08-17 08:38:09 +00:00: }
+2026-08-17 08:38:09 +00:00:  ⨯ error: invalid input syntax for type uuid: "quality-home-s-the-valley-4000a61f"
+2026-08-17 08:38:09 +00:00:     at async h (.next/server/chunks/ssr/_410eb2c3._.js:1:5789)
+2026-08-17 08:38:09 +00:00:     at async i (.next/server/chunks/ssr/_410eb2c3._.js:1:6968)
+2026-08-17 08:38:09 +00:00:     at async l (.next/server/chunks/ssr/_410eb2c3._.js:1:7636) {
+2026-08-17 08:38:09 +00:00:   length: 166,
+2026-08-17 08:38:09 +00:00:   severity: 'ERROR',
+2026-08-17 08:38:09 +00:00:   code: '22P02',
+2026-08-17 08:38:09 +00:00:   detail: undefined,
+2026-08-17 08:38:09 +00:00:   hint: undefined,
+2026-08-17 08:38:09 +00:00:   position: undefined,
+2026-08-17 08:38:09 +00:00:   internalPosition: undefined,
+2026-08-17 08:38:09 +00:00:   internalQuery: undefined,
+2026-08-17 08:38:09 +00:00:   where: "unnamed portal parameter $1 = '...'",
+2026-08-17 08:38:09 +00:00:   schema: undefined,
+2026-08-17 08:38:09 +00:00:   table: undefined,
+2026-08-17 08:38:09 +00:00:   column: undefined,
+2026-08-17 08:38:09 +00:00:   dataType: undefined,
+2026-08-17 08:38:09 +00:00:   constraint: undefined,
+2026-08-17 08:38:09 +00:00:   file: 'uuid.c',
+2026-08-17 08:38:09 +00:00:   line: '138',
+2026-08-17 08:38:09 +00:00:   routine: 'string_to_uuid',
+2026-08-17 08:38:09 +00:00:   digest: '4204818261'
+2026-08-17 08:38:09 +00:00: }
+2026-08-17 08:38:59 +00:00:  ⚠ metadataBase property in metadata export is not set for resolving social open graph or twitter images, using "http://localhost:6002". See https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadatabase
+2026-08-17 08:50:59 +00:00:  ⚠ metadataBase property in metadata export is not set for resolving social open graph or twitter images, using "http://localhost:6002". See https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadatabase
+2026-08-17 10:03:02 +00:00:  ⚠ metadataBase property in metadata export is not set for resolving social open graph or twitter images, using "http://localhost:6002". See https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadatabase
+2026-08-17 11:59:33 +00:00:  ⚠ metadataBase property in metadata export is not set for resolving social open graph or twitter images, using "http://localhost:6002". See https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadatabase
+2026-08-17 17:33:48 +00:00:  ⚠ metadataBase property in metadata export is not set for resolving social open graph or twitter images, using "http://localhost:6002". See https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadatabase
+2026-08-18 03:54:21 +00:00: Error: Failed to find Server Action "x". This request might be from an older or newer deployment.
+2026-08-18 03:54:21 +00:00: Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+2026-08-18 03:54:21 +00:00:     at ignore-listed frames
+2026-08-18 03:54:22 +00:00: Error: Failed to find Server Action "x". This request might be from an older or newer deployment.
+2026-08-18 03:54:22 +00:00: Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+2026-08-18 03:54:22 +00:00:     at ignore-listed frames
+2026-08-18 03:54:23 +00:00: Error: Failed to find Server Action "x". This request might be from an older or newer deployment.
+2026-08-18 03:54:23 +00:00: Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+2026-08-18 03:54:23 +00:00:     at ignore-listed frames
+2026-08-18 12:46:09 +00:00:  ⚠ metadataBase property in metadata export is not set for resolving social open graph or twitter images, using "http://localhost:6002". See https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadatabase
+2026-08-18 13:02:57 +00:00:  ⚠ metadataBase property in metadata export is not set for resolving social open graph or twitter images, using "http://localhost:6002". See https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadatabase
+2026-08-18 13:05:41 +00:00:  ⚠ metadataBase property in metadata export is not set for resolving social open graph or twitter images, using "http://localhost:6002". See https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadatabase
+2026-08-19 05:42:32 +00:00:  ⚠ metadataBase property in metadata export is not set for resolving social open graph or twitter images, using "http://localhost:6002". See https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadatabase
+2026-08-19 06:19:53 +00:00:  ⚠ metadataBase property in metadata export is not set for resolving social open graph or twitter images, using "http://localhost:6002". See https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadatabase
+2026-08-19 07:38:40 +00:00:  ⚠ metadataBase property in metadata export is not set for resolving social open graph or twitter images, using "http://localhost:6002". See https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadatabase
+2026-08-19 10:00:52 +00:00:  ⚠ metadataBase property in metadata export is not set for resolving social open graph or twitter images, using "http://localhost:6002". See https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadatabase
+2026-08-19 10:07:10 +00:00: [API] POST /api/upload error: Error [StorageApiError]: The object exceeded the maximum allowed size
+2026-08-19 10:07:10 +00:00:     at <unknown> (.next/server/chunks/lib_supabase_server_ts_b192d4e9._.js:11:17079) {
+2026-08-19 10:07:10 +00:00:   __isStorageError: true,
+2026-08-19 10:07:10 +00:00:   namespace: 'storage',
+2026-08-19 10:07:10 +00:00:   status: 400,
+2026-08-19 10:07:10 +00:00:   statusCode: '413',
+2026-08-19 10:07:10 +00:00:   code: 'EntityTooLarge'
+2026-08-19 10:07:10 +00:00: }
+2026-08-19 10:07:37 +00:00:  ⚠ metadataBase property in metadata export is not set for resolving social open graph or twitter images, using "http://localhost:6002". See https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadatabase
+2026-08-20 13:10:16 +00:00:  ⚠ metadataBase property in metadata export is not set for resolving social open graph or twitter images, using "http://localhost:6002". See https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadatabase
+2026-08-20 13:28:22 +00:00: [API] POST /api/upload error: Error [StorageApiError]: mime type application/pdf is not supported
+2026-08-20 13:28:22 +00:00:     at <unknown> (.next/server/chunks/lib_supabase_server_ts_b192d4e9._.js:11:17079) {
+2026-08-20 13:28:22 +00:00:   __isStorageError: true,
+2026-08-20 13:28:22 +00:00:   namespace: 'storage',
+2026-08-20 13:28:22 +00:00:   status: 400,
+2026-08-20 13:28:22 +00:00:   statusCode: '415',
+2026-08-20 13:28:22 +00:00:   code: 'InvalidMimeType'
+2026-08-20 13:28:22 +00:00: }
+2026-08-21 10:01:59 +00:00: [API] POST /api/upload error: Error [StorageApiError]: mime type image/avif is not supported
+2026-08-21 10:01:59 +00:00:     at <unknown> (.next/server/chunks/lib_supabase_server_ts_b192d4e9._.js:11:17079) {
+2026-08-21 10:01:59 +00:00:   __isStorageError: true,
+2026-08-21 10:01:59 +00:00:   namespace: 'storage',
+2026-08-21 10:01:59 +00:00:   status: 400,
+2026-08-21 10:01:59 +00:00:   statusCode: '415',
+2026-08-21 10:01:59 +00:00:   code: 'InvalidMimeType'
+2026-08-21 10:01:59 +00:00: }
+2026-08-21 10:02:06 +00:00: [API] POST /api/upload error: Error [StorageApiError]: mime type image/avif is not supported
+2026-08-21 10:02:06 +00:00:     at <unknown> (.next/server/chunks/lib_supabase_server_ts_b192d4e9._.js:11:17079) {
+2026-08-21 10:02:06 +00:00:   __isStorageError: true,
+2026-08-21 10:02:06 +00:00:   namespace: 'storage',
+2026-08-21 10:02:06 +00:00:   status: 400,
+2026-08-21 10:02:06 +00:00:   statusCode: '415',
+2026-08-21 10:02:06 +00:00:   code: 'InvalidMimeType'
+2026-08-21 10:02:06 +00:00: }
+2026-08-21 12:03:10 +00:00: [API] POST /api/upload error: Error [StorageApiError]: mime type image/avif is not supported
+2026-08-21 12:03:10 +00:00:     at <unknown> (.next/server/chunks/lib_supabase_server_ts_b192d4e9._.js:11:17079) {
+2026-08-21 12:03:10 +00:00:   __isStorageError: true,
+2026-08-21 12:03:10 +00:00:   namespace: 'storage',
+2026-08-21 12:03:10 +00:00:   status: 400,
+2026-08-21 12:03:10 +00:00:   statusCode: '415',
+2026-08-21 12:03:10 +00:00:   code: 'InvalidMimeType'
+2026-08-21 12:03:10 +00:00: }
+2026-08-21 12:05:29 +00:00: [API] POST /api/upload error: Error [StorageApiError]: mime type image/avif is not supported
+2026-08-21 12:05:29 +00:00:     at <unknown> (.next/server/chunks/lib_supabase_server_ts_b192d4e9._.js:11:17079) {
+2026-08-21 12:05:29 +00:00:   __isStorageError: true,
+2026-08-21 12:05:29 +00:00:   namespace: 'storage',
+2026-08-21 12:05:29 +00:00:   status: 400,
+2026-08-21 12:05:29 +00:00:   statusCode: '415',
+2026-08-21 12:05:29 +00:00:   code: 'InvalidMimeType'
+2026-08-21 12:05:29 +00:00: }
+2026-08-21 22:54:04 +00:00: Error: Failed to find Server Action "x". This request might be from an older or newer deployment.
+2026-08-21 22:54:04 +00:00: Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+2026-08-21 22:54:04 +00:00:     at ignore-listed frames
+2026-08-21 22:54:04 +00:00: Error: Failed to find Server Action "x". This request might be from an older or newer deployment.
+2026-08-21 22:54:04 +00:00: Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+2026-08-21 22:54:04 +00:00:     at ignore-listed frames
+2026-08-21 22:54:04 +00:00: Error: Failed to find Server Action "x". This request might be from an older or newer deployment.
+2026-08-21 22:54:04 +00:00: Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+2026-08-21 22:54:04 +00:00:     at ignore-listed frames
+2026-08-24 10:46:34 +00:00: [API] POST /api/upload error: Error [StorageApiError]: mime type image/avif is not supported
+2026-08-24 10:46:34 +00:00:     at <unknown> (.next/server/chunks/lib_supabase_server_ts_b192d4e9._.js:11:17079) {
+2026-08-24 10:46:34 +00:00:   __isStorageError: true,
+2026-08-24 10:46:34 +00:00:   namespace: 'storage',
+2026-08-24 10:46:34 +00:00:   status: 400,
+2026-08-24 10:46:34 +00:00:   statusCode: '415',
+2026-08-24 10:46:34 +00:00:   code: 'InvalidMimeType'
+2026-08-24 10:46:34 +00:00: }
+2026-08-24 10:54:07 +00:00: [API] POST /api/upload error: Error [StorageApiError]: mime type image/avif is not supported
+2026-08-24 10:54:07 +00:00:     at <unknown> (.next/server/chunks/lib_supabase_server_ts_b192d4e9._.js:11:17079) {
+2026-08-24 10:54:07 +00:00:   __isStorageError: true,
+2026-08-24 10:54:07 +00:00:   namespace: 'storage',
+2026-08-24 10:54:07 +00:00:   status: 400,
+2026-08-24 10:54:07 +00:00:   statusCode: '415',
+2026-08-24 10:54:07 +00:00:   code: 'InvalidMimeType'
+2026-08-24 10:54:07 +00:00: }
+2026-08-24 12:02:18 +00:00: [API] POST /api/upload error: Error [StorageApiError]: mime type image/avif is not supported
+2026-08-24 12:02:18 +00:00:     at <unknown> (.next/server/chunks/lib_supabase_server_ts_b192d4e9._.js:11:17079) {
+2026-08-24 12:02:18 +00:00:   __isStorageError: true,
+2026-08-24 12:02:18 +00:00:   namespace: 'storage',
+2026-08-24 12:02:18 +00:00:   status: 400,
+2026-08-24 12:02:18 +00:00:   statusCode: '415',
+2026-08-24 12:02:18 +00:00:   code: 'InvalidMimeType'
+2026-08-24 12:02:18 +00:00: }
+2026-08-24 14:24:17 +00:00: Error: Failed to find Server Action "x". This request might be from an older or newer deployment.
+2026-08-24 14:24:17 +00:00: Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+2026-08-24 14:24:17 +00:00:     at ignore-listed frames
+2026-08-24 23:27:04 +00:00: Error: Failed to find Server Action "x". This request might be from an older or newer deployment.
+2026-08-24 23:27:04 +00:00: Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+2026-08-24 23:27:04 +00:00:     at ignore-listed frames
+2026-08-27 15:54:10 +00:00: Error: Failed to find Server Action "x". This request might be from an older or newer deployment.
+2026-08-27 15:54:10 +00:00: Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+2026-08-27 15:54:10 +00:00:     at ignore-listed frames
+2026-08-28 15:55:15 +00:00: Error: Failed to find Server Action "x". This request might be from an older or newer deployment.
+2026-08-28 15:55:15 +00:00: Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+2026-08-28 15:55:15 +00:00:     at ignore-listed frames
+2026-08-29 03:27:51 +00:00: Error: Failed to find Server Action "fd9ed40a28765531bf92940ac97dde32a860888d". This request might be from an older or newer deployment.
+2026-08-29 03:27:51 +00:00: Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+2026-08-29 03:27:51 +00:00:     at ignore-listed frames
+2026-08-29 03:27:51 +00:00: Error: Failed to find Server Action "c2d9d026940b7c6614ea9099e846668c5c08405c". This request might be from an older or newer deployment.
+2026-08-29 03:27:51 +00:00: Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+2026-08-29 03:27:51 +00:00:     at ignore-listed frames
+2026-08-29 03:27:51 +00:00: Error: Failed to find Server Action "4fbad143aaf107719bd944f0bf9bf31adc5f098c". This request might be from an older or newer deployment.
+2026-08-29 03:27:51 +00:00: Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+2026-08-29 03:27:51 +00:00:     at ignore-listed frames
+2026-08-29 03:27:51 +00:00: Error: Failed to find Server Action "ddbcc338c699d881e8114079c0ff1a7f03f4b286". This request might be from an older or newer deployment.
+2026-08-29 03:27:51 +00:00: Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+2026-08-29 03:27:51 +00:00:     at ignore-listed frames
+2026-08-29 03:27:51 +00:00: Error: Failed to find Server Action "f9c8362c6d942ac0b92990ff744c3efb255841b8". This request might be from an older or newer deployment.
+2026-08-29 03:27:51 +00:00: Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+2026-08-29 03:27:51 +00:00:     at ignore-listed frames
+2026-08-29 03:27:51 +00:00: Error: Failed to find Server Action "7508a4e2b0c9f5cdc6b90fb404e31e9f5aeb7d4a". This request might be from an older or newer deployment.
+2026-08-29 03:27:51 +00:00: Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+2026-08-29 03:27:51 +00:00:     at ignore-listed frames
+2026-08-29 03:27:52 +00:00: Error: Failed to find Server Action "bb2fbf27d59ab4be80b3100050a8ebcc81e4db1d". This request might be from an older or newer deployment.
+2026-08-29 03:27:52 +00:00: Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+2026-08-29 03:27:52 +00:00:     at ignore-listed frames
+2026-08-29 03:27:52 +00:00: Error: Failed to find Server Action "3e3540cea6b83312a09cd8a0c169150b4abb6e47". This request might be from an older or newer deployment.
+2026-08-29 03:27:52 +00:00: Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+2026-08-29 03:27:52 +00:00:     at ignore-listed frames
+2026-08-29 03:27:52 +00:00: Error: Failed to find Server Action "f8503c00034ea93fefdf68daa29e864e17c8219f". This request might be from an older or newer deployment.
+2026-08-29 03:27:52 +00:00: Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+2026-08-29 03:27:52 +00:00:     at ignore-listed frames
+2026-08-29 03:27:52 +00:00: Error: Failed to find Server Action "fb862ea8453a58fcc7e9d9706b2cc3ee3459d652". This request might be from an older or newer deployment.
+2026-08-29 03:27:52 +00:00: Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+2026-08-29 03:27:52 +00:00:     at ignore-listed frames
+2026-08-29 03:27:52 +00:00: Error: Failed to find Server Action "cf37b8b1f391c967ceee67d36432d01dedde3474". This request might be from an older or newer deployment.
+2026-08-29 03:27:52 +00:00: Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+2026-08-29 03:27:52 +00:00:     at ignore-listed frames
+2026-08-29 03:27:52 +00:00: Error: Failed to find Server Action "249d0dc4650b8bc44b802f3d50d42997e4b786df". This request might be from an older or newer deployment.
+2026-08-29 03:27:52 +00:00: Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+2026-08-29 03:27:52 +00:00:     at ignore-listed frames
+2026-08-29 03:27:52 +00:00: Error: Failed to find Server Action "e9a7637fb0ac6f47b502edfac2919f161ae3d2f8". This request might be from an older or newer deployment.
+2026-08-29 03:27:52 +00:00: Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+2026-08-29 03:27:52 +00:00:     at ignore-listed frames
+2026-08-29 03:27:52 +00:00: Error: Failed to find Server Action "c2802b6d775fa613d60cecece1b83dd2cd10ee73". This request might be from an older or newer deployment.
+2026-08-29 03:27:52 +00:00: Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+2026-08-29 03:27:52 +00:00:     at ignore-listed frames
+2026-08-29 03:27:52 +00:00: Error: Failed to find Server Action "ee5fa2425c85b14d0380dc0b6df4097c66f1ec36". This request might be from an older or newer deployment.
+2026-08-29 03:27:52 +00:00: Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+2026-08-29 03:27:52 +00:00:     at ignore-listed frames
+2026-08-29 03:27:52 +00:00: Error: Failed to find Server Action "189a70c2a2b482668b42d526580252153236d1e8". This request might be from an older or newer deployment.
+2026-08-29 03:27:52 +00:00: Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+2026-08-29 03:27:52 +00:00:     at ignore-listed frames
+2026-08-29 03:27:53 +00:00: Error: Failed to find Server Action "022226002627557438aef5c887a0bfe870a3236a". This request might be from an older or newer deployment.
+2026-08-29 03:27:53 +00:00: Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+2026-08-29 03:27:53 +00:00:     at ignore-listed frames
+2026-08-29 03:27:53 +00:00: Error: Failed to find Server Action "460eda544170e8611661ea7f076dc8d2ac803543". This request might be from an older or newer deployment.
+2026-08-29 03:27:53 +00:00: Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+2026-08-29 03:27:53 +00:00:     at ignore-listed frames
+2026-08-29 03:27:53 +00:00: Error: Failed to find Server Action "364de7fa03e78913a4c52d6c9a3d7abe5f177856". This request might be from an older or newer deployment.
+2026-08-29 03:27:53 +00:00: Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+2026-08-29 03:27:53 +00:00:     at ignore-listed frames
+2026-08-29 03:27:53 +00:00: Error: Failed to find Server Action "829298be2b74635096e727027c64163c761dc060". This request might be from an older or newer deployment.
+2026-08-29 03:27:53 +00:00: Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+2026-08-29 03:27:53 +00:00:     at ignore-listed frames
+2026-08-29 03:27:53 +00:00: Error: Failed to find Server Action "ed955d06acdfc662eb77773f248683578a9ff366". This request might be from an older or newer deployment.
+2026-08-29 03:27:53 +00:00: Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+2026-08-29 03:27:53 +00:00:     at ignore-listed frames
+2026-08-29 03:27:53 +00:00: Error: Failed to find Server Action "60d8a7ab0ce910bed7a728eb819a32bd068ec066". This request might be from an older or newer deployment.
+2026-08-29 03:27:53 +00:00: Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+2026-08-29 03:27:53 +00:00:     at ignore-listed frames
+2026-08-29 03:27:53 +00:00: Error: Failed to find Server Action "b608e4cd4694d58ba27f5892cccd4fe8823466d1". This request might be from an older or newer deployment.
+2026-08-29 03:27:53 +00:00: Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+2026-08-29 03:27:53 +00:00:     at ignore-listed frames
+2026-08-29 03:27:53 +00:00: Error: Failed to find Server Action "2979027e9fee0a193b606cfa725fceddf83c66a8". This request might be from an older or newer deployment.
+2026-08-29 03:27:53 +00:00: Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+2026-08-29 03:27:53 +00:00:     at ignore-listed frames
+2026-08-29 03:27:53 +00:00: Error: Failed to find Server Action "610cdf15e6c1a74cfc11a1d566753afce2f9d174". This request might be from an older or newer deployment.
+2026-08-29 03:27:53 +00:00: Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+2026-08-29 03:27:53 +00:00:     at ignore-listed frames
+2026-08-29 03:27:53 +00:00: Error: Failed to find Server Action "972cd689cd807d47d4abde0f9530fe8914a6b78d". This request might be from an older or newer deployment.
+2026-08-29 03:27:53 +00:00: Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+2026-08-29 03:27:53 +00:00:     at ignore-listed frames
+2026-08-29 03:27:53 +00:00: Error: Failed to find Server Action "cbf81fde5da93060b45bbcb69dcef0044e255498". This request might be from an older or newer deployment.
+2026-08-29 03:27:53 +00:00: Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+2026-08-29 03:27:53 +00:00:     at ignore-listed frames
+2026-08-29 03:27:53 +00:00: Error: Failed to find Server Action "ef780636ae5833b5b5f2a691e2d614cb5860387b". This request might be from an older or newer deployment.
+2026-08-29 03:27:53 +00:00: Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+2026-08-29 03:27:53 +00:00:     at ignore-listed frames
+2026-08-29 03:27:53 +00:00: Error: Failed to find Server Action "62657c71a9b9ce8ffb045a9cafdb8de0985f63d3". This request might be from an older or newer deployment.
+2026-08-29 03:27:53 +00:00: Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+2026-08-29 03:27:53 +00:00:     at ignore-listed frames
+2026-08-29 03:27:53 +00:00: Error: Failed to find Server Action "ecd70aca259858f5be071b658a513273cdaefd7a". This request might be from an older or newer deployment.
+2026-08-29 03:27:53 +00:00: Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+2026-08-29 03:27:53 +00:00:     at ignore-listed frames
+2026-08-29 03:27:53 +00:00: Error: Failed to find Server Action "4246515688bd912d380aaf0b35732a6307a17a24". This request might be from an older or newer deployment.
+2026-08-29 03:27:53 +00:00: Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+2026-08-29 03:27:53 +00:00:     at ignore-listed frames
+2026-08-29 03:27:53 +00:00: Error: Failed to find Server Action "08835a639cb9558b4165aaee75f24c7e6ff9066c". This request might be from an older or newer deployment.
+2026-08-29 03:27:53 +00:00: Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+2026-08-29 03:27:53 +00:00:     at ignore-listed frames
+2026-08-29 03:27:53 +00:00: Error: Failed to find Server Action "4336c8ad00113d6530c9bba102c99a90eb613780". This request might be from an older or newer deployment.
+2026-08-29 03:27:53 +00:00: Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+2026-08-29 03:27:53 +00:00:     at ignore-listed frames
+2026-08-29 03:27:53 +00:00: Error: Failed to find Server Action "791189699986d4a4f34c557f5fdda8ce96803e9a". This request might be from an older or newer deployment.
+2026-08-29 03:27:53 +00:00: Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+2026-08-29 03:27:53 +00:00:     at ignore-listed frames
+2026-08-29 03:27:53 +00:00: Error: Failed to find Server Action "1f0c6db0af3f8e8aafdefa38f0cd6674f403fc3a". This request might be from an older or newer deployment.
+2026-08-29 03:27:53 +00:00: Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+2026-08-29 03:27:53 +00:00:     at ignore-listed frames
+2026-08-29 03:27:53 +00:00: Error: Failed to find Server Action "fc378024bd1887fe5a6212013a21d331e6b3cb78". This request might be from an older or newer deployment.
+2026-08-29 03:27:53 +00:00: Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+2026-08-29 03:27:53 +00:00:     at ignore-listed frames
+2026-08-29 03:27:53 +00:00: Error: Failed to find Server Action "7eb3d5718fd64c28330fe963d37067962ca90e63". This request might be from an older or newer deployment.
+2026-08-29 03:27:53 +00:00: Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+2026-08-29 03:27:53 +00:00:     at ignore-listed frames
+2026-08-29 03:27:53 +00:00: Error: Failed to find Server Action "71a55504561473d1f2ae7ed3c6c42dfe34772e5b". This request might be from an older or newer deployment.
+2026-08-29 03:27:53 +00:00: Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+2026-08-29 03:27:53 +00:00:     at ignore-listed frames
+2026-08-29 03:27:55 +00:00: Error: Failed to find Server Action "501d16506e2e70e439d72b9c851dad932d26f248". This request might be from an older or newer deployment.
+2026-08-29 03:27:55 +00:00: Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+2026-08-29 03:27:55 +00:00:     at ignore-listed frames
+2026-08-29 03:27:55 +00:00: Error: Failed to find Server Action "cfe1ad4deaada00d23bc61a707c6727274776687". This request might be from an older or newer deployment.
+2026-08-29 03:27:55 +00:00: Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+2026-08-29 03:27:55 +00:00:     at ignore-listed frames
+2026-08-29 03:27:55 +00:00: Error: Failed to find Server Action "1b836ff2db8501d682f261d30c9218e1b53d9f4c". This request might be from an older or newer deployment.
+2026-08-29 03:27:55 +00:00: Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+2026-08-29 03:27:55 +00:00:     at ignore-listed frames
+2026-08-29 03:27:55 +00:00: Error: Failed to find Server Action "cae74923849cd394c7da37c6783f5a76816fa0b9". This request might be from an older or newer deployment.
+2026-08-29 03:27:55 +00:00: Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+2026-08-29 03:27:55 +00:00:     at ignore-listed frames
+2026-08-29 03:27:55 +00:00: Error: Failed to find Server Action "d470b83ddbc65ca62c24bdce4ccb8d639af179c7". This request might be from an older or newer deployment.
+2026-08-29 03:27:55 +00:00: Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+2026-08-29 03:27:55 +00:00:     at ignore-listed frames
+2026-08-29 03:27:55 +00:00: Error: Failed to find Server Action "0c2b0ed426a1a57e197a6ea85e544e170d60e10a". This request might be from an older or newer deployment.
+2026-08-29 03:27:55 +00:00: Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+2026-08-29 03:27:55 +00:00:     at ignore-listed frames
+2026-08-29 03:27:55 +00:00: Error: Failed to find Server Action "1cfbb93fa204c5f57611671ad6a2d7357b3789eb". This request might be from an older or newer deployment.
+2026-08-29 03:27:55 +00:00: Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+2026-08-29 03:27:55 +00:00:     at ignore-listed frames
+2026-08-29 03:27:55 +00:00: Error: Failed to find Server Action "27f345c40b395ade8a2fce67b67e834908b9e1b9". This request might be from an older or newer deployment.
+2026-08-29 03:27:55 +00:00: Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+2026-08-29 03:27:55 +00:00:     at ignore-listed frames
+2026-08-31 02:33:09 +00:00: Error: Failed to find Server Action "x". This request might be from an older or newer deployment.
+2026-08-31 02:33:09 +00:00: Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+2026-08-31 02:33:09 +00:00:     at ignore-listed frames
+2026-08-31 02:33:09 +00:00: Error: Failed to find Server Action "x". This request might be from an older or newer deployment.
+2026-08-31 02:33:09 +00:00: Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+2026-08-31 02:33:09 +00:00:     at ignore-listed frames
+2026-08-31 02:33:09 +00:00: Error: Failed to find Server Action "x". This request might be from an older or newer deployment.
+2026-08-31 02:33:09 +00:00: Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+2026-08-31 02:33:09 +00:00:     at ignore-listed frames
+2026-08-31 02:33:10 +00:00: Error: Failed to find Server Action "x". This request might be from an older or newer deployment.
+2026-08-31 02:33:10 +00:00: Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+2026-08-31 02:33:10 +00:00:     at ignore-listed frames
+2026-08-31 02:33:10 +00:00: Error: Failed to find Server Action "x". This request might be from an older or newer deployment.
+2026-08-31 02:33:10 +00:00: Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+2026-08-31 02:33:10 +00:00:     at ignore-listed frames
+2026-08-31 02:33:10 +00:00: Error: Failed to find Server Action "x". This request might be from an older or newer deployment.
+2026-08-31 02:33:10 +00:00: Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+2026-08-31 02:33:10 +00:00:     at ignore-listed frames
+2026-08-31 02:33:10 +00:00: Error: Failed to find Server Action "x". This request might be from an older or newer deployment.
+2026-08-31 02:33:10 +00:00: Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+2026-08-31 02:33:10 +00:00:     at ignore-listed frames
+2026-09-01 06:03:45 +00:00: Error: Failed to find Server Action "x". This request might be from an older or newer deployment.
+2026-09-01 06:03:45 +00:00: Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+2026-09-01 06:03:45 +00:00:     at ignore-listed frames
+2026-09-01 07:16:55 +00:00: Error: Failed to find Server Action "x". This request might be from an older or newer deployment.
+2026-09-01 07:16:55 +00:00: Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+2026-09-01 07:16:55 +00:00:     at ignore-listed frames
+2026-09-05 17:41:04 +00:00: Error: Failed to find Server Action "x". This request might be from an older or newer deployment.
+2026-09-05 17:41:04 +00:00: Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+2026-09-05 17:41:04 +00:00:     at ignore-listed frames
+2026-09-06 02:54:23 +00:00: Error: Failed to find Server Action "x". This request might be from an older or newer deployment.
+2026-09-06 02:54:23 +00:00: Read more: https://nextjs.org/docs/messages/failed-to-find-server-action
+2026-09-06 02:54:23 +00:00:     at ignore-listed frames

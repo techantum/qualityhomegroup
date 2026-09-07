@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/auth-context";
+import { adminApiFetch } from "@/lib/admin-api";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -165,13 +166,11 @@ export default function GlobalSEOPage() {
   };
 
   const handleSaveSEO = async () => {
-    if (!editingPage || !user?.getIdToken) return;
+    if (!editingPage || !user) return;
     setSaving(true);
     try {
-      const token = await user.getIdToken();
-      const res = await fetch(`/api/v1/seo/${editingPage}`, {
+      const res = await adminApiFetch(user, `/api/v1/seo/${editingPage}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify(editForm),
       });
       if (!res.ok) throw new Error("Save failed");
@@ -193,7 +192,7 @@ export default function GlobalSEOPage() {
   }
 
   return (
-    <div className="p-6">
+    <div className="p-4 md:p-6 overflow-x-hidden">
       <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
         <div>
           <h1 className="text-2xl font-bold text-[#1F2A54]">SEO Manager</h1>
