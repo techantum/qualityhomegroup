@@ -73,7 +73,7 @@ export function Header() {
               className="ml-2 cursor-pointer rounded-md bg-[#1F2A54] px-6 py-2 font-medium text-white transition-all duration-300 btn-hover-lift hover:bg-[#1F2A54]/90"
               onClick={() => setIsEnquiryOpen(true)}
             >
-              Enquiry Now
+              Enquire Now
             </Button>
           </nav>
         </div>

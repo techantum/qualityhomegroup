@@ -56,13 +56,19 @@ export function CompanyHistorySection({
           <h2 className="font-royal text-3xl md:text-4xl text-[#1F2A54] mb-12">{titleText}</h2>
         </Reveal>
         <div className="relative">
-          <div className="absolute left-[15px] md:left-1/2 top-0 bottom-0 w-px bg-[#1F2A54]/15 md:-translate-x-px" />
+          <div className="absolute left-6 top-0 bottom-0 w-px -translate-x-1/2 bg-[#1F2A54]/15 md:left-1/2" />
           <div className="space-y-10">
             {items.map((item, index) => (
               <Reveal key={`${item.year}-${index}`} delay={index * 0.05}>
-                <div className={`relative md:grid md:grid-cols-2 md:gap-12 ${index % 2 === 1 ? "" : ""}`}>
-                  <div className={`pl-10 md:pl-0 ${index % 2 === 1 ? "md:col-start-2" : "md:text-right md:pr-12"}`}>
-                    <div className="absolute left-0 md:left-1/2 top-1.5 h-8 w-8 -translate-x-1/2 rounded-full bg-[#1F2A54] text-white text-xs font-bold flex items-center justify-center">
+                <div className="relative md:grid md:grid-cols-2 md:gap-12">
+                  <div
+                    className={
+                      index % 2 === 1
+                        ? "pl-14 md:col-start-2 md:pl-12"
+                        : "pl-14 md:pl-0 md:pr-12 md:text-right"
+                    }
+                  >
+                    <div className="absolute left-6 top-1.5 flex h-8 w-8 -translate-x-1/2 items-center justify-center rounded-full bg-[#1F2A54] text-xs font-bold text-white md:left-1/2">
                       {String(index + 1).padStart(2, "0")}
                     </div>
                     <p className="text-[#DDA21A] font-semibold mb-1">{item.year}</p>

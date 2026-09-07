@@ -63,16 +63,14 @@ export function Footer() {
 
   return (
     <footer>
-      <div className="bg-[#F5F5F5] py-16">
+      <div className="bg-[#F5F5F5] py-10">
         <div className="max-w-[1200px] mx-auto px-4">
           <Stagger className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
             <StaggerItem>
-              <Link href="/">
+              <Link href="/" className="inline-flex shrink-0">
                 <BrandingLogo
                   variant="footer"
-                  width={56}
-                  height={56}
-                  className="mb-8 h-14 w-auto"
+                  className="mb-4 object-contain"
                 />
               </Link>
 

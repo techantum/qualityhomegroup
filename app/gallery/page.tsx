@@ -115,7 +115,7 @@ export default function GalleryPage() {
               {projects.map((project, index) => (
                 <div 
                   key={`${project.id}-${index}`} 
-                  className="group cursor-pointer card-hover-lift"
+                  className="group cursor-pointer card-hover-lift rounded-2xl p-2"
                   onClick={() => openGalleryPopup(project)}
                 >
                   <div className="relative aspect-square rounded-2xl overflow-hidden mb-3">

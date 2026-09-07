@@ -124,28 +124,28 @@ export function TestimonialsSection() {
             <motion.button
               type="button"
               onClick={prevSlide}
-              className="absolute left-2 md:-left-6 top-1/2 -translate-y-1/2 z-10 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center text-white bg-black/20 md:bg-transparent rounded-full"
+              className="unstyled absolute left-0 top-1/2 z-20 flex h-9 w-9 min-h-0 min-w-0 -translate-y-1/2 appearance-none items-center justify-center rounded-full border-0 bg-black/20 p-0 text-white md:-left-6 md:h-12 md:w-12 md:bg-transparent"
               whileHover={{ scale: 1.15, x: -4 }}
               whileTap={{ scale: 0.95 }}
               aria-label="Previous testimonial"
             >
-              <ChevronLeft className="w-10 h-10" />
+              <ChevronLeft className="h-6 w-6 md:h-10 md:w-10" />
             </motion.button>
             <motion.button
               type="button"
               onClick={nextSlide}
-              className="absolute right-2 md:-right-6 top-1/2 -translate-y-1/2 z-10 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center text-white bg-black/20 md:bg-transparent rounded-full"
+              className="unstyled absolute right-0 top-1/2 z-20 flex h-9 w-9 min-h-0 min-w-0 -translate-y-1/2 appearance-none items-center justify-center rounded-full border-0 bg-black/20 p-0 text-white md:-right-6 md:h-12 md:w-12 md:bg-transparent"
               whileHover={{ scale: 1.15, x: 4 }}
               whileTap={{ scale: 0.95 }}
               aria-label="Next testimonial"
             >
-              <ChevronRight className="w-10 h-10" />
+              <ChevronRight className="h-6 w-6 md:h-10 md:w-10" />
             </motion.button>
 
             <AnimatePresence mode="wait">
             <motion.div
               key={startIndex}
-              className="grid grid-cols-1 md:grid-cols-2 gap-8 px-8 md:px-12"
+              className="grid grid-cols-1 gap-8 px-14 md:grid-cols-2 md:px-12"
               initial={{ opacity: 0, x: 40 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -40 }}

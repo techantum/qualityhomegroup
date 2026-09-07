@@ -75,10 +75,10 @@ export default function BlogPage() {
           {!loading && posts.length > 0 && (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {posts.map((post, index) => (
-                <article key={`${post.id}-${index}`} className="group card-hover-lift">
+                <article key={`${post.id}-${index}`} className="group">
                   {/* Clickable Image */}
-                  <Link href={`/blog/${post.id}`}>
-                    <div className="relative aspect-square rounded-2xl overflow-hidden mb-4 cursor-pointer">
+                  <Link href={`/blog/${post.id}`} className="block">
+                    <div className="relative mb-4 aspect-square cursor-pointer overflow-hidden rounded-2xl transition-[transform,box-shadow] duration-300 group-hover:-translate-y-1 group-hover:shadow-[0_16px_32px_-12px_rgba(31,42,84,0.22)]">
                       <SafeImage
                         src={post.image}
                         hideIfEmpty

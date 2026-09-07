@@ -27,8 +27,8 @@ export function BrandingLogo({
   const src = variant === "header" ? branding.logoHeader : branding.logoFooter;
   const label = alt ?? branding.siteName;
 
-  const resolvedWidth = width ?? (variant === "header" ? SITE_LOGO_SIZE_PX : 160);
-  const resolvedHeight = height ?? (variant === "header" ? SITE_LOGO_SIZE_PX : 48);
+  const resolvedWidth = width ?? SITE_LOGO_SIZE_PX;
+  const resolvedHeight = height ?? SITE_LOGO_SIZE_PX;
 
   const sizeStyle =
     variant === "header"
@@ -40,7 +40,11 @@ export function BrandingLogo({
           minHeight: "var(--site-logo-size)",
           maxHeight: "var(--site-logo-size)",
         }
-      : { width: resolvedWidth, height: resolvedHeight, maxWidth: resolvedWidth };
+      : {
+          height: "var(--site-logo-size)",
+          width: "auto",
+          maxHeight: "var(--site-logo-size)",
+        };
 
   if (!isValidImageUrl(src)) {
     return (
@@ -64,10 +68,10 @@ export function BrandingLogo({
       width={resolvedWidth}
       height={resolvedHeight}
       className={cn(
-        variant === "header" ? "object-contain" : "",
+        "object-contain",
         className
       )}
-      style={variant === "header" ? sizeStyle : undefined}
+      style={sizeStyle}
       priority={priority}
     />
   );

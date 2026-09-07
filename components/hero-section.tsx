@@ -254,17 +254,19 @@ export function HeroSection() {
           >
             <ChevronRight className="w-10 h-10" />
           </motion.button>
-          <div className="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+          <div className="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1.5 sm:gap-2">
             {slides.map((_, index) => (
               <motion.button
                 key={index}
                 type="button"
                 onClick={() => setCurrentSlide(index)}
-                className={`h-3 rounded-full ${
-                  index === currentSlide ? "bg-gold" : "bg-white/50"
+                className={`unstyled appearance-none border-0 p-0 min-h-0 min-w-0 shrink-0 rounded-full ${
+                  index === currentSlide
+                    ? "h-1.5 w-4 bg-gold sm:h-3 sm:w-8"
+                    : "h-1.5 w-1.5 bg-white/50 sm:h-3 sm:w-3"
                 }`}
+                layout
                 animate={{
-                  width: index === currentSlide ? 32 : 12,
                   opacity: index === currentSlide ? 1 : 0.5,
                 }}
                 whileHover={{ scale: 1.2, opacity: 1 }}
