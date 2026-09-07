@@ -56,7 +56,7 @@ export function CompanyHistorySection({
           <h2 className="font-royal text-3xl md:text-4xl text-[#1F2A54] mb-12">{titleText}</h2>
         </Reveal>
         <div className="relative">
-          <div className="absolute left-6 top-0 bottom-0 w-px -translate-x-1/2 bg-[#1F2A54]/15 md:left-1/2" />
+          <div className="absolute left-6 top-[22px] bottom-0 w-px -translate-x-1/2 bg-[#1F2A54]/15 md:left-1/2" />
           <div className="space-y-10">
             {items.map((item, index) => (
               <Reveal key={`${item.year}-${index}`} delay={index * 0.05}>

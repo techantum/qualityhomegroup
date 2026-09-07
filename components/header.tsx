@@ -90,7 +90,7 @@ export function Header() {
                 className="h-9 rounded-md bg-[#1F2A54] px-3 text-xs font-medium text-white hover:bg-[#1F2A54]/90"
                 onClick={() => setIsEnquiryOpen(true)}
               >
-                Enquire
+                Enquire Now
               </Button>
               <button
                 type="button"
@@ -135,7 +135,7 @@ export function Header() {
                       setIsEnquiryOpen(true);
                     }}
                   >
-                    Enquiry Now
+                    Enquire Now
                   </Button>
                 </nav>
               </motion.div>
