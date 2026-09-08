@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useLayoutEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { MapPin, ChevronLeft, ChevronRight } from "lucide-react";
@@ -24,6 +24,9 @@ export function ProjectsSection() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [slidesToShow, setSlidesToShow] = useState(3);
   const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [viewportWidth, setViewportWidth] = useState(0);
+  const viewportRef = useRef<HTMLDivElement>(null);
+  const cardGap = 24;
 
   useEffect(() => {
     async function fetchProjects() {
@@ -66,6 +69,32 @@ export function ProjectsSection() {
   }, []);
 
   const maxIndex = Math.max(0, projects.length - slidesToShow);
+  const cardWidth =
+    viewportWidth > 0
+      ? (viewportWidth - cardGap * Math.max(0, slidesToShow - 1)) / slidesToShow
+      : 0;
+
+  useLayoutEffect(() => {
+    if (isLoading || projects.length === 0) return;
+    const node = viewportRef.current;
+    if (!node) return;
+
+    const update = (width: number) => {
+      if (width > 0) setViewportWidth(width);
+    };
+    update(node.clientWidth);
+
+    const observer = new ResizeObserver((entries) => {
+      const width = entries[0]?.contentRect.width ?? node.clientWidth;
+      update(width);
+    });
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [isLoading, projects.length]);
+
+  useEffect(() => {
+    setCurrentIndex((prev) => Math.min(prev, maxIndex));
+  }, [maxIndex]);
 
   const nextSlide = () => {
     setCurrentIndex((prev) => Math.min(prev + 1, maxIndex));
@@ -78,8 +107,6 @@ export function ProjectsSection() {
   const goToSlide = (index: number) => {
     setCurrentIndex(Math.min(index, maxIndex));
   };
-
-  const visibleProjects = projects.slice(currentIndex, currentIndex + slidesToShow);
 
   const handleTouchStart = (e: React.TouchEvent) => setTouchStart(e.touches[0].clientX);
   const handleTouchEnd = (e: React.TouchEvent) => {
@@ -137,7 +164,7 @@ export function ProjectsSection() {
                 type="button"
                 onClick={prevSlide}
                 disabled={currentIndex === 0}
-                className="absolute left-1 sm:-left-2 md:-left-16 top-1/2 -translate-y-1/2 z-10 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center disabled:opacity-30 text-white md:text-[#1F2A54] bg-black/30 md:bg-transparent rounded-full"
+                className="absolute left-1 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/30 text-white disabled:opacity-30 sm:left-2 md:left-1 md:h-12 md:w-12 md:bg-transparent md:text-[#1F2A54] min-[1440px]:-left-16"
                 whileHover={{ scale: 1.15, x: -4 }}
                 whileTap={{ scale: 0.95 }}
                 aria-label="Previous projects"
@@ -146,17 +173,19 @@ export function ProjectsSection() {
               </motion.button>
 
               {/* Projects Cards */}
-              <div className="w-full overflow-hidden px-8 md:px-0">
-                <motion.div
-                  className="flex gap-6"
-                  animate={{ x: `-${currentIndex * (100 / slidesToShow + 2)}%` }}
-                  transition={{ type: "spring", stiffness: 260, damping: 30 }}
-                >
+              <div className="px-10 md:px-14 min-[1440px]:px-0">
+                <div ref={viewportRef} className="w-full min-w-0 overflow-hidden">
+                  <motion.div
+                    className="flex flex-nowrap gap-6"
+                    animate={{ x: cardWidth > 0 ? -(currentIndex * (cardWidth + cardGap)) : 0 }}
+                    transition={{ type: "spring", stiffness: 300, damping: 36 }}
+                  >
                   {projects.map((project) => (
                     <Link
                       key={project.id}
                       href={`/property/${project.slug || project.id}`}
-                      className="flex-shrink-0 w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] block"
+                      className="block shrink-0"
+                      style={{ width: cardWidth > 0 ? cardWidth : "100%" }}
                     >
                       <motion.div
                         className="group relative rounded-2xl overflow-hidden aspect-[3/4] cursor-pointer"
@@ -195,6 +224,7 @@ export function ProjectsSection() {
                     </Link>
                   ))}
                 </motion.div>
+                </div>
               </div>
 
               {/* Right Arrow */}
@@ -202,7 +232,7 @@ export function ProjectsSection() {
                 type="button"
                 onClick={nextSlide}
                 disabled={currentIndex >= maxIndex}
-                className="absolute right-1 sm:-right-2 md:-right-16 top-1/2 -translate-y-1/2 z-10 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center disabled:opacity-30 text-white md:text-[#1F2A54] bg-black/30 md:bg-transparent rounded-full"
+                className="absolute right-1 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/30 text-white disabled:opacity-30 sm:right-2 md:right-1 md:h-12 md:w-12 md:bg-transparent md:text-[#1F2A54] min-[1440px]:-right-16"
                 whileHover={{ scale: 1.15, x: 4 }}
                 whileTap={{ scale: 0.95 }}
                 aria-label="Next projects"
@@ -212,18 +242,28 @@ export function ProjectsSection() {
             </div>
 
             {/* Dots Indicator */}
-            <div className="flex justify-center gap-2 mt-8">
-              {Array.from({ length: Math.ceil(projects.length / slidesToShow) }).map((_, index) => (
-                <button
-                  key={index}
-                  type="button"
-                  className={`w-2.5 h-2.5 rounded-full transition-colors ${
-                    index === Math.floor(currentIndex / slidesToShow) ? "bg-[#1F2A54]" : "bg-[#1F2A54]/30"
-                  }`}
-                  onClick={() => goToSlide(index * slidesToShow)}
-                  aria-label={`Go to slide group ${index + 1}`}
-                />
-              ))}
+            <div className="mt-8 flex items-center justify-center gap-1">
+              {Array.from({ length: Math.ceil(projects.length / slidesToShow) }).map((_, index) => {
+                const isActive = index === Math.floor(currentIndex / slidesToShow);
+                return (
+                  <button
+                    key={index}
+                    type="button"
+                    className="unstyled flex min-h-0 min-w-0 appearance-none items-center justify-center border-0 bg-transparent p-2"
+                    onClick={() => goToSlide(index * slidesToShow)}
+                    aria-label={`Go to slide group ${index + 1}`}
+                    aria-current={isActive ? "true" : undefined}
+                  >
+                    <span
+                      className={`block rounded-full transition-all ${
+                        isActive
+                          ? "h-1.5 w-4 bg-[#1F2A54] sm:h-2.5 sm:w-6"
+                          : "h-1.5 w-1.5 bg-[#1F2A54]/30 sm:h-2.5 sm:w-2.5"
+                      }`}
+                    />
+                  </button>
+                );
+              })}
             </div>
           </>
         )}

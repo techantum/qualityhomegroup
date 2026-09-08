@@ -95,14 +95,14 @@ export function NewsSection() {
         {!isLoading && articles.length > 0 && (
           <Stagger className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {articles.map((article) => (
-              <StaggerItem key={article.id}>
+              <StaggerItem key={article.id} className="h-full">
               <motion.article 
-                className="group bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden"
+                className="group flex h-full flex-col overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm"
                 whileHover={{ y: -8, boxShadow: "0 20px 40px rgba(31,42,84,0.12)" }}
                 transition={{ type: "spring", stiffness: 400, damping: 28 }}
               >
                 {/* Image */}
-                <div className="aspect-[4/3] overflow-hidden relative img-hover-zoom">
+                <div className="aspect-[4/3] overflow-hidden relative img-hover-zoom shrink-0">
                   <SafeImage
                     src={article.image}
                     alt={article.title}
@@ -112,23 +112,23 @@ export function NewsSection() {
                 </div>
                 
                 {/* Content */}
-                <div className="p-4 text-center">
+                <div className="flex flex-1 flex-col p-4 text-center">
                   {/* Meta */}
-                  <div className="flex items-center justify-center gap-2 text-sm mb-2">
+                  <div className="mb-2 flex items-center justify-center gap-2 text-sm">
                     <span className="text-red-500 font-medium">{article.category}</span>
                     <span className="text-gray-400">•</span>
                     <span className="text-gray-500">{article.date}</span>
                   </div>
                   
                   {/* Title */}
-                  <h3 className="font-semibold text-[#1F2A54] leading-tight mb-4 text-balance group-hover:text-[#DDA21A] transition-colors">
+                  <h3 className="mb-4 line-clamp-2 min-h-[2.5rem] font-semibold leading-tight text-[#1F2A54] text-balance">
                     {article.title}
                   </h3>
                   
                   {/* Read More */}
                   <Link 
                     href={`/blog/${article.id}`}
-                    className="inline-flex items-center text-sm text-[#1F2A54] hover:text-[#DDA21A] transition-colors link-hover-slide cursor-pointer"
+                    className="mt-auto inline-flex items-center justify-center text-sm text-[#1F2A54] hover:text-[#DDA21A] transition-colors link-hover-slide cursor-pointer"
                   >
                     Read More <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
                   </Link>

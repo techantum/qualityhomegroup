@@ -46,7 +46,8 @@ export default function ContactPage() {
         const json = await res.json().catch(() => ({}));
         if (res.ok && json?.data) {
           setContactInfo(json.data);
-          if (json.data.heroTitle) setHeroTitle(json.data.heroTitle);
+          const title = String(json.data.heroTitle ?? json.data.title ?? "").trim();
+          if (title) setHeroTitle(title);
           if (json.data.heroImage) setHeroImage(json.data.heroImage);
         }
       } catch (e) {
@@ -140,7 +141,7 @@ export default function ContactPage() {
       {/* Header */}
       <Header />
 
-      <ListingHero title={heroTitle} image={heroImage} loading={pageLoading} defaultAlt="Contact Us" />
+      <ListingHero title={heroTitle || "Contact Us"} image={heroImage} loading={pageLoading} defaultAlt="Contact Us" />
 
       {/* Contact Cards */}
       <section className="py-16 bg-[#F5F5F5]">
@@ -177,7 +178,7 @@ export default function ContactPage() {
             </div>
 
             {/* Location Card */}
-            <div className="bg-[#ffffff] rounded-[8px] p-6 border border-gray-200 flex flex-col min-h-[200px]">
+            <div className="bg-[#ffffff] rounded-[8px] p-6 border border-gray-200 flex flex-col min-h-[200px] card-hover-lift transition-all duration-300">
               <div className="mb-4 text-[#1F2A54]">
                 <MapPin className="w-6 h-6" aria-hidden />
               </div>
@@ -287,18 +288,18 @@ export default function ContactPage() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="relative inline-flex items-center px-6 py-2.5 pr-10 bg-transparent border border-gray-300 text-[#000000] text-sm font-medium rounded-full hover:bg-[#1F2A54] hover:text-[#ffffff] hover:border-[#1F2A54] transition-all duration-300 disabled:opacity-50 group hover:shadow-lg active:scale-[0.98]"
+                  className="inline-flex items-center gap-2.5 rounded-full border border-gray-300 bg-transparent px-5 py-1.5 pr-1.5 text-sm font-medium text-[#000000] transition-all duration-300 hover:border-[#1F2A54] hover:bg-[#1F2A54] hover:text-[#ffffff] hover:shadow-lg disabled:opacity-50 active:scale-[0.98] group"
                 >
                   {isSubmitting ? (
                     <>
-                      <Loader2 className="w-4 h-4 animate-spin mr-2" />
+                      <Loader2 className="w-4 h-4 animate-spin" />
                       Sending...
                     </>
                   ) : (
                     <>
-                      Submit
-                      <span className="absolute -top-2 -right-2 w-7 h-7 bg-[#DDA21A] rounded-full flex items-center justify-center">
-                        <ArrowRight className="w-3.5 h-3.5 text-white" />
+                      <span className="pl-1">Submit</span>
+                      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#DDA21A]">
+                        <ArrowRight className="h-3.5 w-3.5 text-white" />
                       </span>
                     </>
                   )}

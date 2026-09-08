@@ -140,7 +140,7 @@ export default function AboutPage() {
 
       {(content?.leaderName || content?.leaderBio || content?.leaderImage) && (
         <section className="py-16 md:py-24 bg-white">
-          <div className="max-w-[900px] mx-auto px-4">
+          <div className="max-w-[1200px] mx-auto px-4">
             <div className={`grid gap-8 items-start ${content?.leaderImage ? "md:grid-cols-[240px_1fr]" : ""}`}>
               {content?.leaderImage && (
                 <div className="relative mx-auto aspect-[3/4] w-full max-w-[240px] overflow-hidden rounded-2xl">
@@ -183,7 +183,7 @@ export default function AboutPage() {
                 )}
               </div>
             )}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-5">
               {team.map((member, index) => (
                 <div key={member.id || index} className="text-center">
                   <div className="relative w-full aspect-[3/4] mb-4 rounded-2xl overflow-hidden">

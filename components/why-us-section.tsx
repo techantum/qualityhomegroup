@@ -63,8 +63,8 @@ export function WhyUsSection() {
     <section className="py-12 md:py-20 bg-white relative overflow-hidden">
       <FloatingOrbs />
       <div className="max-w-[1200px] mx-auto px-4 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-12 items-start">
-          <Reveal direction="right">
+        <div className="grid items-center gap-8 md:gap-12 lg:grid-cols-2 lg:gap-16">
+          <Reveal direction="right" className="w-full">
             {content?.eyebrow && (
               <p className="text-[#1F2A54] font-medium mb-2">{content.eyebrow}</p>
             )}
@@ -115,21 +115,26 @@ export function WhyUsSection() {
           </Reveal>
 
           {isValidImageUrl(content?.image) && (
-            <Reveal direction="left" delay={0.15}>
-              <GsapParallax speed={0.25} className="relative w-full h-[280px] sm:h-[500px] lg:h-[600px]">
-                <motion.div
-                  className="relative w-full h-full"
-                  whileHover={{ scale: 1.03 }}
-                  transition={{ type: "spring", stiffness: 300, damping: 22 }}
-                >
-                  <Image
-                    src={getSafeImageSrc(content.image)!}
-                    alt={content.title || "Why Quality Home Group"}
-                    fill
-                    className="object-contain object-right"
-                  />
-                </motion.div>
-              </GsapParallax>
+            <Reveal direction="left" delay={0.15} className="flex w-full justify-center lg:justify-end">
+              <div className="relative mx-auto w-full max-w-[400px] sm:max-w-[480px] lg:mx-0 lg:max-w-none">
+                <div className="relative aspect-[4/5] w-full overflow-hidden sm:aspect-[3/4] lg:aspect-[4/5]">
+                  <GsapParallax speed={0.25} scale={1} className="absolute inset-0">
+                    <motion.div
+                      className="relative h-full w-full"
+                      whileHover={{ scale: 1.03 }}
+                      transition={{ type: "spring", stiffness: 300, damping: 22 }}
+                    >
+                      <Image
+                        src={getSafeImageSrc(content.image)!}
+                        alt={content.title || "Why Quality Home Group"}
+                        fill
+                        className="object-contain object-center lg:object-right"
+                        sizes="(max-width: 1023px) min(100vw, 480px), 50vw"
+                      />
+                    </motion.div>
+                  </GsapParallax>
+                </div>
+              </div>
             </Reveal>
           )}
         </div>
