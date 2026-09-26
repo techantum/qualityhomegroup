@@ -14,6 +14,7 @@ import {
   mapHeroSlide,
   mapLead,
   mapProject,
+  mapSiteScript,
   mapTestimonial,
   splitProjectPayload,
   stripUndefined,
@@ -24,6 +25,27 @@ import {
   normalizeProjectStatus,
   normalizeProjectType,
 } from "./project-page";
+import { findScriptPageConflicts } from "./site-pages";
+import type { ScriptPlacement } from "./firestore-types";
+
+export class ScriptPageConflictError extends Error {
+  conflicts: string[];
+  constructor(conflicts: string[]) {
+    super("One or more selected pages already have a script in this placement");
+    this.name = "ScriptPageConflictError";
+    this.conflicts = conflicts;
+  }
+}
+
+export interface SiteScriptPayload {
+  name: string;
+  placement: ScriptPlacement;
+  pageSlugs: string[];
+  appliesToAll: boolean;
+  content: string;
+  isActive: boolean;
+  order?: number;
+}
 
 export interface CategoryItem {
   id: string;
@@ -997,6 +1019,91 @@ export async function adminUpdateGalleryImage(
 
 export async function adminDeleteGalleryImage(id: string): Promise<void> {
   await query(`DELETE FROM gallery WHERE id = $1`, [id]);
+}
+
+export async function adminGetSiteScripts(): Promise<ReturnType<typeof mapSiteScript>[]> {
+  if (!isDatabaseConfigured()) return [];
+  const result = await query(
+    `SELECT * FROM site_scripts ORDER BY placement ASC, sort_order ASC, created_at ASC`,
+  );
+  return result.rows.map((row) => mapSiteScript(row));
+}
+
+export async function adminGetActiveSiteScripts(): Promise<ReturnType<typeof mapSiteScript>[]> {
+  if (!isDatabaseConfigured()) return [];
+  const result = await query(
+    `SELECT * FROM site_scripts WHERE is_active = TRUE ORDER BY sort_order ASC, created_at ASC`,
+  );
+  return result.rows.map((row) => mapSiteScript(row));
+}
+
+async function assertNoScriptPageConflict(
+  payload: Pick<SiteScriptPayload, "placement" | "pageSlugs" | "appliesToAll">,
+  excludeId?: string,
+) {
+  const existing = await adminGetSiteScripts();
+  const conflicts = findScriptPageConflicts(existing, payload, excludeId);
+  if (conflicts.length) {
+    throw new ScriptPageConflictError(conflicts);
+  }
+}
+
+export async function adminAddSiteScript(script: SiteScriptPayload): Promise<string> {
+  await assertNoScriptPageConflict(script);
+  const result = await query(
+    `INSERT INTO site_scripts (name, placement, page_slugs, applies_to_all, content, is_active, sort_order)
+     VALUES ($1, $2, $3, $4, $5, $6, $7)
+     RETURNING id`,
+    [
+      script.name,
+      script.placement,
+      script.appliesToAll ? [] : script.pageSlugs,
+      script.appliesToAll,
+      script.content,
+      script.isActive,
+      script.order ?? 0,
+    ],
+  );
+  return String(result.rows[0].id);
+}
+
+export async function adminUpdateSiteScript(
+  id: string,
+  script: Partial<SiteScriptPayload>,
+): Promise<void> {
+  const existing = await query(`SELECT * FROM site_scripts WHERE id = $1`, [id]);
+  if (!existing.rows[0]) {
+    throw new Error("Script not found");
+  }
+  const current = mapSiteScript(existing.rows[0]);
+  const next = {
+    placement: script.placement ?? current.placement,
+    pageSlugs: script.pageSlugs ?? current.pageSlugs,
+    appliesToAll: script.appliesToAll ?? current.appliesToAll,
+  };
+  await assertNoScriptPageConflict(next, id);
+
+  const sets: string[] = [];
+  const values: unknown[] = [];
+  let i = 1;
+  if (script.name !== undefined) { sets.push(`name = $${i++}`); values.push(script.name); }
+  if (script.placement !== undefined) { sets.push(`placement = $${i++}`); values.push(script.placement); }
+  if (script.pageSlugs !== undefined || script.appliesToAll !== undefined) {
+    sets.push(`page_slugs = $${i++}`);
+    values.push(next.appliesToAll ? [] : next.pageSlugs);
+  }
+  if (script.appliesToAll !== undefined) { sets.push(`applies_to_all = $${i++}`); values.push(script.appliesToAll); }
+  if (script.content !== undefined) { sets.push(`content = $${i++}`); values.push(script.content); }
+  if (script.isActive !== undefined) { sets.push(`is_active = $${i++}`); values.push(script.isActive); }
+  if (script.order !== undefined) { sets.push(`sort_order = $${i++}`); values.push(script.order); }
+  if (!sets.length) return;
+  sets.push("updated_at = NOW()");
+  values.push(id);
+  await query(`UPDATE site_scripts SET ${sets.join(", ")} WHERE id = $${i}`, values);
+}
+
+export async function adminDeleteSiteScript(id: string): Promise<void> {
+  await query(`DELETE FROM site_scripts WHERE id = $1`, [id]);
 }
 
 export async function adminGetDashboardStats(): Promise<{

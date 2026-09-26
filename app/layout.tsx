@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { Plus_Jakarta_Sans } from 'next/font/google'
 import { MotionProvider } from '@/components/providers/motion-provider'
 import { BrandingHead } from '@/components/branding-head'
+import { SiteScripts } from '@/components/site-scripts'
 import './globals.css'
 
 const plusJakartaSans = Plus_Jakarta_Sans({
@@ -41,6 +42,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${plusJakartaSans.variable} font-sans antialiased`}>
         <BrandingHead />
+        <SiteScripts />
         <MotionProvider>{children}</MotionProvider>
       </body>
     </html>

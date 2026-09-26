@@ -235,6 +235,21 @@ export interface FormField {
   validation?: string;
 }
 
+export type ScriptPlacement = "header" | "footer";
+
+export interface SiteScript {
+  id?: string;
+  name: string;
+  placement: ScriptPlacement;
+  pageSlugs: string[];
+  appliesToAll: boolean;
+  content: string;
+  isActive: boolean;
+  order: number;
+  createdAt?: Timestamp;
+  updatedAt?: Timestamp;
+}
+
 export interface AnalyticsData {
   pageViews: number;
   uniqueVisitors: number;

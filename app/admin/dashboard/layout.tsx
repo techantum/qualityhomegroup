@@ -27,6 +27,7 @@ import {
   FormInput,
   Globe,
   Tags,
+  Code2,
 } from "lucide-react";
 import { useBranding } from "@/hooks/use-branding";
 import { isValidImageUrl } from "@/lib/media";
@@ -79,6 +80,7 @@ function buildMenuItems(categories: SidebarCategory[]): MenuItem[] {
     { icon: FolderOpen, label: "Projects", href: "/admin/dashboard/projects" },
     { icon: Tags, label: "Categories", href: "/admin/dashboard/categories" },
     { icon: Search, label: "SEO Manager", href: "/admin/dashboard/seo" },
+    { icon: Code2, label: "Header & Footer Scripts", href: "/admin/dashboard/scripts" },
     { icon: BarChart3, label: "Analytics", href: "/admin/dashboard/analytics" },
     { icon: Settings, label: "Settings", href: "/admin/dashboard/settings" },
   ];
@@ -156,10 +158,10 @@ export default function AdminDashboardLayout({
     return null;
   }
 
-  // For the main dashboard page, render children directly (it has its own layout)
-  if (pathname === "/admin/dashboard") {
-    return <>{children}</>;
-  }
+  const pageTitle =
+    pathname === "/admin/dashboard"
+      ? "Dashboard"
+      : pathname.split("/").pop()?.replace(/-/g, " ") || "Dashboard";
 
   return (
     <div className="min-h-screen bg-secondary/30">
@@ -287,7 +289,7 @@ export default function AdminDashboardLayout({
                 <Menu size={24} />
               </button>
               <h1 className="truncate text-base sm:text-xl font-semibold text-[#1F2A54] capitalize">
-                {pathname.split('/').pop()?.replace(/-/g, ' ') || 'Dashboard'}
+                {pageTitle}
               </h1>
             </div>
             <div className="flex shrink-0 items-center gap-3">

@@ -132,6 +132,21 @@ export function mapCmsPage(row: Record<string, unknown>) {
   };
 }
 
+export function mapSiteScript(row: Record<string, unknown>) {
+  return {
+    id: String(row.id),
+    name: (row.name as string) ?? "",
+    placement: row.placement as "header" | "footer",
+    pageSlugs: Array.isArray(row.page_slugs) ? (row.page_slugs as string[]) : [],
+    appliesToAll: Boolean(row.applies_to_all),
+    content: (row.content as string) ?? "",
+    isActive: Boolean(row.is_active),
+    order: Number(row.sort_order ?? 0),
+    createdAt: iso(row.created_at),
+    updatedAt: iso(row.updated_at),
+  };
+}
+
 export function mapCmsSection(row: Record<string, unknown>) {
   return {
     id: String(row.id),

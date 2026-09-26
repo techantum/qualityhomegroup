@@ -84,8 +84,39 @@ export const cmsSectionSchema = z.object({
   settings: z.record(z.unknown()).optional(),
 });
 
+/** Custom header/footer scripts */
+const siteScriptFields = z.object({
+  name: z.string().min(1).max(200),
+  placement: z.enum(["header", "footer"]),
+  appliesToAll: z.boolean().default(false),
+  pageSlugs: z.array(z.string().min(1).max(100)).max(50).default([]),
+  content: z.string().min(1).max(100_000),
+  isActive: z.boolean().default(true),
+  order: z.number().int().min(0).optional(),
+});
+
+export const siteScriptSchema = siteScriptFields.refine(
+  (value) => value.appliesToAll || value.pageSlugs.length > 0,
+  {
+    message: "Select All pages or at least one page",
+    path: ["pageSlugs"],
+  },
+);
+
+export const siteScriptUpdateSchema = z.object({
+  name: z.string().min(1).max(200).optional(),
+  placement: z.enum(["header", "footer"]).optional(),
+  appliesToAll: z.boolean().optional(),
+  pageSlugs: z.array(z.string().min(1).max(100)).max(50).optional(),
+  content: z.string().min(1).max(100_000).optional(),
+  isActive: z.boolean().optional(),
+  order: z.number().int().min(0).optional(),
+});
+
 export type ContactSubmissionInput = z.infer<typeof contactSubmissionSchema>;
 export type LeadsQueryInput = z.infer<typeof leadsQuerySchema>;
 export type UpdateLeadStatusInput = z.infer<typeof updateLeadStatusSchema>;
 export type CMSPageInput = z.infer<typeof cmsPageSchema>;
 export type CMSSectionInput = z.infer<typeof cmsSectionSchema>;
+export type SiteScriptInput = z.infer<typeof siteScriptSchema>;
+export type SiteScriptUpdateInput = z.infer<typeof siteScriptUpdateSchema>;
